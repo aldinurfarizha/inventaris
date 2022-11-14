@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="<?=base_url()?>/assets/css/demo.css" />
     <link rel="stylesheet" href="<?=base_url()?>/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
     <link rel="stylesheet" href="<?=base_url()?>/assets/vendor/libs/apex-charts/apex-charts.css" />
+    <link rel="stylesheet" href="<?=base_url('assets/')?>css/fontawesome-free/css/all.min.css">
     <link rel="apple-touch-icon" sizes="57x57" href="<?=base_url()?>/assets/img/favicon/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="<?=base_url()?>/assets/img/favicon/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="<?=base_url()?>/assets/img/favicon/apple-icon-72x72.png">
