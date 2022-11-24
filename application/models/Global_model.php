@@ -29,6 +29,19 @@ class Global_model extends CI_Model{
     function insertcallback($table,$data){
       return ($this->db->insert($table, $data))  ?   $this->db->insert_id()  :   false;
     }
-   
+    function is_kode_barang_available($kd_barang){
+      if($this->db->where(["kd_barang"=>$kd_barang])->from('master_barang')->count_all_results()==0){
+        return true;
+      }else{
+        return false;
+      }
+    }
+    function master_barang(){
+      $this->db->select('*');
+      $this->db->from('master_barang');
+      $this->db->join('kategori_barang', 'master_barang.kd_kategori = kategori_barang.kd_kategori');
+      $this->db->where(['deleted'=>0]);
+      return $this->db->get();
+    }
 }
 ?>
