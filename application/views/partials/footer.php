@@ -36,6 +36,22 @@
                               location.reload();
                             });
               }
+       $("#logout").click( function() {
+    Swal.fire({
+                icon: 'question',
+                title: 'PERHATIAN!',
+                text: 'Apakah anda ingin Keluar/Log Out sekarang?',
+                showConfirmButton: true,
+                showCancelButton: true,
+                showBackdrop: true,
+                confirmButtonText: 'Ya Keluar',
+                cancelButtonText: 'Tidak'
+            }).then(function(data){
+                if(data.value === true){
+                    window.location.href = "<?= base_url('auth/logout')?>";
+                }
+            });
+   });
     </script>
   </body>
 </html>

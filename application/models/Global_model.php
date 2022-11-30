@@ -43,5 +43,12 @@ class Global_model extends CI_Model{
       $this->db->where(['deleted'=>0]);
       return $this->db->get();
     }
+    function sub_bagian(){
+      $this->db->select('sub_office_bagian.nama as nama_sub_bagian,sub_office_bagian.*, sub_office.nama as nama_sub_office,sub_office.*');
+      $this->db->from('sub_office_bagian');
+      $this->db->join('sub_office', 'sub_office_bagian.sub_id=sub_office.sub_id', 'left');
+      return $this->db->get();
+
+    }
 }
 ?>

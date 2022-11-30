@@ -90,11 +90,6 @@
                     <div data-i18n="Account">Sub Kantor</div>
                   </a>
                 </li>
-                 <li class="menu-item <?php if($this->uri->segment('2')=='sub_bagian') { echo"active";}?>">
-                  <a href="<?=base_url('master/kantor')?>" class="menu-link">
-                    <div data-i18n="Account">Sub Bagian</div>
-                  </a>
-                </li>
               </ul>
             </li>
             <li class="menu-item <?php if($this->uri->segment('1')=='laporan') { echo"active open";}?>">
@@ -142,15 +137,15 @@
                 <div data-i18n="Basic">Profil Perusahaan</div>
               </a>
             </li>
-            <li class="menu-item <?php if($this->uri->segment('2')=='profil') { echo"active";}?>">
-              <a href="<?=base_url('setting/profil')?>" class="menu-link">
+            <li class="menu-item <?php if($this->uri->segment('2')=='user') { echo"active";}?>">
+              <a href="<?=base_url('setting/user')?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user"></i>
                 <div data-i18n="Basic">User</div>
               </a>
             </li>
           <li class="menu-header small text-uppercase"><span class="menu-header-text"></span></li>
-            <li class="menu-item <?php if($this->uri->segment('2')=='profil') { echo"active";}?>">
-              <a href="<?=base_url('setting/profil')?>" class="menu-link">
+            <li class="menu-item">
+              <a href="#" id="logout" class="menu-link">
                 <i class="text-danger menu-icon tf-icons bx bx-power-off"></i>
                 <div data-i18n="Basic">Logout</div>
               </a>

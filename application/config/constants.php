@@ -84,7 +84,9 @@ defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
-defined('APP_NAME')      OR define('APP_NAME', "SIMBA"); 
+defined('APP_NAME')      OR define('APP_NAME', "SIMBA");
+defined('APP_NAME_DESC')      OR define('APP_NAME_DESC', "Sistem Inventaris Barang");
 defined('APP_NAME_TITLE')      OR define('APP_NAME_TITLE', " | SIMBA - PAM KUNINGAN"); 
 defined('APP_SUB_NAME')      OR define('APP_SUB_NAME', "Sistem Inventaris Barang"); 
 defined('LOGO_PATH')      OR define('LOGO_PATH', '/assets/img/logo.png'); 
+defined('LOGO_PERUSAHAAN_PATH')      OR define('LOGO_PERUSAHAAN_PATH', '/assets/upload/logo/'); 
