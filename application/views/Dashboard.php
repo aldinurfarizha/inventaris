@@ -8,7 +8,7 @@
                     <div class="d-flex align-items-end row">
                       <div class="col-sm-12">
                         <div class="card-body">
-                          <h5 class="card-title text-primary">Selamat Datang, Admin 👋</h5>
+                          <h5 class="card-title text-primary">Selamat Datang, <?=$this->session->userdata('nama')?> 👋</h5>
                         </div>
                       </div>
                     </div>

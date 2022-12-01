@@ -110,23 +110,11 @@
                 </li>
               </ul>
             </li>
-            <li class="menu-item <?php if($this->uri->segment('1')=='inventaris') { echo"active open";}?>">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-cube-alt"></i>
+            <li class="menu-item <?php if($this->uri->segment('1')=='inventaris') { echo"active";}?>">
+              <a href="<?=base_url('inventaris')?>" class="menu-link">
+                 <i class="menu-icon tf-icons bx bx-cube-alt"></i>
                 <div data-i18n="Misc">Inventaris</div>
               </a>
-              <ul class="menu-sub">
-                <li class="menu-item <?php if($this->uri->segment('2')=='list_inventaris') { echo"active";}?>">
-                 <a href="<?=base_url('barang/list_barang')?>" class="menu-link">
-                    <div data-i18n="Basic">List Inventaris</div>
-                  </a>
-                </li>
-                <li class="menu-item <?php if($this->uri->segment('2')=='tambah') { echo"active";}?>">
-                 <a href="<?=base_url('inventaris/tambah')?>" class="menu-link">
-                    <div data-i18n="Basic">Tambah Inventaris</div>
-                  </a>
-                </li>
-              </ul>
             </li>
             <!-- Components -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Pengaturan</span></li>
