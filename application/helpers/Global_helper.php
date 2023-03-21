@@ -1,4 +1,15 @@
 <?php
+if(!function_exists('opt_day')){
+
+    function opt_day(){
+        $day=array();
+        for ($x = 1; $x <= 31; $x++) {
+            array_push($day,$x);
+        } 
+        return $day;
+    }
+}
+
 if (!function_exists('opt_tahun')){
     function opt_tahun(){
         $tahun=array();
@@ -25,6 +36,7 @@ if(!function_exists('opt_satuan')){
 if(!function_exists('opt_bulan')){
     function opt_bulan(){
         $bulan=array(
+            '',
             'Januari',
             'Februari',
             'Maret',

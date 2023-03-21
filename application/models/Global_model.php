@@ -4,7 +4,8 @@ class Global_model extends CI_Model{
 
     function insert($table,$data)
     {
-      return $this->db->insert($table, $data);
+      $this->db->insert($table, $data);
+      return $this->db->affected_rows();
     }
     function update($table,$where,$data)
     {
@@ -36,6 +37,16 @@ class Global_model extends CI_Model{
         return false;
       }
     }
+    function inventaris($where){
+      $this->db->select('barang.*, master_barang.*, office.*, office.nama as nama_kantor, sub_office.nama as nama_sub_kantor');
+      $this->db->from('barang');
+      $this->db->join('master_barang','master_barang.id=barang.master_barang_id');
+      $this->db->join('office','office.of_id=barang.of_id');
+      $this->db->join('sub_office','sub_office.sub_id=barang.sub_id');
+      $this->db->where($where);
+      return $this->db->get();
+
+    }
     function master_barang(){
       $this->db->select('*');
       $this->db->from('master_barang');
@@ -48,7 +59,22 @@ class Global_model extends CI_Model{
       $this->db->from('sub_office_bagian');
       $this->db->join('sub_office', 'sub_office_bagian.sub_id=sub_office.sub_id', 'left');
       return $this->db->get();
-
+    }
+    function get_detail_barang($id){
+      $this->db->select('barang.*, master_barang.*, office.*, office.nama as nama_kantor, sub_office.nama as nama_sub_kantor');
+      $this->db->from('barang');
+      $this->db->join('master_barang','master_barang.id=barang.master_barang_id');
+      $this->db->join('office','office.of_id=barang.of_id');
+      $this->db->join('sub_office','sub_office.sub_id=barang.sub_id');
+      $this->db->where(['id_barang'=>$id]);
+      return $this->db->get();
+    }
+    function get_history($id){
+      $this->db->select('history_update.*, office.*');
+      $this->db->from('history_update');
+      $this->db->join('office', 'history_update.of_id = office.of_id');
+      $this->db->where(['id_barang'=>$id]);
+      return $this->db->get();
     }
 }
 ?>
