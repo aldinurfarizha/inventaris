@@ -111,7 +111,8 @@
                     </thead>
                     <tbody class="table-border-bottom-0">
                       <?php $no=1; foreach($data as $datar):?>
-                        <th><?=$no?></th>
+                        <tr>
+                          <th><?=$no?></th>
                         <th><?=$datar->nama_barang?></th>
                         <th><?=$datar->d.'-'.$datar->m.'-'.$datar->y?></th>
                         <th><?=$datar->nama_kantor.' '.$datar->nama_sub_kantor?></th>
@@ -123,7 +124,8 @@
                               <span class="fa fa-search"></span>
                               </a>
                             </th>
-                        <?php endforeach;?>
+                        </tr>
+                        <?php $no++; endforeach;?>
                     </tbody>
                   </table>
                 </div>
@@ -215,9 +217,12 @@
                                       <label for="defaultFormControlInput" class="form-label">Bulan perolehan</label>
                                       <select class="form-control" name="m" id="m">
                                         <option value="">--Pilih Bulan--</option>
-                                        <?php $no=1; foreach(opt_bulan() as $bulan){?>
-                                          <option value="<?=$no?>"><?=$bulan?></option>
-                                        <?php $no++; } ?>
+                                         <?php $no=0; 
+                                          foreach(opt_bulan() as $bulan){
+                                                if($bulan!=""){?>
+                                            <option value="<?=$no?>"><?=$bulan?></option>
+                                                  <?php }?>
+                                          <?php $no++; } ?>
                                       </select>
                                     </div>
                                      <div class="col-md-6">

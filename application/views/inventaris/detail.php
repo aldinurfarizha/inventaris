@@ -3,18 +3,37 @@
  <div class="layout-page">
           <div class="content-wrapper">
             <div class="container-xxl flex-grow-1 container-p-y">
-              <div class="row justify-content-end">
-                  <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-6">
                   <div class="card h-100">
                     <div class="card-header d-flex align-items-center justify-content-between">
-                      <h5 class="card-title m-0 me-2">Detail Inventaris</h5>
+                      <h5 class="card-title m-0 me-2">Detail Inventaris (ID:<?=$data->id_barang?>)</h5>
                     </div>
                     <div class="card-body">
                       <div class="row">
+                         <div class="col-md-12">
+                              <div class="text-center">
+                                <?php
+                                if($data->foto_barang!=null){
+                                  $image=base_url().FOTO_BARANG_PATH.$data->foto_barang;
+                                  ?>
+                                  <?php
+                                }else{
+                                  $image=base_url().NO_IMAGE;
+                                }
+                                ?>
+                                <img style="width: 150px; ;" src="<?=$image?>" alt="">
+                                <br>
+                                <button class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#basicModal">Ganti/Upload Foto</button>
+                              </div>
+                              <br>
+                            </div>
                         <div class="col-md-6">
+                          <form id="data_barang" name="data_barang" method="POST" action="<?=base_url('inventaris/update_inventaris')?>">
                           <input type="hidden" value="<?=$this->session->userdata('nama')?>" class="form-control" id="defaultFormControlInput" name="admin" >
+                          <input type="hidden" value="<?=$data->id_barang?>"  name="id" >
                           <label for="defaultFormControlInput" class="form-label">Barang</label>
-                          <select class="form-control" name="master_barang_id" id="id_barang">
+                          <select class="form-control" name="master_barang_id">
                             <option selected="true" value="<?=$data->master_barang_id?>"><?=$data->nama_barang.' ('.$data->kd_barang.')'?></option>
                             <?php foreach($barang as $bar){?>
                               <option value="<?=$bar->id?>"><?=$bar->nama_barang.' ('.$bar->kd_barang.')';?></option>
@@ -106,148 +125,93 @@
                                         ?>
                                       </select>
                                     </div>
+                                    <div class="col-md-6">
+                                      <label for="defaultFormControlInput" class="form-label">Terakhir di perbaharui</label>
+                                      <input type="text" value="<?=$data->last_update?>" class="form-control" id="defaultFormControlInput" readonly>
+                                    </div>
+                                    <br>
+                                    </form>
+                                    <hr style="margin-top: 10px;">
+                                    <div class="row">
+                                      <div class="col-md-12">
+                                      <div class="text-center">
+                                        <button onclick="update()" id="btn_update_barang" class="btn btn-primary">Update</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                   <div class="col-md-6">
+                  <div class="card h-100">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                      <h5 class="card-title m-0 me-2">History Update</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="row">
+                         <div class="col-md-12">
+                              <div class="text-center">
+                                <?php
+                                if(@getimagesize(base_url().QR_PATH.$data->id_barang.'.png')!== false){
+                                  $image=base_url().QR_PATH.$data->id_barang.'.png';
+                                  echo "<small class='text-muted'>Scan di aplikasi android untuk tambahkan history</small><br>";
+                                }else{
+                                  $image=base_url().NO_BARCODE;
+                                }
+                                ?>
+                                <img style="width: 150px; ;" src="<?=$image?>" alt="">
+                              </div>
+                              <br>
+                            </div>
+                        <div class="table-responsive text-nowrap">
+                          <table class="table table-striped table-hover">
+                            <thead>
+                              <tr>
+                                <th>#</th>
+                                <th>Keterangan</th>
+                                <th>User</th>
+                                <th>Tanggal</th>
+                              </tr>
+                            </thead>
+                            <tbody class="table-border-bottom-0">
+                              <?php $no=1; foreach($history as $hist):?>
+                                <tr>
+                                  <th><?=$no?></th>
+                                  <th><?=$hist->keterangan?></th>
+                                  <th><?=$hist->user?></th>
+                                  <th><?=$hist->date_updated?></th>
+                                </tr>
+                                <?php endforeach;?>
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+              <div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">
                           <div class="modal-dialog" role="document">
                             <div class="modal-content">
                               <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel1">Edit Kantor</h5>
+                                <h5 class="modal-title" id="exampleModalLabel1">Ganti / Upload Foto</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
                               <div class="modal-body">
-                                 <form id="form_edit">
-                                  <input type="hidden" id="id" name="id">
+                                 <form id="upload_foto" enctype="multipart/form-data" action="<?=base_url('inventaris/upload_foto')?>">
                                     <div>
-                                      <label for="defaultFormControlInput" class="form-label">Nama Kantor</label>
-                                      <input type="text" class="form-control"  name="nama_kantor_edit" id="nama_kantor_edit" placeholder="misal: KCP.Darma" aria-describedby="defaultFormControlHelp">
+                                      <label for="defaultFormControlInput" class="form-label">File Foto</label>
+                                         <input type="hidden" value="<?=$data->id_barang?>"  name="id" >
+                                        <input type="file" class="form-control" accept="image/*" name="file">
                                     </div>
-                                      <div>
-                                      <label for="defaultFormControlInput" class="form-label">Kepala</label>
-                                      <input type="text" class="form-control" id="defaultFormControlInput" name="kepala_edit" placeholder="misal: Fullan Fullanah" aria-describedby="defaultFormControlHelp">
-                                    </div>
-                                     <div>
-                                      <label for="defaultFormControlInput" class="form-label">NIK</label>
-                                      <input type="text" class="form-control" id="defaultFormControlInput" name="nik_edit" placeholder="misal: 123.123" aria-describedby="defaultFormControlHelp">
-                                    </div>
-                                </form>
                               </div>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                                   Batal
                                 </button>
-                                <button type="button" onclick="do_edit()" id="edit" class="btn btn-primary">Simpan</button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                   <div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">
-                          <div class="modal-dialog modal-lg" role="document">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel1">Tambah Barang</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                              </div>
-                              <div class="modal-body">
-                                 <form id="form_add">
-                                    <div class="row">
-                                      <div class="col-md-6">
-                                         <input type="hidden" value="<?=$this->session->userdata('nama')?>" class="form-control" id="defaultFormControlInput" name="admin" >
-                                      <label for="defaultFormControlInput" class="form-label">Barang</label>
-                                      <select class="form-control" name="master_barang_id" id="id_barang">
-                                        <option value="">--Pilih Barang--</option>
-                                        <?php foreach($barang as $bar){?>
-                                          <option value="<?=$bar->id?>"><?=$bar->nama_barang.' ('.$bar->kd_barang.')';?></option>
-                                        <?php } ?>
-                                      </select>
-                                    </div>
-                                     <div class="col-md-6">
-                                      <label for="defaultFormControlInput" class="form-label">Kantor</label>
-                                      <select class="form-control" name="of_id" id="of_id">
-                                        <option value="">--Pilih kantor--</option>
-                                        <?php foreach($kantor as $kan){?>
-                                          <option value="<?=$kan->of_id?>"><?=$kan->nama;?></option>
-                                        <?php } ?>
-                                      </select>
-                                    </div>
-                                    <?php if($data->is_pusat==1){?>
-                                      <div class="col-md-6" id="sub_kantor_option">
-                                      <label for="defaultFormControlInput" class="form-label">Sub Kantor</label>
-                                      <select class="form-control" name="sub_id" id="sub_id">
-                                        <option value="">--Pilih Sub Kantor--</option>
-                                        <?php foreach($sub_kantor as $kan){?>
-                                          <option value="<?=$kan->sub_id?>"><?=$kan->nama;?></option>
-                                        <?php } ?>
-                                      </select>
-                                    </div>
-                                    <?php } ?>
-                                    <div class="col-md-6">
-                                      <label for="defaultFormControlInput" class="form-label">Tahun perolehan</label>
-                                      <select class="form-control" name="y" id="y">
-                                        <option value="">--Pilih Tahun--</option>
-                                        <?php foreach(opt_tahun() as $tahun){?>
-                                          <option value="<?=$tahun?>"><?=$tahun?></option>
-                                        <?php } ?>
-                                      </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                      <label for="defaultFormControlInput" class="form-label">Bulan perolehan</label>
-                                      <select class="form-control" name="m" id="m">
-                                        <option value="">--Pilih Bulan--</option>
-                                        <?php $no=1; foreach(opt_bulan() as $bulan){?>
-                                          <option value="<?=$no?>"><?=$bulan?></option>
-                                        <?php $no++; } ?>
-                                      </select>
-                                    </div>
-                                     <div class="col-md-6">
-                                      <label for="defaultFormControlInput" class="form-label">Tanggal perolehan</label>
-                                      <select class="form-control" name="d" id="d">
-                                        <option value="">--Pilih Tanggal--</option>
-                                        <?php foreach(opt_day() as $day){?>
-                                          <option value="<?=$day?>"><?=$day?></option>
-                                        <?php } ?>
-                                      </select>
-                                    </div>
-                                     <div class="col-md-6">
-                                      <label for="defaultFormControlInput" class="form-label">Merk</label>
-                                      <input type="text" class="form-control" id="defaultFormControlInput" name="merk" placeholder="misal: Samsung,informa, philips" aria-describedby="defaultFormControlHelp">
-                                    </div>
-                                     <div class="col-md-6">
-                                      <label for="defaultFormControlInput" class="form-label">Spek</label>
-                                      <input type="text" class="form-control" id="defaultFormControlInput" name="spek" placeholder="misal: Warna Hitam,Layar 4 inch" aria-describedby="defaultFormControlHelp">
-                                    </div>
-                                     <div class="col-md-6">
-                                      <label for="defaultFormControlInput" class="form-label">Satuan</label>
-                                      <select class="form-control" name="satuan" id="satuan">
-                                        <option value="">--Pilih Satuan--</option>
-                                        <?php foreach(opt_satuan() as $satuan){?>
-                                          <option value="<?=$satuan?>"><?=$satuan?></option>
-                                        <?php } ?>
-                                      </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                      <label for="defaultFormControlInput" class="form-label">Harga</label>
-                                      <input type="text" class="form-control" name="harga" id="harga" placeholder="Rp. 0" aria-describedby="defaultFormControlHelp">
-                                    </div>
-                                     <div class="col-md-6">
-                                      <label for="defaultFormControlInput" class="form-label">Status</label>
-                                      <select class="form-control" name="status" id="status">
-                                        <option value="">--Pilih Status--</option>
-                                        <option value="1">Aktif</option>
-                                        <option value="0">Tidak Aktif</option>
-                                      </select>
-                                    </div>
-                                    </div>
-                                </form>
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                                  Batal
-                                </button>
-                                <button type="button" onclick="add()" id="add" class="btn btn-primary">Simpan</button>
+                                <button type="submit" id="upload_btn" class="btn btn-primary">Upload</button>
+                                 </form>
                               </div>
                             </div>
                           </div>
@@ -275,57 +239,40 @@ $('#of_id_filter').on('change', function (e) {
       $('#sub_kantor_filter').show();
     }
 });
- $('#form_add').trigger("reset");
- function hapus(id){
-            Swal.fire({
-                        icon: 'question',
-                        title: 'Hapus',
-                        text: 'Anda yakin ingin Menghapus Inventaris Ini ?',
-                        showConfirmButton: true,
-                        showCancelButton: true,
-                        showBackdrop: true,
-                        confirmButtonText: 'Ya Hapus',
-                        cancelButtonText: 'Tidak'
-                    }).then(function(data){
-                      if(data.value === true){
-                        $.ajax({
-                      url: "<?= base_url('inventaris/delete_kantor')?>",
-                      type: "POST",
-                      data: {
-                          "id":id,
-                      },
-                      beforeSend(){
-                        loading();
-                      },
-                      success:function(response){
-                        success();
-                      },
-                      error:function(response){
-                          Swal.fire({
-                            icon: "error",
-                            title: 'Opps!',
-                            button:"Oke",
-                            text: response.responseJSON.messages
-                          }).then(function(){
-                          })
-                      }
-                    });
-                    }
-                    });};
 
-function add(){
+ $('#upload_foto').on('submit',(function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        $.ajax({
+            type:'POST',
+            url: $(this).attr('action'),
+            data:formData,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(data){
+                success();
+            },
+            beforeSend(){
+              $("#upload_btn").attr("disabled", true);
+              $('#basicModal').modal('hide');
+              loading();
+              },
+        });
+    }));
+function update(){
               $.ajax({
-              url: "<?= base_url('inventaris/add')?>",
+              url: "<?= base_url('inventaris/update_inventaris')?>",
               type: "POST",
-              data:$('#form_add').serialize(), 
+              data:$('#data_barang').serialize(), 
               beforeSend(){
-              $("#add").attr("disabled", true);
+              $("#btn_update_barang").attr("disabled", true);
               loading();
               $('#basicModal').modal('hide');
               },
               success:function(response){
-                $("#add").attr("disabled", false);
-                $('#form_add').trigger("reset");
+                $("#btn_update_barang").attr("disabled", false);
+                $('#data_barang').trigger("reset");
                 Swal.fire({
                         title: "Berhasil",
                         icon: "success",
@@ -335,7 +282,7 @@ function add(){
                             });
               },
               error:function(response){
-                $("#add").attr("disabled", false);
+                $("#btn_update_barang").attr("disabled", false);
                   Swal.fire({
                     icon: "error",
                     title: 'Opps!',
