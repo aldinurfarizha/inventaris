@@ -116,6 +116,12 @@
                 <div data-i18n="Misc">Inventaris</div>
               </a>
             </li>
+              <li class="menu-item <?php if($this->uri->segment('1')=='cetak') { echo"active";}?>">
+              <a href="<?=base_url('cetak')?>" class="menu-link">
+                 <i class="menu-icon tf-icons bx bx-printer"></i>
+                <div data-i18n="Misc">Cetak Label</div>
+              </a>
+            </li>
             <!-- Components -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Pengaturan</span></li>
             <!-- Cards -->

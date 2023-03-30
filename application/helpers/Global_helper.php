@@ -107,3 +107,21 @@ if (!function_exists('tanggal')) {
         return $tanggal;
     }
 }
+if (!function_exists('count_invent')) {
+    function count_invent($of_id) {
+        $ci =& get_instance();
+        return $ci->db->query("SELECT COUNT(id_barang) as res FROM barang where status=1 and of_id=".$of_id)->row()->res;
+    }
+}
+if (!function_exists('of_name')) {
+    function of_name($of_id) {
+        $ci =& get_instance();
+        return $ci->db->query("SELECT nama from office where of_id=".$of_id)->row()->nama;
+    }
+}
+if (!function_exists('get_detail_barang')) {
+    function get_detail_barang($id) {
+        $ci =& get_instance();
+        return $ci->Global_model->get_detail_barang($id)->row();
+    }
+}

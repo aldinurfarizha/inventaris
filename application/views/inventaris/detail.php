@@ -22,7 +22,7 @@
                                   $image=base_url().NO_IMAGE;
                                 }
                                 ?>
-                                <img style="width: 150px; ;" src="<?=$image?>" alt="">
+                                <center><img style="width: 150px; cursor: zoom-in;" class="d-block rounded" src="<?=$image?>" onclick="zoom('<?=$image?>')"  alt=""></center>
                                 <br>
                                 <button class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#basicModal">Ganti/Upload Foto</button>
                               </div>
@@ -153,12 +153,10 @@
                          <div class="col-md-12">
                               <div class="text-center">
                                 <?php
-                                if(@getimagesize(base_url().QR_PATH.$data->id_barang.'.png')!== false){
-                                  $image=base_url().QR_PATH.$data->id_barang.'.png';
+                  
+                                  $image=base_url().QR_LOAD_PATH.$data->id_barang.'.png';
                                   echo "<small class='text-muted'>Scan di aplikasi android untuk tambahkan history</small><br>";
-                                }else{
-                                  $image=base_url().NO_BARCODE;
-                                }
+                               
                                 ?>
                                 <img style="width: 150px; ;" src="<?=$image?>" alt="">
                               </div>
@@ -171,6 +169,7 @@
                                 <th>#</th>
                                 <th>Keterangan</th>
                                 <th>User</th>
+                                <th>Foto</th>
                                 <th>Tanggal</th>
                               </tr>
                             </thead>
@@ -180,6 +179,13 @@
                                   <th><?=$no?></th>
                                   <th><?=$hist->keterangan?></th>
                                   <th><?=$hist->user?></th>
+                                  <th>
+                                    <?php if($hist->foto!=null):?>
+                                    <img src="<?=base_url().FOTO_HISTORY_BARANG_PATH.$hist->foto?>" class="d-block rounded" style="cursor: zoom-in;" onclick="zoom('<?=base_url().FOTO_HISTORY_BARANG_PATH.$hist->foto?>')" width="75px;" alt="">
+                                    <?php else:?>
+                                      <img src="<?=base_url().NO_IMAGE?>" width="50px;" alt="">
+                                      <?php endif;?>
+                                  </th>
                                   <th><?=$hist->date_updated?></th>
                                 </tr>
                                 <?php endforeach;?>
@@ -230,6 +236,9 @@
       $('#sub_kantor_option').show();
     }
 });
+function zoom(link){
+  window.open(link,'mywin','width=500,height=500');
+}
 $('#of_id_filter').on('change', function (e) {
     var optionSelected = $("option:selected", this);
     var valueSelected = this.value;

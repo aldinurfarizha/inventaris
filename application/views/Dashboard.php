@@ -29,7 +29,7 @@
                             </div>
                           </div>
                           <span class="fw-semibold d-block mb-1">Total Data Inventaris</span>
-                          <h3 class="card-title mb-2">172</h3>
+                          <h3 class="card-title mb-2"><?=@$total_data_inventaris?></h3>
                           <small class="text-success fw-semibold"><i class="bx bx-cube-alt"></i> Barang</small>
                         </div>
                       </div>
@@ -47,7 +47,7 @@
                             </div>
                           </div>
                           <span>Inventaris Aktif</span>
-                          <h3 class="card-title text-nowrap mb-1">123</h3>
+                          <h3 class="card-title text-nowrap mb-1"><?=@$inventaris_aktif?></h3>
                           <small class="text-success fw-semibold"><i class="bx bx-cube-alt"></i> Barang</small>
                         </div>
                       </div>
@@ -65,7 +65,7 @@
                             </div>
                           </div>
                           <span class="d-block mb-1">Inventaris Tidak Aktif</span>
-                          <h3 class="card-title text-nowrap mb-2">60</h3>
+                          <h3 class="card-title text-nowrap mb-2"><?=@$inventaris_tidak_aktif?></h3>
                            <small class="text-danger fw-semibold"><i class="bx bx-cube-alt"></i> Barang</small>
                         </div>
                       </div>
@@ -79,7 +79,7 @@
                             </div>
                           </div>
                           <span class="fw-semibold d-block mb-1">Master Barang</span>
-                          <h3 class="card-title mb-2">70</h3>
+                          <h3 class="card-title mb-2"><?=@$master_barang?></h3>
                          <small class="text-primary fw-semibold"><i class="bx bx-cube-alt"></i> Barang</small>
                         </div>
                       </div>
@@ -93,17 +93,10 @@
                     <div class="card-header d-flex align-items-center justify-content-between pb-0">
                       <div class="card-title mb-0">
                         <h5 class="m-0 me-2">Inventaris Statistics</h5>
-                        <small class="text-muted">Total Inventaris Terdaftar</small>
                       </div>
                     </div>
+                    <br>
                     <div class="card-body">
-                      <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="d-flex flex-column align-items-center gap-1">
-                          <h2 class="mb-2">8,258</h2>
-                          <span>Total Inventaris</span>
-                        </div>
-                        <div id="orderStatisticsChart"></div>
-                      </div>
                       <ul class="p-0 m-0">
                         <li class="d-flex mb-4 pb-1">
                           <div class="avatar flex-shrink-0 me-3">
@@ -117,7 +110,7 @@
                               <small class="text-muted">Handphone,Televisi dll</small>
                             </div>
                             <div class="user-progress">
-                              <small class="fw-semibold">125</small>
+                              <small class="fw-semibold"><?=@$elektronik?></small>
                             </div>
                           </div>
                         </li>
@@ -127,11 +120,11 @@
                           </div>
                           <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                             <div class="me-2">
-                              <h6 class="mb-0">Mebeler</h6>
+                              <h6 class="mb-0">Meubelair</h6>
                               <small class="text-muted">Meja,Kursi dll</small>
                             </div>
                             <div class="user-progress">
-                              <small class="fw-semibold">784</small>
+                              <small class="fw-semibold"><?=@$meubelair?></small>
                             </div>
                           </div>
                         </li>
@@ -143,25 +136,31 @@
                   <div class="card h-100">
                     <div class="card-header d-flex align-items-center justify-content-between">
                       <h5 class="card-title m-0 me-2">Inventaris Berumur > 5 tahun</h5>
+                      <a href="#" class="btn rounded-pill btn-outline-secondary">
+                        <span class="tf-icons bx bx-menu"></span>&nbsp; Details
+                      </a>
                     </div>
                     <div class="card-body">
-                   <div class="table-responsive text-nowrap">
+                   <div style="height:200px;" class="table-responsive text-nowrap">
                   <table class="table table-striped">
                     <thead>
                       <tr>
-                        <th>Jenis</th>
+                        <th>Nama Barang</th>
                         <th>Merk/Spek</th>
                         <th>Lokasi</th>
                         <th>Perolehan</th>
                       </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
+                      <?php foreach($limatahun as $data):?>
                       <tr>
-                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>CPU</strong></td>
-                        <td>Alcatroz/Core i5</td>
-                        <td>Cabang Kuningan-ADM</td>
-                        <td><span class="badge bg-label-danger me-1">2018-08-08</span></td>
+                        <td><strong><?=@$data->nama_barang?></strong></td>
+                        <td><?=@$data->merk.'/'.@$data->spek?></td>
+                        <th><?=$data->nama_kantor.' '.$data->nama_sub_kantor?></th>
+                        <td><span class="badge bg-label-danger me-1"><?=$data->y.'-'.$data->m.'-'.$data->d?></span></td>
                       </tr>
+                        <?php endforeach?>
+                      
                     </tbody>
                   </table>
                 </div>

@@ -89,9 +89,12 @@ defined('APP_NAME_DESC')      OR define('APP_NAME_DESC', "Sistem Inventaris Bara
 defined('APP_NAME_TITLE')      OR define('APP_NAME_TITLE', " | SIMBA - PAM KUNINGAN"); 
 defined('APP_SUB_NAME')      OR define('APP_SUB_NAME', "Sistem Inventaris Barang"); 
 defined('LOGO_PATH')      OR define('LOGO_PATH', '/assets/img/logo.png'); 
+defined('LOGO_PAM')      OR define('LOGO_PAM', '/assets/img/logo_pam.jpeg'); 
 defined('LOGO_PERUSAHAAN_PATH')      OR define('LOGO_PERUSAHAAN_PATH', '/assets/upload/logo/'); 
 defined('FOTO_BARANG_PATH')      OR define('FOTO_BARANG_PATH', 'private/barang/'); 
+defined('FOTO_HISTORY_BARANG_PATH')      OR define('FOTO_HISTORY_BARANG_PATH', 'private/history_barang/'); 
 defined('NO_IMAGE')      OR define('NO_IMAGE', 'assets/img/noimage.png'); 
 defined('NO_BARCODE')      OR define('NO_BARCODE', 'assets/img/nobarcode.png'); 
-defined('QR_PATH')             OR define('QR_PATH', 'private/qr/');
+defined('QR_PATH')             OR define('QR_PATH', '/private/qr/');
+defined('QR_LOAD_PATH')             OR define('QR_LOAD_PATH', 'private/qr/');
 defined('TEMP_PATH')             OR define('TEMP_PATH', 'private/temp/');

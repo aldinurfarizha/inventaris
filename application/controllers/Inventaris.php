@@ -39,6 +39,23 @@ class Inventaris extends CI_Controller {
 		$data['sub_kantor']=$this->Global_model->get_all('sub_office')->result();
 		$this->load->view('inventaris/index',$data);
 	}
+	public function result($of_id){
+
+		$data['title']="Daftar Inventaris Kantor ".of_name($of_id);
+		$param=array(
+			'deleted'=>0
+		);
+		$search_param=array(
+			'barang.of_id'=>$of_id
+		);
+		
+		$data['data']=$this->Global_model->inventaris($search_param)->result();
+		$data['barang']=$this->Global_model->get_by_id('master_barang',$param)->result();
+		$data['kantor']=$this->Global_model->get_all('office')->result();
+		$data['sub_kantor']=$this->Global_model->get_all('sub_office')->result();
+		$data['of_id']=$of_id;
+		$this->load->view('inventaris/index',$data);
+	}
 	public function detail($id){
 		$param=array(
 			'deleted'=>0
@@ -51,12 +68,10 @@ class Inventaris extends CI_Controller {
 		$this->load->view('inventaris/detail',$data);
 	}
 	public function update_inventaris(){
+		date_default_timezone_set('Asia/Jakarta');
 		$id_barang=$this->input->post('id');
 		$sub_id=$this->input->post('sub_id');
 		$of_id=$this->input->post('of_id');
-		if($of_id==1){
-			$sub_id=0;
-		}
 		$master_barang_id=$this->input->post('master_barang_id');
 		$admin=$this->input->post('admin');
 		$y=$this->input->post('y');
@@ -67,6 +82,7 @@ class Inventaris extends CI_Controller {
 		$satuan=$this->input->post('satuan');
 		$harga=$this->input->post('harga');
 		$status=$this->input->post('status');
+		$now = date('Y-m-d H:i:s');
 		$data=array(
 			'of_id'=>$of_id,
 			'master_barang_id'=>$master_barang_id,
@@ -80,6 +96,7 @@ class Inventaris extends CI_Controller {
 			'satuan'=>$satuan,
 			'harga'=>str_replace(".","",$harga),
 			'status'=>$status,
+			'last_update'=> $now
 		);
 		$where=array(
 			'id_barang'=>$id_barang
@@ -151,7 +168,10 @@ class Inventaris extends CI_Controller {
 				));
 			}
 	}
+	
 	public function add(){
+		date_default_timezone_set('Asia/Jakarta');
+		$now = date('Y-m-d H:i:s');
 		$master_barang_id=$this->input->post('master_barang_id');
 		$of_id=$this->input->post('of_id');
 		$sub_id=$this->input->post('sub_id');
@@ -178,7 +198,8 @@ class Inventaris extends CI_Controller {
 			'harga'=>str_replace(".","",$harga),
 			'keterangan'=>$keterangan,
 			'admin'=>$admin,
-			'status'=>$status
+			'status'=>$status,
+			'last_update'=>$now
 		);
 		if($this->Global_model->insert('barang',$data)){
 			$this->load->library('ciqrcode');
