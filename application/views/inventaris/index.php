@@ -119,6 +119,7 @@
                                         <?php } ?>
                                       </select>
                                     </div>
+                                    
                                      <div class="col-md-6">
                                       <label for="defaultFormControlInput" class="form-label">Kantor</label>
                                       <select class="form-control" required name="of_id" id="of_id">
@@ -128,6 +129,7 @@
                                         <?php } ?>
                                       </select>
                                     </div>
+                                    <?php if($of_id==1):?>
                                     <div class="col-md-6" id="sub_kantor_option">
                                       <label for="defaultFormControlInput" class="form-label">Sub Kantor</label>
                                       <select class="form-control" name="sub_id" id="sub_id">
@@ -137,6 +139,8 @@
                                         <?php } ?>
                                       </select>
                                     </div>
+                                        <?php endif;?>
+                                   
                                     <div class="col-md-6">
                                       <label for="defaultFormControlInput" class="form-label">Tahun perolehan</label>
                                       <select class="form-control" required name="y" id="y">

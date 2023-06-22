@@ -16,7 +16,7 @@
                     </div>
                     <div class="card-body">
                    <div class="table-responsive text-nowrap">
-                     <form target="_blank" action="<?=base_url('cetak/print')?>" method="POST">
+                     <form target="_blank" action="<?=base_url('cetak/prints')?>" method="POST">
                   <table id="table"  class="table table-hover table-borderless">
                     <thead>
                       <tr>

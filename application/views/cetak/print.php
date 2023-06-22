@@ -27,7 +27,8 @@
         <td>
             <center>
             <h3><?=$barang->kd_barang?></h3>
-            <h3><?=$barang->y.'-'.$barang->m.'-'.$barang->d?></h3>
+            <h3 style="margin-bottom:0;"><?=$barang->y.'-'.$barang->m.'-'.$barang->d?></h3>
+            <p style="font-size: 9px;"><?=$barang->nama_barang?></p>
             </center>
         </td>
         <td>

@@ -9,7 +9,7 @@ class Cetak extends CI_Controller {
 		$data['title']="Cetak Label";
 		$this->load->view('cetak/index',$data);
 	}
-	public function print(){
+	public function prints(){
 		$item=$this->input->post('item');
 		if(sizeof($item)!=0){
 			$data['data']=$item;
