@@ -100,13 +100,7 @@
                   </div>
                 </div>
                 <div class="mb-3">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="remember-me" />
-                    <label class="form-check-label" for="remember-me"> Remember Me </label>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <button class="btn btn-primary d-grid w-100" onclick="login()" id="btn_login" type="button">Masuk</button>
+                  <button class="btn btn-primary d-grid w-100" type="submit">Masuk</button>
                 </div>
               </form>
             </div>
@@ -141,6 +135,10 @@
                         location.reload();
                     });
               }
+      $('form').one('submit', function(e) {
+    e.preventDefault();
+    login();
+    });
       function login(){
           $.ajax({
               url: "<?= base_url('auth/prosess_login')?>",

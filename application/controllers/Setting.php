@@ -75,9 +75,11 @@ class Setting extends CI_Controller {
 		$direktur=$this->input->post('direktur');
 		$kadiv_umum=$this->input->post('kadiv_umum');
 		$kasub_logistik=$this->input->post('kasub_logistik');
+		$kasub_rt=$this->input->post('kasub_rt');
 		$nik_dirut=$this->input->post('nik_dirut');
 		$nik_kadiv=$this->input->post('nik_kadiv');
 		$nik_subdiv=$this->input->post('nik_subdiv');
+		$nik_rt=$this->input->post('nik_rt');
 		$data=array(
 			'judul1'=>$judul1,
 			'judul2'=>$judul2,
@@ -87,9 +89,11 @@ class Setting extends CI_Controller {
 			'direktur'=>$direktur,
 			'kadiv_umum'=>$kadiv_umum,
 			'kasub_logistik'=>$kasub_logistik,
+			'kasub_rt'=>$kasub_rt,
 			'nik_dirut'=>$nik_dirut,
 			'nik_kadiv'=>$nik_kadiv,
 			'nik_subdiv'=>$nik_subdiv,
+			'nik_rt'=>$nik_rt
 		);
 		$where=array(
 			'id'=>$id

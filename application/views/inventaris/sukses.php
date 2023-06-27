@@ -3,9 +3,12 @@
       <?php $this->load->view('partials/navbar')?>
           <div class="content-wrapper">
             <div class="container-xxl flex-grow-1 container-p-y">
-              <div class="row">
-                <div class="col-md-6">
+              <div class="row justify-content-center">
+                <div class="col-md-9">
                   <div class="card h-100">
+                    <div class="alert alert-success" role="alert">
+                 <i class="fa fa-check-circle"></i> <b>Inventaris Baru Berhasil Di tambahakan.</b> 
+              </div>
                     <div class="card-header d-flex align-items-center justify-content-between">
                       <h5 class="card-title m-0 me-2">Detail Inventaris (ID:<?=$data->id_barang?>)</h5>
                     </div>
@@ -31,9 +34,9 @@
                         <div class="col-md-6">
                           <form id="data_barang" name="data_barang" method="POST" action="<?=base_url('inventaris/update_inventaris')?>">
                           <input type="hidden" value="<?=$this->session->userdata('nama')?>" class="form-control" id="defaultFormControlInput" name="admin" >
-                          <input type="hidden" value="<?=$data->id_barang?>"  name="id" >
+                          <input type="hidden" value="<?=$data->id_barang?>"  name="id" readonly>
                           <label for="defaultFormControlInput" class="form-label">Barang</label>
-                          <select class="form-control" name="master_barang_id">
+                          <select class="form-control" name="master_barang_id" readonly>
                             <option selected="true" value="<?=$data->master_barang_id?>"><?=$data->nama_barang.' ('.$data->kd_barang.')'?></option>
                             <?php foreach($barang as $bar){?>
                               <option value="<?=$bar->id?>"><?=$bar->nama_barang.' ('.$bar->kd_barang.')';?></option>
@@ -42,7 +45,7 @@
                         </div>
                          <div class="col-md-6">
                             <label for="defaultFormControlInput" class="form-label">Kantor</label>
-                            <select class="form-control" name="of_id" id="of_id">
+                            <select class="form-control" name="of_id" id="of_id" readonly>
                               <option value="<?=$data->of_id?>"><?=$data->nama_kantor?></option>
                               <?php foreach($kantor as $kan){?>
                                 <option value="<?=$kan->of_id?>"><?=$kan->nama;?></option>
@@ -52,7 +55,7 @@
                           <?php if($data->is_pusat==1){?>
                                     <div class="col-md-6" id="sub_kantor_option">
                                     <label for="defaultFormControlInput" class="form-label">Sub Kantor</label>
-                                    <select class="form-control" name="sub_id" id="sub_id">
+                                    <select class="form-control" name="sub_id" id="sub_id" readonly>
                                         <option selected="true" value="<?=$data->sub_id?>"><?=$data->nama_sub_kantor?></option>
                                       <?php foreach($sub_kantor as $kan){?>
                                         <option value="<?=$kan->sub_id?>"><?=$kan->nama;?></option>
@@ -62,7 +65,7 @@
                                   <?php } ?>
                           <div class="col-md-6">
                             <label for="defaultFormControlInput" class="form-label">Tahun perolehan</label>
-                            <select class="form-control" name="y" id="y">
+                            <select class="form-control" name="y" id="y" readonly>
                               <option selected="true" value="<?=$data->y?>"><?=$data->y?></option>
                               <?php foreach(opt_tahun() as $tahun){?>
                                 <option value="<?=$tahun?>"><?=$tahun?></option>
@@ -71,7 +74,7 @@
                           </div>
                           <div class="col-md-6">
                             <label for="defaultFormControlInput" class="form-label">Bulan perolehan</label>
-                            <select class="form-control" name="m" id="m">
+                            <select class="form-control" name="m" id="m" readonly>
                               <option selected="true" value="<?=$data->m?>"><?=opt_bulan()[$data->m]?></option>
                               <?php $no=0; 
                               foreach(opt_bulan() as $bulan){
@@ -83,7 +86,7 @@
                           </div>
                             <div class="col-md-6">
                             <label for="defaultFormControlInput" class="form-label">Tanggal perolehan</label>
-                            <select class="form-control" name="d" id="d">
+                            <select class="form-control" name="d" id="d" readonly>
                               <option selected="true" value="<?=$data->d?>"><?=$data->d?></option>
                               <?php foreach(opt_day() as $day){?>
                                 <option value="<?=$day?>"><?=$day?></option>
@@ -92,15 +95,15 @@
                           </div>
                            <div class="col-md-6">
                                       <label for="defaultFormControlInput" class="form-label">Merk</label>
-                                      <input type="text" value="<?=$data->merk?>" class="form-control" id="defaultFormControlInput" name="merk" placeholder="misal: Samsung,informa, philips" aria-describedby="defaultFormControlHelp">
+                                      <input type="text" value="<?=$data->merk?>" class="form-control" id="defaultFormControlInput" name="merk" placeholder="misal: Samsung,informa, philips" aria-describedby="defaultFormControlHelp" readonly>
                                     </div>
                                      <div class="col-md-6">
                                       <label for="defaultFormControlInput" class="form-label">Spek</label>
-                                      <input type="text" value="<?=$data->spek?>" class="form-control" id="defaultFormControlInput" name="spek" placeholder="misal: Warna Hitam,Layar 4 inch" aria-describedby="defaultFormControlHelp">
+                                      <input type="text" value="<?=$data->spek?>" class="form-control" id="defaultFormControlInput" name="spek" placeholder="misal: Warna Hitam,Layar 4 inch" aria-describedby="defaultFormControlHelp" readonly>
                                     </div>
                                      <div class="col-md-6">
                                       <label for="defaultFormControlInput" class="form-label">Satuan</label>
-                                      <select class="form-control" name="satuan" id="satuan">
+                                      <select class="form-control" name="satuan" id="satuan" readonly>
                                         <option selected="true" value="<?=$data->satuan?>"><?=$data->satuan?></option>
                                         <?php foreach(opt_satuan() as $satuan){?>
                                           <option value="<?=$satuan?>"><?=$satuan?></option>
@@ -109,11 +112,11 @@
                                     </div>
                                     <div class="col-md-6">
                                       <label for="defaultFormControlInput" class="form-label">Harga (Rp.)</label>
-                                      <input type="text" class="form-control" value="<?=$data->harga?>" name="harga" id="harga" placeholder="Rp. 0" aria-describedby="defaultFormControlHelp">
+                                      <input type="text" class="form-control" value="<?=$data->harga?>" name="harga" id="harga" placeholder="Rp. 0" aria-describedby="defaultFormControlHelp" readonly>
                                     </div>
                                      <div class="col-md-6">
                                       <label for="defaultFormControlInput" class="form-label">Status</label>
-                                      <select class="form-control" name="status" id="status">
+                                      <select class="form-control" name="status" id="status" readonly>
                                         <?php
                                           if($data->status){?>
                                             <option selected="true" value="1">Aktif</option>
@@ -135,63 +138,11 @@
                                     <div class="row">
                                       <div class="col-md-12">
                                       <div class="text-center">
-                                        <button onclick="update()" id="btn_update_barang" class="btn btn-primary">Update</button>
+                                        <a href="<?=base_url('cetak/single_label/'.$id)?>" target="_blank" class="btn btn-dark">Cetak Label <i class="fa fa-qrcode"></i></a>
+                                        <a href="<?=base_url('inventaris/detail/'.$id)?>" class="btn btn-primary">Edit Data <i class="fa fa-edit"></i></a>
                                       </div>
                                     </div>
                                   </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                   <div class="col-md-6">
-                  <div class="card h-100">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                      <h5 class="card-title m-0 me-2">History Update</h5>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                         <div class="col-md-12">
-                              <div class="text-center">
-                                <?php
-                  
-                                  $image=base_url().QR_LOAD_PATH.$data->id_barang.'.png';
-                                  echo "<small class='text-muted'>Scan di aplikasi android untuk tambahkan history</small><br>";
-                               
-                                ?>
-                                <img style="width: 150px; ;" src="<?=$image?>" alt="">
-                              </div>
-                              <br>
-                            </div>
-                        <div class="table-responsive text-nowrap">
-                          <table class="table table-striped table-hover">
-                            <thead>
-                              <tr>
-                                <th>#</th>
-                                <th>Keterangan</th>
-                                <th>User</th>
-                                <th>Foto</th>
-                                <th>Tanggal</th>
-                              </tr>
-                            </thead>
-                            <tbody class="table-border-bottom-0">
-                              <?php $no=1; foreach($history as $hist):?>
-                                <tr>
-                                  <th><?=$no?></th>
-                                  <th><?=$hist->keterangan?></th>
-                                  <th><?=$hist->user?></th>
-                                  <th>
-                                    <?php if($hist->foto!=null):?>
-                                    <img src="<?=base_url().FOTO_HISTORY_BARANG_PATH.$hist->foto?>" class="d-block rounded" style="cursor: zoom-in;" onclick="zoom('<?=base_url().FOTO_HISTORY_BARANG_PATH.$hist->foto?>')" width="75px;" alt="">
-                                    <?php else:?>
-                                      <img src="<?=base_url().NO_IMAGE?>" width="50px;" alt="">
-                                      <?php endif;?>
-                                  </th>
-                                  <th><?=$hist->date_updated?></th>
-                                </tr>
-                                <?php endforeach;?>
-                            </tbody>
-                          </table>
-                        </div>
                       </div>
                     </div>
                   </div>

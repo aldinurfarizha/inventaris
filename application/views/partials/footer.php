@@ -27,6 +27,17 @@
                   allowOutsideClick: false,
                   });
       }
+      function alertMessage(message){
+      Swal.fire({
+                    icon: "warning",
+                    title: message,
+                    button:"Mengerti",
+                    text: "Pastikan semua form terisi."
+                  })
+      }
+      function buka(url){
+        window.location.href = url;
+    }
       function success(){
         Swal.fire({
                         title: "Berhasil",
@@ -36,7 +47,7 @@
                               location.reload();
                             });
               }
-       $("#logout").click( function() {
+       $(".logout").click( function() {
     Swal.fire({
                 icon: 'question',
                 title: 'PERHATIAN!',

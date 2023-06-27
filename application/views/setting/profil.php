@@ -1,5 +1,6 @@
 <?php $this->load->view('partials/header')?>
  <div class="layout-page">
+      <?php $this->load->view('partials/navbar')?>
           <div class="content-wrapper">
             <div class="container-xxl flex-grow-1 container-p-y">
               <div class="row justify-content-end">
@@ -75,6 +76,18 @@
                               <label for="defaultFormControlInput" class="form-label">NIK Aset</label>
                               <div class="input-group">
                                 <input type="text" class="form-control"  aria-label="Username" value="<?=@$data->nik_subdiv?>" name="nik_subdiv" aria-describedby="basic-addon11">
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <label for="defaultFormControlInput" class="form-label">Kasub Rumah Tangga</label>
+                              <div class="input-group">
+                                <input type="text" class="form-control" aria-label="Username" value="<?=@$data->kasub_rt?>" name="kasub_rt" aria-describedby="basic-addon11">
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <label for="defaultFormControlInput" class="form-label">NIK Rumah Tangga</label>
+                              <div class="input-group">
+                                <input type="text" class="form-control"  aria-label="Username" value="<?=@$data->nik_rt?>" name="nik_rt" aria-describedby="basic-addon11">
                               </div>
                             </div>
                             <div class="col-sm-12">

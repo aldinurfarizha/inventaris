@@ -6,6 +6,7 @@
     }
 </style>
  <div class="layout-page">
+      <?php $this->load->view('partials/navbar')?>
           <div class="content-wrapper">
             <div class="container-xxl flex-grow-1 container-p-y">
               <div class="row justify-content-end">

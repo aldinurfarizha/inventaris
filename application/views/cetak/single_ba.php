@@ -14,9 +14,8 @@
     <title>Nyetak</title>
 </head>
 <body>
-    
-    <?php foreach($data as $datar):
-        $barang=get_detail_barang($datar);?>
+        <?php 
+        $barang=get_detail_barang($id);?>
         <table>
         <tbody>
          <tr>
@@ -34,11 +33,10 @@
         <td>
             <center>
                 <img style="width:100px;" src="<?=base_url(QR_LOAD_PATH).$barang->id_barang.'.png'?>" alt="">
+            <br>
             </center>
         </td>
          </tr>
           </table>
-    <?php endforeach;
-        ?>
 </body>
 </html>

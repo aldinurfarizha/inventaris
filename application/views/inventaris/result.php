@@ -1,6 +1,6 @@
 <?php $this->load->view('partials/header')?>
-
  <div class="layout-page">
+      <?php $this->load->view('partials/navbar')?>
           <div class="content-wrapper">
             <div class="container-xxl flex-grow-1 container-p-y">
               <div class="row justify-content-end">
@@ -174,97 +174,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
                               <div class="modal-body">
-                                 <form id="form_add">
-                                    <div class="row">
-                                      <div class="col-md-6">
-                                         <input type="hidden" value="<?=$this->session->userdata('nama')?>" class="form-control" id="defaultFormControlInput" name="admin" >
-                                      <label for="defaultFormControlInput" class="form-label">Barang</label>
-                                      <select class="form-control" name="master_barang_id" id="id_barang">
-                                        <option value="">--Pilih Barang--</option>
-                                        <?php foreach($barang as $bar){?>
-                                          <option value="<?=$bar->id?>"><?=$bar->nama_barang.' ('.$bar->kd_barang.')';?></option>
-                                        <?php } ?>
-                                      </select>
-                                    </div>
-                                     <div class="col-md-6">
-                                      <label for="defaultFormControlInput" class="form-label">Kantor</label>
-                                      <select class="form-control" name="of_id" id="of_id">
-                                        <option value="">--Pilih kantor--</option>
-                                        <?php foreach($kantor as $kan){?>
-                                          <option value="<?=$kan->of_id?>"><?=$kan->nama;?></option>
-                                        <?php } ?>
-                                      </select>
-                                    </div>
-                                    <div class="col-md-6" id="sub_kantor_option">
-                                      <label for="defaultFormControlInput" class="form-label">Sub Kantor</label>
-                                      <select class="form-control" name="sub_id" id="sub_id">
-                                        <option value="">--Pilih Sub Kantor--</option>
-                                        <?php foreach($sub_kantor as $kan){?>
-                                          <option value="<?=$kan->sub_id?>"><?=$kan->nama;?></option>
-                                        <?php } ?>
-                                      </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                      <label for="defaultFormControlInput" class="form-label">Tahun perolehan</label>
-                                      <select class="form-control" name="y" id="y">
-                                        <option value="">--Pilih Tahun--</option>
-                                        <?php foreach(opt_tahun() as $tahun){?>
-                                          <option value="<?=$tahun?>"><?=$tahun?></option>
-                                        <?php } ?>
-                                      </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                      <label for="defaultFormControlInput" class="form-label">Bulan perolehan</label>
-                                      <select class="form-control" name="m" id="m">
-                                        <option value="">--Pilih Bulan--</option>
-                                         <?php $no=0; 
-                                          foreach(opt_bulan() as $bulan){
-                                                if($bulan!=""){?>
-                                            <option value="<?=$no?>"><?=$bulan?></option>
-                                                  <?php }?>
-                                          <?php $no++; } ?>
-                                      </select>
-                                    </div>
-                                     <div class="col-md-6">
-                                      <label for="defaultFormControlInput" class="form-label">Tanggal perolehan</label>
-                                      <select class="form-control" name="d" id="d">
-                                        <option value="">--Pilih Tanggal--</option>
-                                        <?php foreach(opt_day() as $day){?>
-                                          <option value="<?=$day?>"><?=$day?></option>
-                                        <?php } ?>
-                                      </select>
-                                    </div>
-                                     <div class="col-md-6">
-                                      <label for="defaultFormControlInput" class="form-label">Merk</label>
-                                      <input type="text" class="form-control" id="defaultFormControlInput" name="merk" placeholder="misal: Samsung,informa, philips" aria-describedby="defaultFormControlHelp">
-                                    </div>
-                                     <div class="col-md-6">
-                                      <label for="defaultFormControlInput" class="form-label">Spek</label>
-                                      <input type="text" class="form-control" id="defaultFormControlInput" name="spek" placeholder="misal: Warna Hitam,Layar 4 inch" aria-describedby="defaultFormControlHelp">
-                                    </div>
-                                     <div class="col-md-6">
-                                      <label for="defaultFormControlInput" class="form-label">Satuan</label>
-                                      <select class="form-control" name="satuan" id="satuan">
-                                        <option value="">--Pilih Satuan--</option>
-                                        <?php foreach(opt_satuan() as $satuan){?>
-                                          <option value="<?=$satuan?>"><?=$satuan?></option>
-                                        <?php } ?>
-                                      </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                      <label for="defaultFormControlInput" class="form-label">Harga</label>
-                                      <input type="text" class="form-control" name="harga" id="harga" placeholder="Rp. 0" aria-describedby="defaultFormControlHelp">
-                                    </div>
-                                     <div class="col-md-6">
-                                      <label for="defaultFormControlInput" class="form-label">Status</label>
-                                      <select class="form-control" name="status" id="status">
-                                        <option value="">--Pilih Status--</option>
-                                        <option value="1">Aktif</option>
-                                        <option value="0">Tidak Aktif</option>
-                                      </select>
-                                    </div>
-                                    </div>
-                                </form>
+                                
                               </div>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">

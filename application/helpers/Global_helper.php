@@ -125,3 +125,33 @@ if (!function_exists('get_detail_barang')) {
         return $ci->Global_model->get_detail_barang($id)->row();
     }
 }
+if (!function_exists('getNomorBA')) {
+    function getNomorBA() {
+        $ci =& get_instance();
+        $yearNow=date('Y');
+        $nomor=$ci->db->query("SELECT max(nomor) as nomor from berita_acara where YEAR(tanggal)=$yearNow")->row()->nomor;
+        if($nomor==0){
+            return 1;
+        }else{
+            return $nomor+=1;
+        }
+    }
+}
+if (!function_exists('infoPerusahaan')) {
+    function infoPerusahaan() {
+        $ci =& get_instance();
+        return $ci->db->query("SELECT * from profile_perusahaan where id=1")->row();
+    }
+}
+if (!function_exists('infoPusat')) {
+    function infoPusat($sub_id) {
+        $ci =& get_instance();
+        return $ci->db->query("SELECT * from sub_office where sub_id=$sub_id")->row();
+    }
+}
+if (!function_exists('infoCabang')) {
+    function infoCabang($of_id) {
+        $ci =& get_instance();
+        return $ci->db->query("SELECT * from office where of_id=$of_id")->row();
+    }
+}

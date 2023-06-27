@@ -18,5 +18,13 @@ class Cetak extends CI_Controller {
 		}
 		echo "<script>alert('GAGAL. Pilih Minimal 1 barang untuk di cetak labelna !'); close();</script>";
 	}
+	public function single_ba($id){
+		$data['id']=$id;
+		$this->load->view('cetak/single_ba',$data);
+	}
+	public function single_label($id){
+		$data['id']=$id;
+		$this->load->view('cetak/single_label',$data);
+	}
 
 }

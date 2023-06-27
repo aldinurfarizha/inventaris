@@ -8,6 +8,16 @@ class Inventaris extends CI_Controller {
 		$data['kantor']=$this->Global_model->get_all('office')->result();
 		$this->load->view('inventaris/pilih',$data);
 	}
+	public function tambah(){
+		$data['title']="Tambah Inventaris";
+		$param=array(
+			'deleted'=>0
+		);
+		$data['barang']=$this->Global_model->get_by_id('master_barang',$param)->result();
+		$data['sub_kantor']=$this->Global_model->get_all('sub_office')->result();
+		$data['kantor']=$this->Global_model->get_all('office')->result();
+		$this->load->view('inventaris/tambah',$data);
+	}
 	public function dulu(){
 		$data['title']="Daftar Inventaris";
 		$param=array(
@@ -66,6 +76,19 @@ class Inventaris extends CI_Controller {
 		$data['sub_kantor']=$this->Global_model->get_all('sub_office')->result();
 		$data['history']=$this->Global_model->get_history($id)->result();
 		$this->load->view('inventaris/detail',$data);
+	}
+	public function sukses($id){
+		$data['title']="Sukses Tambah Inventaris";
+		$param=array(
+			'deleted'=>0
+		);
+		$data['id']=$id;
+		$data['data']=$this->Global_model->get_detail_barang($id)->row();
+		$data['barang']=$this->Global_model->get_by_id('master_barang',$param)->result();
+		$data['kantor']=$this->Global_model->get_all('office')->result();
+		$data['sub_kantor']=$this->Global_model->get_all('sub_office')->result();
+		$data['history']=$this->Global_model->get_history($id)->result();
+		$this->load->view('inventaris/sukses',$data);
 	}
 	public function update_inventaris(){
 		date_default_timezone_set('Asia/Jakarta');
@@ -225,7 +248,8 @@ class Inventaris extends CI_Controller {
 					->set_status_header(200)
 					->set_output(json_encode(array(
 							'status' => true,
-							'messages' => 'Success!'
+							'messages' => 'Success!',
+							'id'=>$id
 					)));
 		}else{
 			return $this->output

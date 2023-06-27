@@ -33,7 +33,7 @@ class Master extends CI_Controller {
 		$nik=$this->input->post('nik');
 		$data=array(
 			'nama'=>$nama,
-			'penanggung_jawab'=>$penanggung_jawab,
+			'kepala'=>$penanggung_jawab,
 			'nik'=>$nik,
 		);
 		$this->Global_model->insert('sub_office',$data);
@@ -148,7 +148,7 @@ class Master extends CI_Controller {
 
 		$data=array(
 			'nama'=>$nama,
-			'penanggung_jawab'=>$penanggung_jawab,
+			'kepala'=>$penanggung_jawab,
 			'nik'=>$nik,
 		);
 		$where=array(

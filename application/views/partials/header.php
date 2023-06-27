@@ -108,13 +108,45 @@
                     <div data-i18n="Basic">Kartu Inventaris</div>
                   </a>
                 </li>
+                 <li class="menu-item <?php if($this->uri->segment('2')=='mutasi') { echo"active";}?>">
+                 <a href="<?=base_url('laporan/kartu_inventaris')?>" class="menu-link">
+                    <div data-i18n="Basic">Mutasi Barang</div>
+                  </a>
+                </li>
+                 <li class="menu-item <?php if($this->uri->segment('2')=='berita_acara') { echo"active";}?>">
+                 <a href="<?=base_url('laporan/berita_acara')?>" class="menu-link">
+                    <div data-i18n="Basic">Berita Acara</div>
+                  </a>
+                </li>
               </ul>
             </li>
-            <li class="menu-item <?php if($this->uri->segment('1')=='inventaris') { echo"active";}?>">
-              <a href="<?=base_url('inventaris')?>" class="menu-link">
-                 <i class="menu-icon tf-icons bx bx-cube-alt"></i>
-                <div data-i18n="Misc">Inventaris</div>
+            <li class="menu-item <?php if($this->uri->segment('1')=='inventaris') { echo"active open";}?>">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-cube-alt"></i>
+                <div data-i18n="Mics">Inventaris</div>
               </a>
+              <ul class="menu-sub">
+               <li class="menu-item <?php if($this->uri->segment('2')=='') { echo"active";}?>">
+                 <a href="<?=base_url('inventaris')?>" class="menu-link">
+                    <div data-i18n="Basic">Inventaris</div>
+                  </a>
+                </li>
+                <li class="menu-item <?php if($this->uri->segment('2')=='tambah' || $this->uri->segment('2')=='sukses') { echo"active";}?>">
+                 <a href="<?=base_url('inventaris/tambah')?>" class="menu-link">
+                    <div data-i18n="Basic">Tambah Inventaris</div>
+                  </a>
+                </li>
+                 <li class="menu-item <?php if($this->uri->segment('2')=='mutasi') { echo"active";}?>">
+                 <a href="<?=base_url('inventaris/kartu_inventaris')?>" class="menu-link">
+                    <div data-i18n="Basic">Mutasi Barang</div>
+                  </a>
+                </li>
+                 <li class="menu-item <?php if($this->uri->segment('2')=='penghapusan_aset') { echo"active";}?>">
+                 <a href="<?=base_url('inventaris/penghapusan_aset')?>" class="menu-link">
+                    <div data-i18n="Basic">Penghapusan Aset</div>
+                  </a>
+                </li>
+              </ul>
             </li>
               <li class="menu-item <?php if($this->uri->segment('1')=='cetak') { echo"active";}?>">
               <a href="<?=base_url('cetak')?>" class="menu-link">
@@ -139,7 +171,7 @@
             </li>
           <li class="menu-header small text-uppercase"><span class="menu-header-text"></span></li>
             <li class="menu-item">
-              <a href="#" id="logout" class="menu-link">
+              <a href="#" class="menu-link logout">
                 <i class="text-danger menu-icon tf-icons bx bx-power-off"></i>
                 <div data-i18n="Basic">Logout</div>
               </a>
