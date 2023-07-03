@@ -113,7 +113,7 @@
                     <div data-i18n="Basic">Mutasi Barang</div>
                   </a>
                 </li>
-                 <li class="menu-item <?php if($this->uri->segment('2')=='berita_acara') { echo"active";}?>">
+                 <li class="menu-item <?php if($this->uri->segment('2')=='berita_acara' || $this->uri->segment('2')=='detail_ba') { echo"active";}?>">
                  <a href="<?=base_url('laporan/berita_acara')?>" class="menu-link">
                     <div data-i18n="Basic">Berita Acara</div>
                   </a>

@@ -149,9 +149,56 @@ if (!function_exists('infoPusat')) {
         return $ci->db->query("SELECT * from sub_office where sub_id=$sub_id")->row();
     }
 }
+if (!function_exists('detailOfid')) {
+    function detailOfid($of_id) {
+        if($of_id==''){
+            return null;
+        }
+        $ci =& get_instance();
+        return $ci->db->query("SELECT * from office where of_id=$of_id")->row();
+    }
+}
+if (!function_exists('detailSubOffice')) {
+    function detailSubOffice($sub_id) {
+        if($sub_id==''){
+            return null;
+        }
+        $ci =& get_instance();
+        return $ci->db->query("SELECT * from sub_office where sub_id=$sub_id")->row();
+    }
+}
 if (!function_exists('infoCabang')) {
     function infoCabang($of_id) {
         $ci =& get_instance();
         return $ci->db->query("SELECT * from office where of_id=$of_id")->row();
+    }
+}
+if (!function_exists('getYear')) {
+    function getYear($date) {
+        $time = strtotime($date);
+        $newformat = date('Y',$time);
+        return $newformat;
+    }
+}
+if (!function_exists('getDetailBA')) {
+    function getDetailBA($id) {
+        $ci =& get_instance();
+        return $ci->db->query("SELECT * from berita_acara where id=$id")->row();
+    }
+}
+if (!function_exists('formatNomor')) {
+    function formatNomor($no) {
+       return sprintf("%03s", $no);
+    }
+}
+if (!function_exists('generateNomorBA')) {
+    function generateNomorBA($id_berita_acara) {
+       $data_ba=@getDetailBA($id_berita_acara);
+       $awal='020/Um. ';
+       $tengah=formatNomor(@$data_ba->nomor);
+       $akhir=' -PAM/TK/';
+       $akhir2=@getYear($data_ba->tanggal);
+       $nomor=$awal.$tengah.$akhir.$akhir2;
+       return $nomor;
     }
 }

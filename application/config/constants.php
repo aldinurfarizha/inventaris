@@ -90,6 +90,7 @@ defined('APP_NAME_TITLE')      OR define('APP_NAME_TITLE', " | SIMBA - PAM KUNIN
 defined('APP_SUB_NAME')      OR define('APP_SUB_NAME', "Sistem Inventaris Barang"); 
 defined('LOGO_PATH')      OR define('LOGO_PATH', '/assets/img/logo.png'); 
 defined('LOGO_PAM')      OR define('LOGO_PAM', '/assets/img/logo_pam.jpeg'); 
+defined('KOP_SURAT')      OR define('KOP_SURAT', '/assets/img/kop_surat.jpg'); 
 defined('LOGO_PERUSAHAAN_PATH')      OR define('LOGO_PERUSAHAAN_PATH', '/assets/upload/logo/'); 
 defined('FOTO_BARANG_PATH')      OR define('FOTO_BARANG_PATH', 'private/barang/'); 
 defined('FOTO_HISTORY_BARANG_PATH')      OR define('FOTO_HISTORY_BARANG_PATH', 'private/history_barang/'); 

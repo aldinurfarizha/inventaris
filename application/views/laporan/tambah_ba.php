@@ -4,7 +4,7 @@
           <div class="content-wrapper">
             <div class="container-xxl flex-grow-1 container-p-y">
               <div class="row">
-                <form id="form_add">
+                <form action="<?=base_url('laporan/insert_ba')?>" method="POST">
                 <div class="col-md-12">
                   <div class="card h-100">
                     <div class="card-header d-flex align-items-center justify-content-between">
@@ -67,21 +67,51 @@
                                           <label for="defaultFormControlInput" class="form-label">NIK Kasub RT</label>
                                           <input type="text" class="form-control" name="nik_rt" readonly value="<?=$info_perusahaan->nik_rt?>">
                                         </div>
-                                  
                                     <hr>
-                                        
                                     </div>
                         </div>
                         <div class="col-md-6">
-
+                                 <div style="height: 500px;" class="table-responsive text-nowrap">
+                                     <table id="table"  class="table table-hover table-borderless">
+                    <thead>
+                      <tr>
+                        <th><input style="cursor: pointer;" class="form-check-input" type="checkbox" id="checkall" ></th>
+                        <th>#</th>
+                        <th>Nama Barang</th>
+                        <th>Perolehan</th>
+                        <th>Lokasi</th>
+                        <th>Merk</th>
+                        <th>Spek</th>
+                        <th>Update Terakhir</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                       
+                      <?php $no=1; foreach($data as $datar):
+                      $status=false;
+                        if($datar->status==1){
+                          $status=true;
+                        }
+                        ?>
+                        <tr>
+                        <th><input style="cursor: pointer;" class="form-check-input" type="checkbox" value="<?=$datar->id_barang?>" name="item[]"></th>
+                        <th><?=$no?></th>
+                        <th><span class="badge bg-label-primary me-1"><?=$datar->nama_barang?></span></th>
+                        <th><small><?=$datar->y.'-'.$datar->m.'-'.$datar->d?></small></th>
+                        <th><small><?=$datar->nama_kantor.' '.$datar->nama_sub_kantor?></small></th>
+                        <th><small><?=$datar->merk?></small></th>
+                        <th><small><?=$datar->spek?></small></th>
+                        <th><small><?=$datar->last_update?></small></th>
+                        </tr>
+                        <?php $no++; endforeach;?>
+                    </tbody>
+                  </table>
+                                 </div>
                         </div>
                         <div class="col-md-12">
-                                              <center><button type="button" onclick="tambah()" id="add" class="btn btn-primary">Buat Berita Acara <i class="fa fa-file"></i></button></center>
-                                        </div>
+                              <center><button type="submit" id="add" onclick="tambah()" class="btn btn-primary">Buat Berita Acara <i class="fa fa-file"></i></button></center>
+                        </div>
                       </div>
-                                    
-                                    
-                               
                     </div>
                   </div>
                 </div>
@@ -138,80 +168,9 @@ $.ajax({
               },
             });
 }
-function validation(){
-    if($('#id_barang').find(":selected").val()==""){
-        alertMessage("Barang belum di pilih !")
-        return false;
-    }
-    if($('#of_id').find(":selected").val()==""){
-        alertMessage("Kantor belum di pilih !")
-        return false;
-    }
-    if($('#of_id').find(":selected").val()==1 && $('#sub_id').find(":selected").val()==""){
-        alertMessage("Sub Kantor belum di pilih !")
-        return false;
-    }
-    if($('#y').val()==""){
-        alertMessage("Tahun Perolehan belum di isi !")
-        return false;
-    }
-    if($('#m').find(":selected").val()==""){
-        alertMessage("Bulan Perolehan belum di pilih !")
-        return false;
-    }
-    if($('#d').find(":selected").val()==""){
-        alertMessage("Tanggal Perolehan belum di pilih !")
-        return false;
-    }
-    if($('#merk').val()==""){
-        alertMessage("Merk belum di isi !")
-        return false;
-    }
-    if($('#spek').val()==""){
-        alertMessage("Spek belum di isi !")
-        return false;
-    }
-    if($('#satuan').find(":selected").val()==""){
-        alertMessage("Satuan belum di pilih !")
-        return false;
-    }
-    if($('#harga').val()==""){
-        alertMessage("Harga belum di isi !")
-        return false;
-    }
-    if($('#status').find(":selected").val()==""){
-        alertMessage("Status belum di pilih !")
-        return false;
-    }
-    return true;
-}
+
 
 function tambah(){
-             if(!validation()){
-                return false;
-             }
-              $.ajax({
-              url: "<?= base_url('inventaris/add')?>",
-              type: "POST",
-              data:$('#form_add').serialize(), 
-              beforeSend(){
-              $("#add").attr("disabled", true);
-              loading();
-              },
-              success:function(response){
-               location.href = "<?=base_url('inventaris/sukses/')?>"+response.id;
-              },
-              error:function(response){
-                $("#add").attr("disabled", false);
-                  Swal.fire({
-                    icon: "error",
-                    title: 'Opps!',
-                    button:"Oke",
-                    text: response.responseJSON.messages
-                  }).then(function(){
-                    $('#basicModal').modal('show');
-                  })
-              }
-            });
+             $("#add").attr("disabled", true);
         };
 </script>

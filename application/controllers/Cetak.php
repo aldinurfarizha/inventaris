@@ -18,9 +18,16 @@ class Cetak extends CI_Controller {
 		}
 		echo "<script>alert('GAGAL. Pilih Minimal 1 barang untuk di cetak labelna !'); close();</script>";
 	}
-	public function single_ba($id){
-		$data['id']=$id;
-		$this->load->view('cetak/single_ba',$data);
+	public function berita_acara($berita_acara_id){
+		$param=array(
+			'id'=>$berita_acara_id
+		);
+		$param_barang=array(
+			'id_berita_acara'=>$berita_acara_id
+		);
+		$data['berita_acara']=$this->Global_model->get_by_id('berita_acara',$param)->row();
+		$data['berita_acara_barang']=$this->Global_model->get_by_id('berita_acara_barang',$param_barang)->result();
+		$this->load->view('cetak/berita_acara',$data);
 	}
 	public function single_label($id){
 		$data['id']=$id;

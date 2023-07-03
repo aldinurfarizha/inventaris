@@ -76,5 +76,18 @@ class Global_model extends CI_Model{
       $this->db->where(['id_barang'=>$id]);
       return $this->db->get();
     }
+    function createBA($berita_acara,$item_barang){
+      $this->db->insert('berita_acara', $berita_acara) ?   $id_berita_acara=$this->db->insert_id()  :   $id_berita_acara=false;
+     if($id_berita_acara){
+      foreach($item_barang as $barang):
+        $data=array(
+          'id_berita_acara'=>$id_berita_acara,
+          'id_barang'=>$barang
+        );
+        $this->db->insert('berita_acara_barang',$data);
+      endforeach;
+     }
+     return $id_berita_acara;
+    }
 }
 ?>
