@@ -28,13 +28,13 @@
     <center><b><h3>BERITA ACARA SERAH TERIMA BARANG INVENTARIS</h3></b>
     <p style="margin-top: -20px;">NOMOR : <?=generateNomorBA($berita_acara->id)?></p>
     </center>
-    <p>Pada hari ini <b>RABU</b> tanggal <b>SEMBILAN</b> bulan <b>NOVEMBER</b> tahun <b>DUA RIBU DUA PULUH DUA <i>(09-11-2022)</i></b>, kami yang bertanda tangan dibawah ini : </p>
+    <p>Pada hari ini <b><?=terbilangHari($berita_acara->tanggal)?></b> tanggal <b><?=terbilangTanggal($berita_acara->tanggal)?></b> bulan <b><?=terbilangBulan($berita_acara->tanggal)?></b> tahun <b><?=terbilangTahun($berita_acara->tanggal)?> <i>(<?=$berita_acara->tanggal?>)</i></b>, kami yang bertanda tangan dibawah ini : </p>
     <center>
     <table>
         <tr>
             <td>1.</td>
             <td>Nama</td>
-            <td>: DIAH NUJURULIAH, SE</td>
+            <td>: <?=$berita_acara->sub_div_rt_nama?></td>
         </tr>
         <tr>
             <td></td>
@@ -44,7 +44,7 @@
          <tr>
             <td></td>
             <td>NIK</td>
-            <td>: 219.209</td>
+            <td>: <?=$berita_acara->sub_div_rt_nik?></td>
         </tr>
     </table>
     </center>
@@ -54,24 +54,30 @@
         <tr>
             <td>2.</td>
             <td>Nama</td>
-            <td>: DIAH NUJURULIAH, SE</td>
+            <td>: <?=$berita_acara->pihak_kedua_nama?></td>
         </tr>
         <tr>
             <td></td>
             <td>JABATAN</td>
-            <td>: Pejabat Rumah Tangga</td>
+            <td>: <?=generateJabatan($berita_acara->of_id, $berita_acara->sub_office)?></td>
         </tr>
          <tr>
             <td></td>
             <td>NIK</td>
-            <td>: 219.209</td>
+            <td>: <?=$berita_acara->pihak_kedua_nik?></td>
         </tr>
     </table>
     </center>
     <p>untuk selanjutnya disebut : --------------- PIHAK KEDUA ------------</p>
     <p>dengan ini PIHAK PERTAMA menyerahkan fasilitas barang inventaris perusahaan  kepada PIHAK KEDUA, dengan perencian sebagai berikut :</p>
-    <p class="item"><b>-	Satu (1) Unit Handphone D2d (Harvard Posline)</b></p>
-    <p class="item"><b>-	Satu (1) Unit Handphone D2d (Harvard Posline)</b></p>
+    <?php 
+    foreach($berita_acara_barang as $barang):
+        $detail_barang=get_detail_barang($barang->id_barang);
+        ?>
+        <p class="item"><b>-	Satu (1) <?=@$detail_barang->satuan?> <?=@$detail_barang->nama_barang?> <?=@$detail_barang->merk?> <?=@$detail_barang->spek?></b></p>
+    <?php endforeach;?>
+    
+
     <p style="margin-top: 30px;">Untuk selanjutnya PIHAK KEDUA selaku pemegang inventaris berkewajiban untuk mematuhi hal-hal sebagai berikut :</p>
     <p class="item justify">1.	PIHAK KEDUA harus menjaga dan merawat barang inventaris ;</p>
     <p class="item justify">2.	Mempergunakan inventaris tersebut untuk keperluan / kepentingan perusahaan dan dilarang menggunakan inventaris tersebut untuk kepentingan pribadi ;</p>
@@ -92,12 +98,12 @@
     </table>
     <table style="width: 100%; margin-top:65px;">
         <tr>
-            <td style="width: 50%;"><center><b>H. MUHAMAD ARIF, S.Sos</b></center></td>
-            <td style="width: 50%;"><center><b>DIAH NUJURULIAH, SE</b></center></td>
+            <td style="width: 50%;"><center><b><?=$berita_acara->pihak_kedua_nama?></b></center></td>
+            <td style="width: 50%;"><center><b><?=$berita_acara->sub_div_rt_nama?></b></center></td>
         </tr>
         <tr>
-            <td style="width: 50%;"><center>NIK. 093.095</center></td>
-            <td style="width: 50%;"><center>NIK. 211.209</center></td>
+            <td style="width: 50%;"><center>NIK. <?=$berita_acara->pihak_kedua_nik?></center></td>
+            <td style="width: 50%;"><center>NIK. <?=$berita_acara->sub_div_rt_nik?></center></td>
         </tr>
     </table>
     <table style="width: 100%; margin-top:10px;">
@@ -105,16 +111,16 @@
             <td><center>Mengetahui / Menyetujui</center></td>
         </tr>
         <tr>
-            <td><center>PLT KEPALA DIVISI UMUM,</center></td>
+            <td><center>KEPALA DIVISI UMUM,</center></td>
         </tr>
     </table>
      <table style="width: 100%; margin-top:65px;">
         <tr>
-            <td><center><b>ASEP HENDI RAHMAT</b></center></td>
+            <td><center><b><?=$berita_acara->kadiv_umum_nama?></b></center></td>
             
         </tr>
         <tr>
-            <td><center>NIK. 095.133</center></td>
+            <td><center>NIK. <?=$berita_acara->kadiv_umum_nik?></center></td>
         </tr>
     </table>
     <p class="right footer" style="margin-top:50px;">Jl. RE Martadinata No. 527 KUNINGAN - JAWA BARAT  45514</p>
