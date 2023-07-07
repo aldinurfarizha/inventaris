@@ -71,11 +71,11 @@ class Laporan extends CI_Controller {
 		$param=array(
 			'id'=>$berita_acara_id
 		);
-		$param_barang=array(
+		$param_inventaris=array(
 			'id_berita_acara'=>$berita_acara_id
 		);
 		$data['berita_acara']=$this->Global_model->get_by_id('berita_acara',$param)->row();
-		$data['berita_acara_barang']=$this->Global_model->get_by_id('berita_acara_barang',$param_barang)->result();
+		$data['berita_acara_barang']=$this->Global_model->get_by_id('berita_acara_inventaris',$param_inventaris)->result();
 		$this->load->view('laporan/detail_ba',$data);
 	}
 	public function get_pihak_kedua(){

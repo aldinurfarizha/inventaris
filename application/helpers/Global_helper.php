@@ -238,7 +238,7 @@ if (!function_exists('of_name')) {
 if (!function_exists('get_detail_barang')) {
     function get_detail_barang($id) {
         $ci =& get_instance();
-        return $ci->Global_model->get_detail_barang($id)->row();
+        return $ci->Global_model->get_detail_inventaris($id)->row();
     }
 }
 if (!function_exists('getNomorBA')) {
@@ -257,6 +257,12 @@ if (!function_exists('infoPerusahaan')) {
     function infoPerusahaan() {
         $ci =& get_instance();
         return $ci->db->query("SELECT * from profile_perusahaan where id=1")->row();
+    }
+}
+if (!function_exists('getPerkiraan')) {
+    function getPerkiraan() {
+        $ci =& get_instance();
+        return $ci->db->query("SELECT * from master_perkiraan where deleted=0")->result();
     }
 }
 if (!function_exists('infoPusat')) {
@@ -316,5 +322,16 @@ if (!function_exists('generateNomorBA')) {
        $akhir2=@getYear($data_ba->tanggal);
        $nomor=$awal.$tengah.$akhir.$akhir2;
        return $nomor;
+    }
+}
+if (!function_exists('limitText')) {
+    function limitText($text) {
+        $limit=25;
+        if(strlen($text)<=$limit){
+            return $text;
+        }else{
+            $text = substr($text,0,$limit) . '...';
+            return $text;
+        }
     }
 }

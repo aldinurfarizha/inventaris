@@ -26,7 +26,7 @@ class Cetak extends CI_Controller {
 			'id_berita_acara'=>$berita_acara_id
 		);
 		$data['berita_acara']=$this->Global_model->get_by_id('berita_acara',$param)->row();
-		$data['berita_acara_barang']=$this->Global_model->get_by_id('berita_acara_barang',$param_barang)->result();
+		$data['berita_acara_barang']=$this->Global_model->get_by_id('berita_acara_inventaris',$param_barang)->result();
 		$this->load->view('cetak/berita_acara',$data);
 	}
 	public function single_label($id){

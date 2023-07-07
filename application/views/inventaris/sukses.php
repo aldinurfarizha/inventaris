@@ -34,13 +34,10 @@
                         <div class="col-md-6">
                           <form id="data_barang" name="data_barang" method="POST" action="<?=base_url('inventaris/update_inventaris')?>">
                           <input type="hidden" value="<?=$this->session->userdata('nama')?>" class="form-control" id="defaultFormControlInput" name="admin" >
-                          <input type="hidden" value="<?=$data->id_barang?>"  name="id" readonly>
+                          <input type="hidden" value="<?=$data->id_inventaris?>"  name="id_inventaris" readonly>
                           <label for="defaultFormControlInput" class="form-label">Barang</label>
                           <select class="form-control" name="master_barang_id" readonly>
-                            <option selected="true" value="<?=$data->master_barang_id?>"><?=$data->nama_barang.' ('.$data->kd_barang.')'?></option>
-                            <?php foreach($barang as $bar){?>
-                              <option value="<?=$bar->id?>"><?=$bar->nama_barang.' ('.$bar->kd_barang.')';?></option>
-                            <?php } ?>
+                            <option selected="true" value="<?=$data->id_barang?>"><?=$data->kd_perkiraan.' | '.$data->nama_perkiraan?></option>
                           </select>
                         </div>
                          <div class="col-md-6">

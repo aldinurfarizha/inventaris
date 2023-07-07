@@ -1,4 +1,5 @@
 <?php $this->load->view('partials/header')?>
+<link rel="stylesheet" href="<?=base_url()?>/assets/vendor/libs/select2/select2.css" />
  <div class="layout-page">
       <?php $this->load->view('partials/navbar')?>
           <div class="content-wrapper">
@@ -12,13 +13,13 @@
                     <div class="card-body">
                          <form id="form_add">
                                     <div class="row">
-                                      <div class="col-md-6">
+                                      <div class="col-md-12">
                                          <input type="hidden" value="<?=$this->session->userdata('nama')?>" class="form-control" id="defaultFormControlInput" name="admin" >
-                                      <label for="defaultFormControlInput" class="form-label">Barang</label>
-                                      <select class="form-control" name="master_barang_id" id="id_barang">
+                                      <label for="defaultFormControlInput" class="form-label">Barang ( Kd perkiraan | Nama Perkiraan Dasar | Nama Perkiraan | Merk | Tipe | Spek)</label>
+                                      <select class="form-control" name="id_barang" id="id_barang">
                                         <option value="">--Pilih Barang--</option>
                                         <?php foreach($barang as $bar){?>
-                                          <option value="<?=$bar->id?>"><?=$bar->nama_barang.' ('.$bar->kd_barang.')';?></option>
+                                          <option value="<?=$bar->id_barang?>"><?=$bar->kd_perkiraan.' | '.$bar->nama_perkiraan_dasar.' | '.$bar->nama_perkiraan.' | '.$bar->merk.' | '.$bar->tipe.' | '.$bar->spek;?></option>
                                         <?php } ?>
                                       </select>
                                     </div>
@@ -65,23 +66,6 @@
                                         <?php } ?>
                                       </select>
                                     </div>
-                                     <div class="col-md-6">
-                                      <label for="defaultFormControlInput" class="form-label">Merk</label>
-                                      <input type="text" class="form-control" id="merk" name="merk" placeholder="misal: Samsung,informa, philips" aria-describedby="defaultFormControlHelp">
-                                    </div>
-                                     <div class="col-md-6">
-                                      <label for="defaultFormControlInput" class="form-label">Spek</label>
-                                      <input type="text" class="form-control" id="spek" name="spek" placeholder="misal: Warna Hitam,Layar 4 inch" aria-describedby="defaultFormControlHelp">
-                                    </div>
-                                     <div class="col-md-6">
-                                      <label for="defaultFormControlInput" class="form-label">Satuan</label>
-                                      <select class="form-control" name="satuan" id="satuan">
-                                        <option value="">--Pilih Satuan--</option>
-                                        <?php foreach(opt_satuan() as $satuan){?>
-                                          <option value="<?=$satuan?>"><?=$satuan?></option>
-                                        <?php } ?>
-                                      </select>
-                                    </div>
                                     <div class="col-md-6">
                                       <label for="defaultFormControlInput" class="form-label">Harga (Rp.)</label>
                                       <input type="text" class="form-control" name="harga" id="harga" placeholder="Rp. 0" aria-describedby="defaultFormControlHelp">
@@ -106,7 +90,13 @@
               </div>
 <?php $this->load->view('partials/footer')?>
 <script src="https://cdn.rawgit.com/igorescobar/jQuery-Mask-Plugin/1ef022ab/dist/jquery.mask.min.js"></script>
+<script src="<?=base_url()?>/assets/vendor/libs/select2/select2.js"></script>
 <script>
+    $(document).ready(function(){
+   $("#id_barang").select2({
+       placeholder: "Ketik, untuk Cari dan pilih"
+   });
+    });
   $( '#harga' ).mask('000.000.000.000', {reverse: true});
   $('#sub_kantor_option').hide();
   $('#sub_kantor_filter').hide();
@@ -151,18 +141,6 @@ function validation(){
     }
     if($('#d').find(":selected").val()==""){
         alertMessage("Tanggal Perolehan belum di pilih !")
-        return false;
-    }
-    if($('#merk').val()==""){
-        alertMessage("Merk belum di isi !")
-        return false;
-    }
-    if($('#spek').val()==""){
-        alertMessage("Spek belum di isi !")
-        return false;
-    }
-    if($('#satuan').find(":selected").val()==""){
-        alertMessage("Satuan belum di pilih !")
         return false;
     }
     if($('#harga').val()==""){

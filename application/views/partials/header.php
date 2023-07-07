@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="<?=base_url()?>/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
     <link rel="stylesheet" href="<?=base_url()?>/assets/vendor/libs/apex-charts/apex-charts.css" />
     <link rel="stylesheet" href="<?=base_url('assets/')?>css/fontawesome-free/css/all.min.css">
-    <link rel="stylesheet" href="<?=base_url('assets/')?>js/sweetalert2/sweetalert2.css">
+    <link rel="stylesheet" href="<?=base_url('assets/')?>vendor/libs/sweetalert2/sweetalert2.css">
     <link rel="apple-touch-icon" sizes="57x57" href="<?=base_url()?>/assets/img/favicon/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="<?=base_url()?>/assets/img/favicon/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="<?=base_url()?>/assets/img/favicon/apple-icon-72x72.png">
@@ -75,7 +75,12 @@
                 <div data-i18n="Account Settings">Master</div>
               </a>
               <ul class="menu-sub">
-                <li class="menu-item <?php if($this->uri->segment('2')=='barang') { echo"active";}?>">
+                <li class="menu-item <?php if($this->uri->segment('2')=='perkiraan') { echo"active";}?>">
+                  <a href="<?=base_url('master/perkiraan')?>" class="menu-link">
+                    <div data-i18n="Account">Perkiraan</div>
+                  </a>
+                </li>
+                 <li class="menu-item <?php if($this->uri->segment('2')=='barang' || $this->uri->segment('2')=='v_edit_barang') { echo"active";}?>">
                   <a href="<?=base_url('master/barang')?>" class="menu-link">
                     <div data-i18n="Account">Barang</div>
                   </a>

@@ -13,7 +13,7 @@ class Inventaris extends CI_Controller {
 		$param=array(
 			'deleted'=>0
 		);
-		$data['barang']=$this->Global_model->get_by_id('master_barang',$param)->result();
+		$data['barang']=$this->Global_model->master_barang()->result();
 		$data['sub_kantor']=$this->Global_model->get_all('sub_office')->result();
 		$data['kantor']=$this->Global_model->get_all('office')->result();
 		$this->load->view('inventaris/tambah',$data);
@@ -70,8 +70,8 @@ class Inventaris extends CI_Controller {
 		$param=array(
 			'deleted'=>0
 		);
-		$data['data']=$this->Global_model->get_detail_barang($id)->row();
-		$data['barang']=$this->Global_model->get_by_id('master_barang',$param)->result();
+		$data['data']=$this->Global_model->get_detail_inventaris($id)->row();
+		$data['barang']=$this->Global_model->master_barang()->result();
 		$data['kantor']=$this->Global_model->get_all('office')->result();
 		$data['sub_kantor']=$this->Global_model->get_all('sub_office')->result();
 		$data['history']=$this->Global_model->get_history($id)->result();
@@ -83,7 +83,7 @@ class Inventaris extends CI_Controller {
 			'deleted'=>0
 		);
 		$data['id']=$id;
-		$data['data']=$this->Global_model->get_detail_barang($id)->row();
+		$data['data']=$this->Global_model->get_detail_inventaris($id)->row();
 		$data['barang']=$this->Global_model->get_by_id('master_barang',$param)->result();
 		$data['kantor']=$this->Global_model->get_all('office')->result();
 		$data['sub_kantor']=$this->Global_model->get_all('sub_office')->result();
@@ -92,39 +92,33 @@ class Inventaris extends CI_Controller {
 	}
 	public function update_inventaris(){
 		date_default_timezone_set('Asia/Jakarta');
-		$id_barang=$this->input->post('id');
+		$id_inventaris=$this->input->post('id_inventaris');
 		$sub_id=$this->input->post('sub_id');
 		$of_id=$this->input->post('of_id');
-		$master_barang_id=$this->input->post('master_barang_id');
+		$id_barang=$this->input->post('id_barang');
 		$admin=$this->input->post('admin');
 		$y=$this->input->post('y');
 		$m=$this->input->post('m');
 		$d=$this->input->post('d');
-		$merk=$this->input->post('merk');
-		$spek=$this->input->post('spek');
-		$satuan=$this->input->post('satuan');
 		$harga=$this->input->post('harga');
 		$status=$this->input->post('status');
 		$now = date('Y-m-d H:i:s');
 		$data=array(
 			'of_id'=>$of_id,
-			'master_barang_id'=>$master_barang_id,
+			'id_barang'=>$id_barang,
 			'admin'=>$admin,
 			'sub_id'=>$sub_id,
 			'y'=>$y,
 			'm'=>$m,
 			'd'=>$d,
-			'merk'=>$merk,
-			'spek'=>$spek,
-			'satuan'=>$satuan,
 			'harga'=>str_replace(".","",$harga),
 			'status'=>$status,
 			'last_update'=> $now
 		);
 		$where=array(
-			'id_barang'=>$id_barang
+			'id_inventaris'=>$id_inventaris
 		);
-		$this->Global_model->update('barang',$where, $data);
+		$this->Global_model->update('inventaris',$where, $data);
 		$response=array(
 			'message'=>'Success'
 		);
@@ -135,8 +129,8 @@ class Inventaris extends CI_Controller {
 				));
 	}
 	public function upload_foto(){
-		$id=$this->input->post('id');
-		$foto_barang=$this->Global_model->get_detail_barang($id)->row()->foto_barang;
+		$id_inventaris=$this->input->post('id_inventaris');
+		$foto_barang=$this->Global_model->get_detail_inventaris($id_inventaris)->row()->foto_barang;
 		if($foto_barang==null){
 			$foto_barang_exists=false;
 		}else{
@@ -171,7 +165,7 @@ class Inventaris extends CI_Controller {
 					'foto_barang'=>$foto_name,
 				);
 				$where=array(
-					'id_barang'=>$id,
+					'id_inventaris'=>$id_inventaris,
 				);
 				if ($foto_name && file_exists(TEMP_PATH . $foto_name)) {
 					unlink(TEMP_PATH . $foto_name);
@@ -179,7 +173,7 @@ class Inventaris extends CI_Controller {
 				if($foto_barang_exists){
 					unlink(FOTO_BARANG_PATH . $foto_barang);
 				}
-				$this->Global_model->update('barang',$where, $data);
+				$this->Global_model->update('inventaris',$where, $data);
 				$response=array(
 					'filename'=>$foto_name,
 					'message'=>"success"
@@ -195,36 +189,30 @@ class Inventaris extends CI_Controller {
 	public function add(){
 		date_default_timezone_set('Asia/Jakarta');
 		$now = date('Y-m-d H:i:s');
-		$master_barang_id=$this->input->post('master_barang_id');
+		$id_barang=$this->input->post('id_barang');
 		$of_id=$this->input->post('of_id');
 		$sub_id=$this->input->post('sub_id');
 		$d=$this->input->post('d');
 		$m=$this->input->post('m');
 		$y=$this->input->post('y');
-		$merk=$this->input->post('merk');
-		$spek=$this->input->post('spek');
-		$satuan=$this->input->post('satuan');
 		$harga=$this->input->post('harga');
 		$keterangan=$this->input->post('keterangan');
 		$admin=$this->input->post('admin');
 		$status=$this->input->post('status');
 		$data=array(
-			'master_barang_id'=>$master_barang_id,
+			'id_barang'=>$id_barang,
 			'of_id'=>$of_id,
 			'sub_id'=>$sub_id,
 			'd'=>$d,
 			'm'=>$m,
 			'y'=>$y,
-			'merk'=>$merk,
-			'spek'=>$spek,
-			'satuan'=>$satuan,
 			'harga'=>str_replace(".","",$harga),
 			'keterangan'=>$keterangan,
 			'admin'=>$admin,
 			'status'=>$status,
 			'last_update'=>$now
 		);
-		if($this->Global_model->insert('barang',$data)){
+		if($this->Global_model->insert('inventaris',$data)){
 			$this->load->library('ciqrcode');
 			$id = $this->db->insert_id();
 			$fill=base_url().'lihat/'.$id;

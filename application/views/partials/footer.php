@@ -14,7 +14,7 @@
     <script src="<?=base_url()?>/assets/js/main.js"></script>
     <script src="<?=base_url()?>/assets/js/dashboards-analytics.js"></script>
     <script src="<?=base_url('assets/')?>js/jquery-validation/jquery.validate.min.js"></script>
-     <script src="<?=base_url('assets/')?>js/sweetalert2/sweetalert2.min.js"></script>
+     <script src="<?=base_url('assets/')?>vendor/libs/sweetalert2/sweetalert2.js"></script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script>
       var loadingeffect='<div style="text-align:center;"><i class="fas fa-2x fa-circle-notch fa-3x fa-spin" style="margin-top: 30px; margin-bottom: 30px;" aria-hidden="true"></i></div>';

@@ -28,16 +28,16 @@
                               </div>
                               <br>
                             </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                           <form id="data_barang" name="data_barang" method="POST" action="<?=base_url('inventaris/update_inventaris')?>">
                           <input type="hidden" value="<?=$this->session->userdata('nama')?>" class="form-control" id="defaultFormControlInput" name="admin" >
-                          <input type="hidden" value="<?=$data->id_barang?>"  name="id" >
+                          <input type="hidden" value="<?=$data->id_inventaris?>"  name="id_inventaris" >
                           <label for="defaultFormControlInput" class="form-label">Barang</label>
-                          <select class="form-control" name="master_barang_id">
-                            <option selected="true" value="<?=$data->master_barang_id?>"><?=$data->nama_barang.' ('.$data->kd_barang.')'?></option>
-                            <?php foreach($barang as $bar){?>
-                              <option value="<?=$bar->id?>"><?=$bar->nama_barang.' ('.$bar->kd_barang.')';?></option>
-                            <?php } ?>
+                          <select class="form-control" name="id_barang">
+                            <option selected="true" value="<?=$data->id_barang?>"><?=$data->kd_perkiraan.' | '.$data->nama_perkiraan_dasar.' | '.$data->nama_perkiraan.' | '.$data->merk.' | '.$data->tipe.' | '.$data->spek?></option>
+                             <?php foreach($barang as $bar){?>
+                                <option value="<?=$bar->id_barang?>"><?=$bar->kd_perkiraan.' | '.$bar->nama_perkiraan_dasar.' | '.$bar->nama_perkiraan.' | '.$bar->merk.' | '.$bar->tipe.' | '.$bar->spek;?></option>
+                              <?php } ?>
                           </select>
                         </div>
                          <div class="col-md-6">
@@ -90,27 +90,33 @@
                               <?php } ?>
                             </select>
                           </div>
+                          <div class="col-md-6">
+                                      <label for="defaultFormControlInput" class="form-label">Harga (Rp.)</label>
+                                      <input type="text" class="form-control" value="<?=$data->harga?>" name="harga" id="harga" placeholder="Rp. 0" aria-describedby="defaultFormControlHelp">
+                                    </div>
                            <div class="col-md-6">
                                       <label for="defaultFormControlInput" class="form-label">Merk</label>
-                                      <input type="text" value="<?=$data->merk?>" class="form-control" id="defaultFormControlInput" name="merk" placeholder="misal: Samsung,informa, philips" aria-describedby="defaultFormControlHelp">
+                                      <input type="text" value="<?=$data->merk?>" class="form-control" id="defaultFormControlInput" name="merk" readonly placeholder="misal: Samsung,informa, philips" aria-describedby="defaultFormControlHelp">
+                                    </div>
+                                    <div class="col-md-6">
+                                      <label for="defaultFormControlInput" class="form-label">Tipe</label>
+                                      <input type="text" value="<?=$data->tipe?>" class="form-control" id="defaultFormControlInput" name="merk" readonly placeholder="misal: Samsung,informa, philips" aria-describedby="defaultFormControlHelp">
                                     </div>
                                      <div class="col-md-6">
                                       <label for="defaultFormControlInput" class="form-label">Spek</label>
-                                      <input type="text" value="<?=$data->spek?>" class="form-control" id="defaultFormControlInput" name="spek" placeholder="misal: Warna Hitam,Layar 4 inch" aria-describedby="defaultFormControlHelp">
+                                      <input type="text" value="<?=$data->spek?>" class="form-control" id="defaultFormControlInput" name="spek" readonly placeholder="misal: Warna Hitam,Layar 4 inch" aria-describedby="defaultFormControlHelp">
                                     </div>
+                                    
                                      <div class="col-md-6">
                                       <label for="defaultFormControlInput" class="form-label">Satuan</label>
-                                      <select class="form-control" name="satuan" id="satuan">
+                                      <select class="form-control" name="satuan" readonly id="satuan">
                                         <option selected="true" value="<?=$data->satuan?>"><?=$data->satuan?></option>
                                         <?php foreach(opt_satuan() as $satuan){?>
                                           <option value="<?=$satuan?>"><?=$satuan?></option>
                                         <?php } ?>
                                       </select>
                                     </div>
-                                    <div class="col-md-6">
-                                      <label for="defaultFormControlInput" class="form-label">Harga (Rp.)</label>
-                                      <input type="text" class="form-control" value="<?=$data->harga?>" name="harga" id="harga" placeholder="Rp. 0" aria-describedby="defaultFormControlHelp">
-                                    </div>
+                                    
                                      <div class="col-md-6">
                                       <label for="defaultFormControlInput" class="form-label">Status</label>
                                       <select class="form-control" name="status" id="status">
@@ -154,7 +160,7 @@
                               <div class="text-center">
                                 <?php
                   
-                                  $image=base_url().QR_LOAD_PATH.$data->id_barang.'.png';
+                                  $image=base_url().QR_LOAD_PATH.$data->id_inventaris.'.png';
                                   echo "<small class='text-muted'>Scan di aplikasi android untuk tambahkan history</small><br>";
                                
                                 ?>
@@ -208,7 +214,7 @@
                                  <form id="upload_foto" enctype="multipart/form-data" action="<?=base_url('inventaris/upload_foto')?>">
                                     <div>
                                       <label for="defaultFormControlInput" class="form-label">File Foto</label>
-                                         <input type="hidden" value="<?=$data->id_barang?>"  name="id" >
+                                         <input type="hidden" value="<?=$data->id_inventaris?>"  name="id_inventaris" >
                                         <input type="file" class="form-control" accept="image/*" name="file">
                                     </div>
                               </div>

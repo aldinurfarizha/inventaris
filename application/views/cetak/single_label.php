@@ -15,7 +15,9 @@
 </head>
 <body>
         <?php 
-        $barang=get_detail_barang($id);?>
+        $inventaris=get_detail_barang($id);
+        $barang=$inventaris->nama_perkiraan.' '.$inventaris->merk.' '.$inventaris->spek;
+        ?>
         <table>
         <tbody>
          <tr>
@@ -25,14 +27,14 @@
         <td><img style="width:100px;" src="<?=base_url(LOGO_PAM)?>" alt=""></td>
         <td>
             <center>
-            <h3><?=$barang->kd_barang?></h3>
-            <h3 style="margin-bottom:0;"><?=$barang->y.'-'.$barang->m.'-'.$barang->d?></h3>
-            <p style="font-size: 9px;"><?=$barang->nama_barang?></p>
+            <h3><?=$inventaris->kd_perkiraan?></h3>
+            <h3 style="margin-bottom:0;"><?=$inventaris->y.'-'.$inventaris->m.'-'.$inventaris->d?></h3>
+            <p style="font-size: 6pt;"><?=limitText($barang)?></p>
             </center>
         </td>
         <td>
             <center>
-                <img style="width:100px;" src="<?=base_url(QR_LOAD_PATH).$barang->id_barang.'.png'?>" alt="">
+                <img style="width:100px;" src="<?=base_url(QR_LOAD_PATH).$inventaris->id_inventaris.'.png'?>" alt="">
             <br>
             </center>
         </td>
