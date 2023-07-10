@@ -226,7 +226,7 @@ if (!function_exists('tanggal')) {
 if (!function_exists('count_invent')) {
     function count_invent($of_id) {
         $ci =& get_instance();
-        return $ci->db->query("SELECT COUNT(id_barang) as res FROM barang where status=1 and of_id=".$of_id)->row()->res;
+        return $ci->db->query("SELECT COUNT(id_inventaris) as res FROM inventaris where status=1 and of_id=".$of_id)->row()->res;
     }
 }
 if (!function_exists('of_name')) {

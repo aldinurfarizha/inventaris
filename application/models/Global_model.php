@@ -38,11 +38,13 @@ class Global_model extends CI_Model{
       }
     }
     function inventaris($where){
-      $this->db->select('inventaris.*, master_barang.*, office.*, office.nama as nama_kantor, sub_office.nama as nama_sub_kantor');
+      $this->db->select('inventaris.*, master_barang.*, office.*, office.nama as nama_kantor, sub_office.nama as nama_sub_kantor,master_perkiraan.*, master_perkiraan_dasar.*');
       $this->db->from('inventaris');
-      $this->db->join('master_barang','master_barang.id_barang=inventaris.id_barang');
-      $this->db->join('office','office.of_id=inventaris.of_id');
-      $this->db->join('sub_office','sub_office.sub_id=inventaris.sub_id');
+      $this->db->join('master_barang','master_barang.id_barang=inventaris.id_barang', 'left');
+      $this->db->join('master_perkiraan','master_barang.id_perkiraan=master_perkiraan.id_perkiraan');
+      $this->db->join('master_perkiraan_dasar', 'master_perkiraan.kd_perkiraan_dasar = master_perkiraan_dasar.kd_perkiraan_dasar');
+      $this->db->join('office','office.of_id=inventaris.of_id', 'left');
+      $this->db->join('sub_office','sub_office.sub_id=inventaris.sub_id', 'left');
       $this->db->where($where);
       return $this->db->get();
 

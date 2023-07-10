@@ -56,7 +56,7 @@ class Inventaris extends CI_Controller {
 			'deleted'=>0
 		);
 		$search_param=array(
-			'barang.of_id'=>$of_id
+			'inventaris.of_id'=>$of_id
 		);
 		
 		$data['data']=$this->Global_model->inventaris($search_param)->result();
@@ -70,8 +70,9 @@ class Inventaris extends CI_Controller {
 		$param=array(
 			'deleted'=>0
 		);
+		$data['id']=$id;
 		$data['data']=$this->Global_model->get_detail_inventaris($id)->row();
-		$data['barang']=$this->Global_model->master_barang()->result();
+		$data['barang']=$this->Global_model->get_by_id('master_barang',$param)->result();
 		$data['kantor']=$this->Global_model->get_all('office')->result();
 		$data['sub_kantor']=$this->Global_model->get_all('sub_office')->result();
 		$data['history']=$this->Global_model->get_history($id)->result();

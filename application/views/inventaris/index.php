@@ -24,31 +24,29 @@
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>Nama Barang</th>
+                        <th>Kd Perkiraan</th>
+                        <th>Barang</th>
                         <th>Perolehan</th>
-                        <th>Lokasi</th>
-                        <th>Merk</th>
-                        <th>Spek</th>
                         <th>Satuan</th>
-                        <th>Status</th>
                         <th>Harga (Rp.)</th>
+                        <th>Status</th>
                       </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
-                      <?php $no=1; foreach($data as $datar):
+                      <?php $no=1;
+                      foreach($data as $datar):
                       $status=false;
                         if($datar->status==1){
                           $status=true;
                         }
                         ?>
-                        <tr onclick="buka('<?=base_url('inventaris/detail/').$datar->id_barang?>')" style="cursor: pointer;">
+                        <tr onclick="buka('<?=base_url('inventaris/detail/').$datar->id_inventaris?>')" style="cursor: pointer;">
                           <th><?=$no?></th>
-                        <th><span class="badge bg-label-primary me-1"><?=$datar->nama_barang?></span></th>
+                        <th><span class="badge bg-label-primary me-1"><?=$datar->kd_perkiraan?></span></th>
+                        <th><?=$datar->merk.' '.$datar->tipe.' '.$datar->spek?></th>
                         <th><?=$datar->d.'-'.$datar->m.'-'.$datar->y?></th>
-                        <th><?=$datar->nama_kantor.' '.$datar->nama_sub_kantor?></th>
-                        <th><?=$datar->merk?></th>
-                        <th><?=$datar->spek?></th>
                         <th class="text-center"><?=$datar->satuan?></th>
+                        <th class="text-end"><?=number_format($datar->harga,0,',','.')?></th>
                         <th class="text-center">
                           <?php if($status):?>
                           <span class="badge rounded-pill bg-label-success">Aktif</span>
@@ -56,7 +54,7 @@
                           <span class="badge rounded-pill bg-label-danger">Non-Aktif</span>
                           <?php endif;?>
                         </th>
-                        <th class="text-end"><?=number_format($datar->harga,0,',','.')?></th>
+                        
                      
                         </tr>
                         <?php $no++; endforeach;?>
