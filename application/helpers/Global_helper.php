@@ -335,3 +335,41 @@ if (!function_exists('limitText')) {
         }
     }
 }
+if (!function_exists('terbilangAngka')) {
+    function terbilangAngka($day) {
+     $angka = array(
+        '1' => 'SATU',
+        '2' => 'DUA',
+        '3' => 'TIGA',
+        '4' => 'EMPAT',
+        '5' => 'LIMA',
+        '6' => 'ENAM',
+        '7' => 'TUJUH',
+        '8' => 'DELAPAN',
+        '9' => 'SEMBILAN',
+        '10' => 'SEPULUH',
+        '11' => 'SEBELAS',
+        '12' => 'DUA BELAS',
+        '13' => 'TIGA BELAS',
+        '14' => 'EMPAT BELAS',
+        '15' => 'LIMA BELAS',
+        '16' => 'ENAM BELAS',
+        '17' => 'TUJUH BELAS',
+        '18' => 'DELAPAN BELAS',
+        '19' => 'SEMBILAN BELAS',
+        '20' => 'DUA PULUH',
+        '21' => 'DUA PULUH SATU',
+        '22' => 'DUA PULUH DUA',
+        '23' => 'DUA PULUH TIGA',
+        '24' => 'DUA PULUH EMPAT',
+        '25' => 'DUA PULUH LIMA',
+        '26' => 'DUA PULUH ENAM',
+        '27' => 'DUA PULUH TUJUH',
+        '28' => 'DUA PULUH DELAPAN',
+        '29' => 'DUA PULUH SEMBILAN',
+        '30' => 'TIGA PULUH',
+        '31' => 'TIGA PULUH SATU',
+        );
+        return $angka[$day];
+    }
+}

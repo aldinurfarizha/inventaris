@@ -7,7 +7,7 @@
                 <div class="col-md-6">
                   <div class="card h-100">
                     <div class="card-header d-flex align-items-center justify-content-between">
-                      <h5 class="card-title m-0 me-2">Detail Inventaris (ID:<?=$data->id_barang?>)</h5>
+                      <h5 class="card-title m-0 me-2">Detail Inventaris (ID:<?=$data->id_inventaris?>)</h5>
                     </div>
                     <div class="card-body">
                       <div class="row">
@@ -35,7 +35,8 @@
                           <label for="defaultFormControlInput" class="form-label">Barang</label>
                           <select class="form-control" name="id_barang">
                             <option selected="true" value="<?=$data->id_barang?>"><?=$data->kd_perkiraan.' | '.$data->nama_perkiraan_dasar.' | '.$data->nama_perkiraan.' | '.$data->merk.' | '.$data->tipe.' | '.$data->spek?></option>
-                             <?php foreach($barang as $bar){?>
+                             <?php 
+                             foreach($barang as $bar){?>
                                 <option value="<?=$bar->id_barang?>"><?=$bar->kd_perkiraan.' | '.$bar->nama_perkiraan_dasar.' | '.$bar->nama_perkiraan.' | '.$bar->merk.' | '.$bar->tipe.' | '.$bar->spek;?></option>
                               <?php } ?>
                           </select>

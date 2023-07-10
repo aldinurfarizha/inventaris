@@ -55,7 +55,9 @@ class Laporan extends CI_Controller {
 			'pihak_kedua_nik'=>$nik_kedua,
 			'kadiv_umum_nama'=>$kadiv_umum,
 			'kadiv_umum_nik'=>$nik_kadiv,
-			'tanggal'=>$tanggal
+			'tanggal'=>$tanggal,
+			'sub_office'=>$sub_id,
+			'of_id'=>$of_id
 		);
 		$berita_acara_id=$this->Global_model->createBA($berita_acara,$item);
 		if(!$berita_acara_id){
@@ -75,7 +77,7 @@ class Laporan extends CI_Controller {
 			'id_berita_acara'=>$berita_acara_id
 		);
 		$data['berita_acara']=$this->Global_model->get_by_id('berita_acara',$param)->row();
-		$data['berita_acara_barang']=$this->Global_model->get_by_id('berita_acara_inventaris',$param_inventaris)->result();
+		$data['berita_acara_barang']=$this->Global_model->getBarangBA($berita_acara_id)->result();
 		$this->load->view('laporan/detail_ba',$data);
 	}
 	public function get_pihak_kedua(){
@@ -92,4 +94,22 @@ class Laporan extends CI_Controller {
 				->set_output(json_encode($data
 				));
 	}
+	public function delete_ba(){
+		$id=$this->input->post('id');
+		$where_ba=array(
+			'id'=>$id
+		);
+		$where_ba_inv=array(
+			'id_berita_acara'=>$id
+		);
+		$this->Global_model->delete('berita_acara',$where_ba);
+		$this->Global_model->delete('berita_acara_inventaris',$where_ba_inv);
+		return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode(array(
+                    'status' => true,
+                    'messages' => 'Success!'
+            )));
+		}
 }

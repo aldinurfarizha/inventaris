@@ -74,20 +74,21 @@
                               <thead>
                               <tr>
                                 <td>No.</td>
+                                <td>Jumlah</td>
                                 <td>Barang</td>
-                                <td>Merk</td>
                               </tr>
                               </thead>
                               <tbody>
                                 <?php 
                                 $no=1;
                                 foreach($berita_acara_barang as $barang):
-                                $detail_barang=get_detail_barang($barang->id_barang);
+                                $detail_barang=get_detail_barang($barang->id_inventaris);
+                                $barangs=$detail_barang->merk.' '.$detail_barang->tipe.' '.$detail_barang->spek;
                                 ?>
                                 <tr>
-                                  <td><?=$no?></td>
-                                  <td><?=$detail_barang->nama_barang?></td>
-                                  <td><?=$detail_barang->merk?></td>
+                                  <td><?=$no?>.</td>
+                                  <td><span class="badge bg-secondary"><?=terbilangAngka($barang->total).' ('.$barang->total.') '.$barang->satuan?> </span></td>
+                                  <td><?=$barangs?></td>
                                 </tr>
                                 <?php $no++; endforeach;
                                 ?>

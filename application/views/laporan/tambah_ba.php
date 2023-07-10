@@ -77,11 +77,11 @@
                       <tr>
                         <th><input style="cursor: pointer;" class="form-check-input" type="checkbox" id="checkall" ></th>
                         <th>#</th>
-                        <th>Nama Barang</th>
+                        <th>Kd Perkiraan</th>
+                        <th>Barang</th>
                         <th>Perolehan</th>
-                        <th>Lokasi</th>
-                        <th>Merk</th>
-                        <th>Spek</th>
+                        <th>Satuan</th>
+                        <th>Harga (Rp.)</th>
                         <th>Update Terakhir</th>
                       </tr>
                     </thead>
@@ -92,15 +92,16 @@
                         if($datar->status==1){
                           $status=true;
                         }
+                        $barang=$datar->merk.' '.$datar->tipe.' '.$datar->spek;
                         ?>
                         <tr>
-                        <th><input style="cursor: pointer;" class="form-check-input" type="checkbox" value="<?=$datar->id_barang?>" name="item[]"></th>
+                        <th><input style="cursor: pointer;" class="form-check-input" type="checkbox" value="<?=$datar->id_inventaris?>" name="item[]"></th>
                         <th><?=$no?></th>
-                        <th><span class="badge bg-label-primary me-1"><?=$datar->nama_barang?></span></th>
-                        <th><small><?=$datar->y.'-'.$datar->m.'-'.$datar->d?></small></th>
-                        <th><small><?=$datar->nama_kantor.' '.$datar->nama_sub_kantor?></small></th>
-                        <th><small><?=$datar->merk?></small></th>
-                        <th><small><?=$datar->spek?></small></th>
+                        <th><span class="badge bg-label-secondary me-1"><?=$datar->kd_perkiraan?></span></th>
+                        <th><a target="_blank" href="<?=base_url('inventaris/detail/').$datar->id_inventaris?>"><?=limitText($barang)?></a></th>
+                        <th><?=$datar->d.'-'.$datar->m.'-'.$datar->y?></th>
+                        <th class="text-center"><?=$datar->satuan?></th>
+                        <th class="text-end"><?=number_format($datar->harga,0,',','.')?></th>
                         <th><small><?=$datar->last_update?></small></th>
                         </tr>
                         <?php $no++; endforeach;?>
@@ -120,6 +121,20 @@
 <?php $this->load->view('partials/footer')?>
 <script src="https://cdn.rawgit.com/igorescobar/jQuery-Mask-Plugin/1ef022ab/dist/jquery.mask.min.js"></script>
 <script>
+       $(document).ready(function(){
+        $('#table').DataTable({
+            "bPaginate": false,
+            "bLengthChange": false,
+            "bFilter": true,
+            "scrollY": "400px",
+            "scrollCollapse": true,
+            "bInfo": false,
+            "bAutoWidth": false
+        });
+    });
+    $("#checkall").click(function(){
+    $('input:checkbox').not(this).prop('checked', this.checked);
+});
   $( '#harga' ).mask('000.000.000.000', {reverse: true});
   $('#sub_kantor_option').hide();
   $('#sub_kantor_filter').hide();

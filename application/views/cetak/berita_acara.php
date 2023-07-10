@@ -72,9 +72,10 @@
     <p>dengan ini PIHAK PERTAMA menyerahkan fasilitas barang inventaris perusahaan  kepada PIHAK KEDUA, dengan perencian sebagai berikut :</p>
     <?php 
     foreach($berita_acara_barang as $barang):
-        $detail_barang=get_detail_barang($barang->id_barang);
+        $detail_barang=get_detail_barang($barang->id_inventaris);
+        $barangs=$detail_barang->merk.' '.$detail_barang->tipe.' '.$detail_barang->spek;
         ?>
-        <p class="item"><b>-	Satu (1) <?=@$detail_barang->satuan?> <?=@$detail_barang->nama_barang?> <?=@$detail_barang->merk?> <?=@$detail_barang->spek?></b></p>
+        <p class="item"><b>-<?=terbilangAngka($barang->total).' ('.$barang->total.') '.$barang->satuan.' '.$barangs?>	</b></p>
     <?php endforeach;?>
     
 

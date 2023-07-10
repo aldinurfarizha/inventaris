@@ -10,7 +10,7 @@
                  <i class="fa fa-check-circle"></i> <b>Inventaris Baru Berhasil Di tambahakan.</b> 
               </div>
                     <div class="card-header d-flex align-items-center justify-content-between">
-                      <h5 class="card-title m-0 me-2">Detail Inventaris (ID:<?=$data->id_barang?>)</h5>
+                      <h5 class="card-title m-0 me-2">Detail Inventaris (ID:<?=$data->id_inventaris?>)</h5>
                     </div>
                     <div class="card-body">
                       <div class="row">

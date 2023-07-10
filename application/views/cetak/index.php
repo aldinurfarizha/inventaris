@@ -17,17 +17,17 @@
                     </div>
                     <div class="card-body">
                    <div class="table-responsive text-nowrap">
-                     <form target="_blank" action="<?=base_url('cetak/prints')?>" method="POST">
+                     <form target="_blank" action="<?=base_url('cetak/multi_label')?>" method="POST">
                   <table id="table"  class="table table-hover table-borderless">
                     <thead>
                       <tr>
                         <th><input style="cursor: pointer;" class="form-check-input" type="checkbox" id="checkall" ></th>
                         <th>#</th>
-                        <th>Nama Barang</th>
+                        <th>Kd Perkiraan</th>
+                        <th>Barang</th>
                         <th>Perolehan</th>
-                        <th>Lokasi</th>
-                        <th>Merk</th>
-                        <th>Spek</th>
+                        <th>Satuan</th>
+                        <th>Harga (Rp.)</th>
                         <th>Update Terakhir</th>
                       </tr>
                     </thead>
@@ -35,18 +35,19 @@
                        
                       <?php $no=1; foreach($data as $datar):
                       $status=false;
+                      $barang=$datar->merk.' '.$datar->tipe.' '.$datar->spek;
                         if($datar->status==1){
                           $status=true;
                         }
                         ?>
                         <tr>
-                        <th><input style="cursor: pointer;" class="form-check-input" type="checkbox" value="<?=$datar->id_barang?>" name="item[]"></th>
+                        <th><input style="cursor: pointer;" class="form-check-input" type="checkbox" value="<?=$datar->id_inventaris?>" name="item[]"></th>
                         <th><?=$no?></th>
-                        <th><span class="badge bg-label-primary me-1"><?=$datar->nama_barang?></span></th>
-                        <th><small><?=$datar->y.'-'.$datar->m.'-'.$datar->d?></small></th>
-                        <th><small><?=$datar->nama_kantor.' '.$datar->nama_sub_kantor?></small></th>
-                        <th><small><?=$datar->merk?></small></th>
-                        <th><small><?=$datar->spek?></small></th>
+                        <th><span class="badge bg-label-secondary me-1"><?=$datar->kd_perkiraan?></span></th>
+                        <th><a target="_blank" href="<?=base_url('inventaris/detail/').$datar->id_inventaris?>"><?=limitText($barang)?></a></th>
+                        <th><?=$datar->d.'-'.$datar->m.'-'.$datar->y?></th>
+                        <th class="text-center"><?=$datar->satuan?></th>
+                        <th class="text-end"><?=number_format($datar->harga,0,',','.')?></th>
                         <th><small><?=$datar->last_update?></small></th>
                         </tr>
                         <?php $no++; endforeach;?>

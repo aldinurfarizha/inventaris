@@ -65,7 +65,7 @@ class Global_model extends CI_Model{
       return $this->db->get();
     }
      function master_barang_detail($id){
-       $this->db->select('master_barang.*, master_perkiraan.*, master_perkiraan_dasar.*');
+      $this->db->select('master_barang.*, master_perkiraan.*, master_perkiraan_dasar.*');
       $this->db->from('master_barang');
       $this->db->join('master_perkiraan', 'master_barang.id_perkiraan = master_perkiraan.id_perkiraan');
       $this->db->join('master_perkiraan_dasar', 'master_perkiraan.kd_perkiraan_dasar = master_perkiraan_dasar.kd_perkiraan_dasar');
@@ -102,12 +102,21 @@ class Global_model extends CI_Model{
       foreach($item_barang as $barang):
         $data=array(
           'id_berita_acara'=>$id_berita_acara,
-          'id_barang'=>$barang
+          'id_inventaris'=>$barang
         );
-        $this->db->insert('berita_acara_barang',$data);
+        $this->db->insert('berita_acara_inventaris',$data);
       endforeach;
      }
      return $id_berita_acara;
+    }
+    function getBarangBA($id_berita_acara){
+      $this->db->select('berita_acara_inventaris.*, inventaris.*, count(inventaris.id_barang)as total,master_barang.*');
+      $this->db->from('berita_acara_inventaris');
+      $this->db->join('inventaris', 'berita_acara_inventaris.id_inventaris = inventaris.id_inventaris');
+      $this->db->join('master_barang','master_barang.id_barang=inventaris.id_barang', 'left');
+      $this->db->where(['berita_acara_inventaris.id_berita_acara'=>$id_berita_acara]);
+      $this->db->group_by('inventaris.id_barang'); 
+      return $this->db->get();
     }
 }
 ?>
