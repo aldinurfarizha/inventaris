@@ -29,12 +29,9 @@ class Laporan extends CI_Controller {
 	public function insert_ba(){
 		$nomor=$this->input->post('nomor');
 		$tanggal=$this->input->post('tanggal');
-		$kadiv_umum=$this->input->post('kadiv_umum');
-		$nik_kadiv=$this->input->post('nik_kadiv');
-		$pihak_kedua=$this->input->post('pihak_kedua');
-		$nik_kedua=$this->input->post('nik_kedua');
-		$kasub_rt=$this->input->post('kasub_rt');
-		$nik_rt=$this->input->post('nik_rt');
+		$id_kadiv_umum=$this->input->post('id_kadiv_umum');
+		$id_pihak_kedua=$this->input->post('id_pihak_kedua');
+		$id_kasub_rt=$this->input->post('id_kasub_rt');
 		$item=$this->input->post('item');
 		$of_id=$this->input->post('of_id');
 		$sub_id=$this->input->post('sub_id');
@@ -48,17 +45,33 @@ class Laporan extends CI_Controller {
 			return;
 		}
 		if(sizeof($item)==0){
-			echo "<script>alert('GAGAL. Pilih Minimal 1 barang untuk di cetak labelna !'); window.history.go(-1);</script>";
+			echo "<script>alert('GAGAL. Pilih Minimal 1 barang untuk pembuatan BA !'); window.history.go(-1);</script>";
 			return;
 		}
+		if($id_pihak_kedua==''){
+			echo "<script>alert('GAGAL Pihak Kedua masih kosong. Pilih Pihak Kedua !'); window.history.go(-1);</script>";
+			return;
+		}
+		$kadiv_umum_detail=getEmployeeSimpeg(['pgw_id'=>$id_kadiv_umum])->row();
+		$nama_kadiv_umum=$kadiv_umum_detail->nama;
+		$nik_kadiv_umum=$kadiv_umum_detail->nik;
+
+		$kasub_rt_detail=getEmployeeSimpeg(['pgw_id'=>$id_kasub_rt])->row();
+		$nama_kasub_rt=$kasub_rt_detail->nama;
+		$nik_kasub_rt=$kasub_rt_detail->nik;
+
+		$pihak_kedua_detail=getEmployeeSimpeg(['pgw_id'=>$id_pihak_kedua])->row();
+		$nama_pihak_kedua=$pihak_kedua_detail->nama;
+		$nik_pihak_kedua=$pihak_kedua_detail->nik;
+
 		$berita_acara=array(
 			'nomor'=>$nomor,
-			'sub_div_rt_nama'=>$kasub_rt,
-			'sub_div_rt_nik'=>$nik_rt,
-			'pihak_kedua_nama'=>$pihak_kedua,
-			'pihak_kedua_nik'=>$nik_kedua,
-			'kadiv_umum_nama'=>$kadiv_umum,
-			'kadiv_umum_nik'=>$nik_kadiv,
+			'sub_div_rt_nama'=>$nama_kasub_rt,
+			'sub_div_rt_nik'=>$nik_kasub_rt,
+			'pihak_kedua_nama'=>$nama_pihak_kedua,
+			'pihak_kedua_nik'=>$nik_pihak_kedua,
+			'kadiv_umum_nama'=>$nama_kadiv_umum,
+			'kadiv_umum_nik'=>$nik_kadiv_umum,
 			'tanggal'=>$tanggal,
 			'sub_office'=>$sub_id,
 			'of_id'=>$of_id
@@ -76,9 +89,6 @@ class Laporan extends CI_Controller {
 	public function detail_ba($berita_acara_id){
 		$param=array(
 			'id'=>$berita_acara_id
-		);
-		$param_inventaris=array(
-			'id_berita_acara'=>$berita_acara_id
 		);
 		$data['berita_acara']=$this->Global_model->get_by_id('berita_acara',$param)->row();
 		$data['berita_acara_barang']=$this->Global_model->getBarangBA($berita_acara_id)->result();
@@ -116,6 +126,21 @@ class Laporan extends CI_Controller {
 		);
 		$this->Global_model->delete('berita_acara',$where_ba);
 		$this->Global_model->delete('berita_acara_inventaris',$where_ba_inv);
+		return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode(array(
+                    'status' => true,
+                    'messages' => 'Success!'
+            )));
+		}
+	public function delete_mutasi(){
+		$id=$this->input->post('id');
+		$where=array(
+			'id_mutasi'=>$id
+		);
+		$this->Global_model->delete('mutasi',$where);
+		$this->Global_model->delete('mutasi_inventaris',$where);
 		return $this->output
             ->set_content_type('application/json')
             ->set_status_header(200)

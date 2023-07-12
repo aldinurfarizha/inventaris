@@ -293,10 +293,15 @@ var param;
       off_id:of_id,
       dept_id:$('#sub_id').val()
     }
+  }else if(of_id=='14'||of_id=='15'||of_id=='16'||of_id=='17'||of_id=='18'||of_id=='19'){
+  param={
+        off_id:1,
+        dept_id:7
+      }
   }else{
-     param={
-      off_id:of_id,
-    }
+  param={
+        off_id:of_id,
+      }
   }
   $.ajax({
               url: "<?= base_url('inventaris/get_employee')?>",
@@ -309,8 +314,9 @@ var param;
                UnloadingPihakKedua();
                var data=response['data'];
                var html='';
+               html+='<option selected="true" value="">--Pilih Kadiv/Kacab--</option>';
                for (var i = 0; i< response['data'].length; i++) {
-                 html+='<option value="'+data[i].id+'">'+data[i].nama+' | '+data[i].nik+'</option>';
+                 html+='<option value="'+data[i].id+'">'+data[i].nama+' | '+data[i].nik+' | '+data[i].jabatan+'</option>';
                }
                $('#id_pihak_kedua').html(html);
               },

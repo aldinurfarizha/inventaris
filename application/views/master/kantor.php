@@ -8,8 +8,8 @@
                   
                 </div>
                   <div class="col-md-12">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#basicModal">
-                      <i class="fa fa-plus"></i> Kantor
+                    <button type="button" class="btn btn-primary disabled" data-bs-toggle="modal" data-bs-target="#basicModal">
+                      <i class="fa fa-plus"></i> Kantor (Sinkron Otomatis dengan SIMPEG)
                     </button>
                     <hr>
                   <div class="card h-100">
@@ -37,10 +37,10 @@
                            <td><?=$datar->nik?></td>
                           <?php if($datar->is_pusat==0){?>
                             <td class="text-center">
-                            <button type="button" onclick="hapus(<?=$datar->of_id?>)" class="btn btn-sm btn-icon btn-danger">
+                            <button type="button" onclick="hapus(<?=$datar->of_id?>)" class="btn btn-sm btn-icon btn-danger disabled">
                               <span class="fa fa-trash"></span>
                               </button>
-                             <button type="button" onclick="edit('<?=$datar->of_id?>','<?=$datar->nama?>','<?=$datar->kepala?>','<?=$datar->nik?>')" class="btn btn-sm btn-icon btn-success">
+                             <button type="button" onclick="edit('<?=$datar->of_id?>','<?=$datar->nama?>','<?=$datar->kepala?>','<?=$datar->nik?>')" class="btn btn-sm btn-icon btn-success disabled">
                               <span class="fas fa-pencil-alt"></span>
                               </button>
                             </td>

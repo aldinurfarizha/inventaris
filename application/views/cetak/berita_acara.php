@@ -25,7 +25,7 @@
 </head>
 <body>
     <img style="width:175px;" src="<?=base_url(KOP_SURAT)?>" alt="">
-    <center><b><h3>BERITA ACARA SERAH TERIMA BARANG INVENTARIS</h3></b>
+    <center><b><h3><u>BERITA ACARA SERAH TERIMA BARANG INVENTARIS</u></h3></b>
     <p style="margin-top: -20px;">NOMOR : <?=generateNomorBA($berita_acara->id)?></p>
     </center>
     <p>Pada hari ini <b><?=terbilangHari($berita_acara->tanggal)?></b> tanggal <b><?=terbilangTanggal($berita_acara->tanggal)?></b> bulan <b><?=terbilangBulan($berita_acara->tanggal)?></b> tahun <b><?=terbilangTahun($berita_acara->tanggal)?> <i>(<?=$berita_acara->tanggal?>)</i></b>, kami yang bertanda tangan dibawah ini : </p>
@@ -99,8 +99,8 @@
     </table>
     <table style="width: 100%; margin-top:65px;">
         <tr>
-            <td style="width: 50%;"><center><b><?=$berita_acara->pihak_kedua_nama?></b></center></td>
-            <td style="width: 50%;"><center><b><?=$berita_acara->sub_div_rt_nama?></b></center></td>
+            <td style="width: 50%;"><center><u><b><?=$berita_acara->pihak_kedua_nama?></b></u></center></td>
+            <td style="width: 50%;"><center><u><b><?=$berita_acara->sub_div_rt_nama?></b></u></center></td>
         </tr>
         <tr>
             <td style="width: 50%;"><center>NIK. <?=$berita_acara->pihak_kedua_nik?></center></td>
@@ -117,7 +117,7 @@
     </table>
      <table style="width: 100%; margin-top:65px;">
         <tr>
-            <td><center><b><?=$berita_acara->kadiv_umum_nama?></b></center></td>
+            <td><center><u><b><?=$berita_acara->kadiv_umum_nama?></b></u></center></td>
             
         </tr>
         <tr>
@@ -130,5 +130,5 @@
 </body>
 </html>
 <script type="text/javascript">
-//window.print();
+window.print();
 </script>

@@ -26,7 +26,7 @@
                  <table id="table" class="table table-hover table-borderless table-striped">
                     <thead>
                       <tr>
-                        <th>Nomor Ba</th>
+                        <th>No. Ba</th>
                         <th>Nama Sub Div RT</th>
                         <th>Nama Pihak Kedua</th>
                         <th>Nama Kadiv Umum</th>

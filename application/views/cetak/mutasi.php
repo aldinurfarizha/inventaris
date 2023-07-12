@@ -37,7 +37,7 @@
                                     }
     ?>
     <img style="width:250px;" src="<?=base_url(KOP_SURAT)?>" alt="">
-    <center><b><h3>BERITA ACARA MUTASI BARANG</h3></b>
+    <center><u><b><h3>BERITA ACARA MUTASI BARANG</h3></b></u>
     <p style="margin-top: -20px;">NOMOR : <?=generateNomorMutasi($mutasi->id_mutasi)?></p>
     </center>
     <p>Pada hari ini <b><?=terbilangHari($mutasi->tanggal)?></b> tanggal <b><?=terbilangTanggal($mutasi->tanggal)?></b> bulan <b><?=terbilangBulan($mutasi->tanggal)?></b> tahun <b><?=terbilangTahun($mutasi->tanggal)?> <i>(<?=$mutasi->tanggal?>)</i></b>, Bawha telah di mutasikan Barang / Pengalihan Aset Inventaris Kantor dari <b><?=$asal?></b> ke <b><?=$tujuan?></b> berupa: </p>
@@ -80,7 +80,7 @@
             <td style="width: 50%;"><center>NIK. <?=$mutasi->nik_penyerah?></center></td>
         </tr>
     </table>
-    <table style="width: 100%; margin-top:10px;">
+    <table style="width: 100%; margin-top:30px;">
         <tr>
             <td><center>Mengetahui / Menyetujui</center></td>
         </tr>
@@ -100,5 +100,5 @@
 </body>
 </html>
 <script type="text/javascript">
-//window.print();
+window.print();
 </script>

@@ -26,7 +26,7 @@
                  <table id="table" class="table table-hover table-borderless table-striped">
                     <thead>
                       <tr>
-                        <th>Nomor Mutasi</th>
+                        <th>No. Mutasi</th>
                         <th>Penyerah</th>
                         <th>Penerima</th>
                         <th>Asal -> Tujuan</th>
@@ -53,7 +53,8 @@
                             }else{
                               $tujuan=detailOfid($datar->of_id_penerima)->nama;
                             }
-                            echo $asal.' -> '.$tujuan;
+                            $mutasi=$asal.' -> '.$tujuan;
+                            echo limitText($mutasi);
                             ?>
                           </td>
                           <td class="text-center"><span class="badge badge-center rounded-pill bg-secondary"><?=countJumlahBarangMutasi($datar->id_mutasi)?></span></td>
@@ -87,8 +88,8 @@
      function hapus(id){
             Swal.fire({
                         icon: 'question',
-                        title: 'Hapus',
-                        text: 'Anda yakin ingin Menghapus Berita Acara Ini ?',
+                        title: 'Hapus Mutasi Barang',
+                        text: 'Barang yang sudah di mutasikan tidak dapat kembali ke posisi sebelumnya.',
                         showConfirmButton: true,
                         showCancelButton: true,
                         showBackdrop: true,
@@ -97,7 +98,7 @@
                     }).then(function(data){
                       if(data.value === true){
                         $.ajax({
-                      url: "<?= base_url('laporan/delete_ba')?>",
+                      url: "<?= base_url('laporan/delete_mutasi')?>",
                       type: "POST",
                       data: {
                           "id":id,
