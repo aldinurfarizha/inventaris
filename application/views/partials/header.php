@@ -114,7 +114,7 @@
                   </a>
                 </li>
                  <li class="menu-item <?php if($this->uri->segment('2')=='mutasi') { echo"active";}?>">
-                 <a href="<?=base_url('laporan/kartu_inventaris')?>" class="menu-link">
+                 <a href="<?=base_url('laporan/mutasi')?>" class="menu-link">
                     <div data-i18n="Basic">Mutasi Barang</div>
                   </a>
                 </li>
@@ -131,24 +131,24 @@
                 <div data-i18n="Mics">Inventaris</div>
               </a>
               <ul class="menu-sub">
-               <li class="menu-item <?php if($this->uri->segment('2')=='') { echo"active";}?>">
-                 <a href="<?=base_url('inventaris')?>" class="menu-link">
-                    <div data-i18n="Basic">Inventaris</div>
+               <li class="menu-item <?php if($this->uri->segment('2')=='pilih_kantor' || $this->uri->segment('2')=='result' || $this->uri->segment('2')=='detail')  { echo"active";}?>">
+                 <a href="<?=base_url('inventaris/pilih_kantor')?>" class="menu-link">
+                    <div data-i18n="Basic">Data</div>
                   </a>
                 </li>
                 <li class="menu-item <?php if($this->uri->segment('2')=='tambah' || $this->uri->segment('2')=='sukses') { echo"active";}?>">
                  <a href="<?=base_url('inventaris/tambah')?>" class="menu-link">
-                    <div data-i18n="Basic">Tambah Inventaris</div>
+                    <div data-i18n="Basic">Tambah</div>
                   </a>
                 </li>
                  <li class="menu-item <?php if($this->uri->segment('2')=='mutasi') { echo"active";}?>">
-                 <a href="<?=base_url('inventaris/kartu_inventaris')?>" class="menu-link">
-                    <div data-i18n="Basic">Mutasi Barang</div>
+                 <a href="<?=base_url('inventaris/mutasi')?>" class="menu-link">
+                    <div data-i18n="Basic">Mutasi</div>
                   </a>
                 </li>
-                 <li class="menu-item <?php if($this->uri->segment('2')=='penghapusan_aset') { echo"active";}?>">
-                 <a href="<?=base_url('inventaris/penghapusan_aset')?>" class="menu-link">
-                    <div data-i18n="Basic">Penghapusan Aset</div>
+                 <li class="menu-item <?php if($this->uri->segment('2')=='penghapusan') { echo"active";}?>">
+                 <a href="<?=base_url('inventaris/penghapusan')?>" class="menu-link">
+                    <div data-i18n="Basic">Penghapusan</div>
                   </a>
                 </li>
               </ul>

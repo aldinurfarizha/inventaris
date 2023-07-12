@@ -13,6 +13,10 @@ class Laporan extends CI_Controller {
 		$data['data']=$this->Global_model->get_all('berita_acara')->result();
 		$this->load->view('laporan/ba',$data);
 	}
+	public function mutasi(){
+		$data['data']=$this->Global_model->get_all('mutasi')->result();
+		$this->load->view('laporan/mutasi',$data);
+	}
 	public function tambah_berita_acara(){
 		$search_param=array();
 		$data['info_perusahaan']=infoPerusahaan();
@@ -79,6 +83,14 @@ class Laporan extends CI_Controller {
 		$data['berita_acara']=$this->Global_model->get_by_id('berita_acara',$param)->row();
 		$data['berita_acara_barang']=$this->Global_model->getBarangBA($berita_acara_id)->result();
 		$this->load->view('laporan/detail_ba',$data);
+	}
+	public function detail_mutasi($id_mutasi){
+		$param=array(
+			'id_mutasi'=>$id_mutasi
+		);
+		$data['mutasi']=$this->Global_model->get_by_id('mutasi',$param)->row();
+		$data['mutasi_inventaris']=$this->Global_model->getInventarisMutasi($id_mutasi)->result();
+		$this->load->view('laporan/detail_mutasi',$data);
 	}
 	public function get_pihak_kedua(){
 		$of_id=$this->input->post('of_id');

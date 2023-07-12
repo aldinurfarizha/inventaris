@@ -25,8 +25,8 @@
                         <th>#</th>
                         <th>Kd Perkiraan</th>
                         <th>Barang</th>
+                        <th>Lokasi</th>
                         <th>Perolehan</th>
-                        <th>Satuan</th>
                         <th>Harga (Rp.)</th>
                         <th>Update Terakhir</th>
                       </tr>
@@ -45,8 +45,8 @@
                         <th><?=$no?></th>
                         <th><span class="badge bg-label-secondary me-1"><?=$datar->kd_perkiraan?></span></th>
                         <th><a target="_blank" href="<?=base_url('inventaris/detail/').$datar->id_inventaris?>"><?=limitText($barang)?></a></th>
+                        <th class="text-center"><?=@detailOfid($datar->of_id)->nama.' - '.@detailSubOffice($datar->sub_office)->nama?></th>
                         <th><?=$datar->d.'-'.$datar->m.'-'.$datar->y?></th>
-                        <th class="text-center"><?=$datar->satuan?></th>
                         <th class="text-end"><?=number_format($datar->harga,0,',','.')?></th>
                         <th><small><?=$datar->last_update?></small></th>
                         </tr>

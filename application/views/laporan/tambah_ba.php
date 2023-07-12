@@ -43,35 +43,33 @@
                                       <label for="defaultFormControlInput" class="form-label">Tanggal Surat</label>
                                       <input type="text" value="<?=date('Y-m-d')?>" class="form-control" name="tanggal" readonly>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="defaultFormControlInput" class="form-label">Nama Kadiv Umum</label>
-                                        <input type="text" class="form-control" name="kadiv_umum" readonly value="<?=$info_perusahaan->kadiv_umum?>">
+                                     <div class="col-md-6">
+                                      <div class="form-group">
+                                        <label>Kadiv Umum <div style="display:inline;" id="loading_kadiv_umum"></div></label>
+                                        <select name="id_kadiv_umum" class="form-control" id="id_kadiv_umum">
+                                        </select>
                                       </div>
-                                      <div class="col-md-6">
-                                          <label for="defaultFormControlInput" class="form-label">NIK Kadiv Umum</label>
-                                          <input type="text" class="form-control" name="nik_kadiv" readonly value="<?=$info_perusahaan->nik_kadiv?>">
-                                        </div>
+                                    </div>
                                         <div class="col-md-6">
-                                        <label for="defaultFormControlInput" class="form-label">Nama Pihak Kedua</label>
-                                        <input type="text" class="form-control" name="pihak_kedua" id="pihak_kedua" readonly value="">
+                                      <div class="form-group">
+                                        <label>Pihak Kedua <div style="display:inline;" id="loading_pihak_kedua"></div></label>
+                                        <select name="id_pihak_kedua" class="form-control" id="id_pihak_kedua">
+                                        </select>
                                       </div>
-                                      <div class="col-md-6">
-                                          <label for="defaultFormControlInput" class="form-label">NIK Pihak Kedua</label>
-                                          <input type="text" class="form-control" name="nik_kedua" id="nik_kedua" readonly value="">
-                                        </div>
+                                    </div>
                                        <div class="col-md-6">
-                                        <label for="defaultFormControlInput" class="form-label">Nama Kasub RT</label>
-                                        <input type="text" class="form-control" name="kasub_rt" readonly value="<?=$info_perusahaan->kasub_rt?>">
+                                      <div class="form-group">
+                                        <label>Kasub RT <div style="display:inline;" id="loading_kasub_rt"></div></label>
+                                        <select name="id_kasub_rt" class="form-control" id="id_kasub_rt">
+                                        </select>
                                       </div>
-                                      <div class="col-md-6">
-                                          <label for="defaultFormControlInput" class="form-label">NIK Kasub RT</label>
-                                          <input type="text" class="form-control" name="nik_rt" readonly value="<?=$info_perusahaan->nik_rt?>">
-                                        </div>
+                                    </div>
                                     <hr>
                                     </div>
                         </div>
                         <div class="col-md-6">
-                                 <div style="height: 500px;" class="table-responsive text-nowrap">
+                           <div id="loading_inventaris"></div>
+                                 <div style="height: 300px;" class="table-responsive text-nowrap">
                                      <table id="table"  class="table table-hover table-borderless">
                     <thead>
                       <tr>
@@ -85,27 +83,8 @@
                         <th>Update Terakhir</th>
                       </tr>
                     </thead>
-                    <tbody class="table-border-bottom-0">
-                       
-                      <?php $no=1; foreach($data as $datar):
-                      $status=false;
-                        if($datar->status==1){
-                          $status=true;
-                        }
-                        $barang=$datar->merk.' '.$datar->tipe.' '.$datar->spek;
-                        ?>
-                        <tr>
-                        <th><input style="cursor: pointer;" class="form-check-input" type="checkbox" value="<?=$datar->id_inventaris?>" name="item[]"></th>
-                        <th><?=$no?></th>
-                        <th><span class="badge bg-label-secondary me-1"><?=$datar->kd_perkiraan?></span></th>
-                        <th><a target="_blank" href="<?=base_url('inventaris/detail/').$datar->id_inventaris?>"><?=limitText($barang)?></a></th>
-                        <th><?=$datar->d.'-'.$datar->m.'-'.$datar->y?></th>
-                        <th class="text-center"><?=$datar->satuan?></th>
-                        <th class="text-end"><?=number_format($datar->harga,0,',','.')?></th>
-                        <th><small><?=$datar->last_update?></small></th>
-                        </tr>
-                        <?php $no++; endforeach;?>
-                    </tbody>
+                     <tbody id="data_inventaris" class="table-border-bottom-0">
+                      </tbody>
                   </table>
                                  </div>
                         </div>
@@ -144,7 +123,8 @@
     if(valueSelected!=='1'){
       //cabang
       $('#sub_kantor_option').hide();
-      fillPihakKedua(valueSelected,99);
+      loadInventaris();
+      getPihakKedua();
     }else{
       //pusat
       $('#sub_kantor_option').show();
@@ -155,9 +135,149 @@
     var optionSelected = $("option:selected", this);
     var valueSelected = this.value;
     if(valueSelected!==''){
-      fillPihakKedua(1,valueSelected);
+      loadInventaris();
+      getPihakKedua();
     }
 });
+function loadingInventaris(){
+  $('#loading_inventaris').html('<br><br><br><br><center><i class=" fa-4x fas fa-circle-notch fa-spin"></i></center>');
+}
+function UnloadingInventaris(){
+  $('#loading_inventaris').html('');
+}
+function loadingKadivUmum(){
+  $('#loading_kadiv_umum').html('<i class="fas fa-circle-notch fa-spin"></i>');
+}
+function UnloadingKadivUmum(){
+  $('#loading_kadiv_umum').html('');
+}
+function loadingKasubRT(){
+  $('#loading_kasub_rt').html('<i class="fas fa-circle-notch fa-spin"></i>');
+}
+function UnloadingKasubRT(){
+  $('#loading_kasub_rt').html('');
+}
+function loadingPihakKedua(){
+  $('#loading_pihak_kedua').html('<i class="fas fa-circle-notch fa-spin"></i>');
+}
+function UnloadingPihakKedua(){
+  $('#loading_pihak_kedua').html('');
+}
+
+getKadivUmum();
+getKasubRT();
+function getKadivUmum(){
+  $.ajax({
+              url: "<?= base_url('inventaris/get_employee')?>",
+              type: "POST",
+              data:{
+                off_id:1,
+                dept_id:4,
+                subdept_id:45,
+                occ_id:2
+              }, 
+              beforeSend(){
+                loadingKadivUmum();
+              },
+              success:function(response){
+               UnloadingKadivUmum();
+               var data=response['data'];
+               var html='';
+               for (var i = 0; i< response['data'].length; i++) {
+                 html+='<option selected="true" value="'+data[i].id+'">'+data[i].nama+' | '+data[i].nik+'</option>';
+               }
+               $('#id_kadiv_umum').html(html);
+              },
+              error:function(response){
+                  Swal.fire({
+                    icon: "error",
+                    title: 'Opps!',
+                    button:"Oke",
+                    text: "Gagal Mengambil Data Kadiv Umum"
+                  }).then(function(){
+                    location.reload();
+                  })
+              }
+            });
+}
+function getKasubRT(){
+  $.ajax({
+              url: "<?= base_url('inventaris/get_employee')?>",
+              type: "POST",
+              data:{
+                off_id:1,
+                dept_id:4,
+                subdept_id:91,
+                occ_id:4
+              }, 
+              beforeSend(){
+                loadingKasubRT();
+              },
+              success:function(response){
+               UnloadingKasubRT();
+               var data=response['data'];
+               var html='';
+               for (var i = 0; i< response['data'].length; i++) {
+                 html+='<option selected="true" value="'+data[i].id+'">'+data[i].nama+' | '+data[i].nik+'</option>';
+               }
+               $('#id_kasub_rt').html(html);
+              },
+              error:function(response){
+                  Swal.fire({
+                    icon: "error",
+                    title: 'Opps!',
+                    button:"Oke",
+                    text: "Gagal Mengambil Data Kasub RT"
+                  }).then(function(){
+                    location.reload();
+                  })
+              }
+            });
+}
+function loadInventaris(){
+   $.ajax({
+              url: "<?= base_url('inventaris/load_inventaris')?>",
+              type: "POST",
+              data:{
+                of_id:$('#of_id').val(),
+                sub_id:$('#sub_id').val()
+              }, 
+              beforeSend(){
+              loadingInventaris();
+              },
+              success:function(response){
+               UnloadingInventaris();
+               var data=response['data'];
+               var html='';
+               var no=1;
+               for (var i = 0; i< response['data'].length; i++) {
+                 var barang=data[i].merk+' '+data[i].tipe+' '+data[i].spek;
+                 html+='<tr>'+
+                 '<td><input style="cursor: pointer;" class="form-check-input" type="checkbox" value="'+data[i].id_inventaris+'" name="item[]"></td>'+
+                 '<td>'+no+'</td>'+
+                 '<td><span class="badge bg-label-secondary me-1">'+data[i].kd_perkiraan+'</span></td>'+
+                 '<td><a target="_blank" href="detail/'+data[i].id_inventaris+'">'+barang.slice(0, 25)+'...</a>'+
+                 '<td>'+data[i].y+'-'+data[i].m+'-'+data[i].d+'</td>'+
+                 '<td>'+data[i].satuan+'</td>'+
+                 '<td>'+data[i].last_update+'</td>'+
+                 '</tr>'
+                no++;
+               }
+               $('#data_inventaris').html(html);
+              },
+              error:function(response){
+                $("#add").attr("disabled", false);
+                  Swal.fire({
+                    icon: "error",
+                    title: 'Opps!',
+                    button:"Oke",
+                    text: response.responseJSON.messages
+                  }).then(function(){
+                    $('#basicModal').modal('show');
+                  })
+              }
+            });
+}
 function loadingBa(){
   $('#loading_ba').html('<i class="fas fa-circle-notch fa-spin"></i>');
 }
@@ -165,22 +285,45 @@ function UnloadingBa(){
   $('#loading_ba').html('');
 }
 
-function fillPihakKedua(of_id,sub_id){
-$.ajax({
-              url: "<?= base_url('laporan/get_pihak_kedua')?>",
+function getPihakKedua(){
+let of_id=$('#of_id').val();
+var param;
+  if(of_id==1 || of_id=='1'){
+  param={
+      off_id:of_id,
+      dept_id:$('#sub_id').val()
+    }
+  }else{
+     param={
+      off_id:of_id,
+    }
+  }
+  $.ajax({
+              url: "<?= base_url('inventaris/get_employee')?>",
               type: "POST",
-              data:{
-                "of_id":of_id,
-                "sub_id":sub_id
-              },
+              data:param, 
               beforeSend(){
-              loadingBa();
+                loadingPihakKedua();
               },
               success:function(response){
-               UnloadingBa();
-              $('#pihak_kedua').val(response.kepala);
-               $('#nik_kedua').val(response.nik);
+               UnloadingPihakKedua();
+               var data=response['data'];
+               var html='';
+               for (var i = 0; i< response['data'].length; i++) {
+                 html+='<option value="'+data[i].id+'">'+data[i].nama+' | '+data[i].nik+'</option>';
+               }
+               $('#id_pihak_kedua').html(html);
               },
+              error:function(response){
+                  Swal.fire({
+                    icon: "error",
+                    title: 'Opps!',
+                    button:"Oke",
+                    text: "Gagal Mengambil Data Pihak Kedua"
+                  }).then(function(){
+                    location.reload();
+                  })
+              }
             });
 }
 

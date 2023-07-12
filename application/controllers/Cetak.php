@@ -33,5 +33,13 @@ class Cetak extends CI_Controller {
 		$data['id']=$id;
 		$this->load->view('cetak/single_label',$data);
 	}
+	public function mutasi($id_mutasi){
+		$param=array(
+			'id_mutasi'=>$id_mutasi
+		);
+		$data['mutasi']=$this->Global_model->get_by_id('mutasi',$param)->row();
+		$data['mutasi_inventaris']=$this->Global_model->getInventarisMutasi($id_mutasi)->result();
+		$this->load->view('cetak/mutasi',$data);
+	}
 
 }

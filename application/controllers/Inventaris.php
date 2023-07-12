@@ -2,9 +2,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Inventaris extends CI_Controller {
-	public function index()
+	public function pilih_kantor()
 	{
-		$data['title']="Daftar Inventaris";
+		$data['title']="Pilih Kantor";
 		$data['kantor']=$this->Global_model->get_all('office')->result();
 		$this->load->view('inventaris/pilih',$data);
 	}
@@ -18,36 +18,67 @@ class Inventaris extends CI_Controller {
 		$data['kantor']=$this->Global_model->get_all('office')->result();
 		$this->load->view('inventaris/tambah',$data);
 	}
-	public function dulu(){
-		$data['title']="Daftar Inventaris";
+	public function mutasi(){
 		$param=array(
-			'deleted'=>0
+			'inventaris.status'=>1
 		);
-		$search_param=array();
-		if($master_barang_id=$this->input->get('master_barang_id')){
-			$search_param['master_barang_id']=$master_barang_id;
-		}
-		
-		if($y=$this->input->get('y')){
-			$search_param['y']=$y;
-		}
-		if($m=$this->input->get('m')){
-			$search_param['m']=$m;
-		}
-		if($d=$this->input->get('d')){
-			$search_param['d']=$d;
-		}
-		if($of_id=$this->input->get('of_id')){
-			$search_param['barang.of_id']=$of_id;
-		}
-		if($sub_id=$this->input->get('sub_id')){
-			$search_param['barang.sub_id']=$sub_id;
-		}
-		$data['data']=$this->Global_model->inventaris($search_param)->result();
-		$data['barang']=$this->Global_model->get_by_id('master_barang',$param)->result();
-		$data['kantor']=$this->Global_model->get_all('office')->result();
+		$data['inventaris']=$this->Global_model->inventaris($param)->result();
 		$data['sub_kantor']=$this->Global_model->get_all('sub_office')->result();
-		$this->load->view('inventaris/index',$data);
+		$data['kantor']=$this->Global_model->get_all('office')->result();
+		$this->load->view('inventaris/mutasi',$data);
+	}
+	public function load_inventaris(){
+		$of_id=$this->input->post('of_id');
+		$sub_id=$this->input->post('sub_id');
+		if($of_id==1){
+			$search_param=array(
+			'inventaris.of_id'=>$of_id,
+			'inventaris.sub_id'=>$sub_id
+		);
+		}else{
+			$search_param=array(
+			'inventaris.of_id'=>$of_id
+		);
+		}
+		$data=$this->Global_model->inventaris($search_param)->result();
+		return $this->output
+					->set_content_type('application/json')
+					->set_status_header(200)
+					->set_output(json_encode(array(
+							'status' => true,
+							'messages' => 'Success!',
+							'data'=>$data
+					)));
+	}
+	public function get_employee(){
+		$where=array();
+		$off_id=$this->input->post('off_id');
+		if($off_id){
+			$where['employee.off_id']=$off_id;
+		}
+		$dept_id=$this->input->post('dept_id');
+		if($dept_id){
+			$where['employee.dept_id']=$dept_id;
+		}
+		$subdept_id=$this->input->post('subdept_id');
+		if($subdept_id){
+			$where['employee.subdept_id']=$subdept_id;
+		}
+		$occ_id=$this->input->post('occ_id');
+		if($occ_id){
+			$where['employee.occ_id']=$occ_id;
+		}
+		$where['ishapus']=0;
+		$where['ispensiun']=null;
+		$data=getEmployeeSimpeg($where)->result();
+		return $this->output
+					->set_content_type('application/json')
+					->set_status_header(200)
+					->set_output(json_encode(array(
+							'status' => true,
+							'messages' => 'Success!',
+							'data'=>$data
+					)));
 	}
 	public function result($of_id){
 
@@ -77,6 +108,107 @@ class Inventaris extends CI_Controller {
 		$data['sub_kantor']=$this->Global_model->get_all('sub_office')->result();
 		$data['history']=$this->Global_model->get_history($id)->result();
 		$this->load->view('inventaris/detail',$data);
+	}
+	public function insert_mutasi(){
+		$of_id_penyerah=$this->input->post('of_id_penyerah');
+		$sub_id_penyerah=$this->input->post('sub_id_penyerah');
+		$of_id_penerima=$this->input->post('of_id_penerima');
+		$sub_id_penerima=$this->input->post('sub_id_penerima');
+		$nomor=$this->input->post('nomor');
+		$tanggal=$this->input->post('tanggal');
+		$id_penyerah=$this->input->post('id_penyerah');
+		$id_penerima=$this->input->post('id_penerima');
+		$id_kadiv_umum=$this->input->post('id_kadiv_umum');
+		$item=$this->input->post('item');
+		if($of_id_penyerah==''){
+			echo "<script>alert('GAGAL. Kantor Asal Barang belum di pilih !'); window.history.go(-1);</script>";
+			return;
+		}
+		if($of_id_penyerah==1 && $sub_id_penyerah==''){
+			echo "<script>alert('GAGAL. SUB Kantor asal barang Belum di pilih !'); window.history.go(-1);</script>";
+			return;
+		}
+		if($of_id_penerima==''){
+			echo "<script>alert('GAGAL. Kantor Penerima Barang belum di pilih !'); window.history.go(-1);</script>";
+			return;
+		}
+		if($of_id_penerima==1 && $sub_id_penerima==''){
+			echo "<script>alert('GAGAL. SUB Kantor penerima barang Belum di pilih !'); window.history.go(-1);</script>";
+			return;
+		}
+		if($id_penyerah==''){
+			echo "<script>alert('GAGAL. Yang Menyerahkan Barang belum di pilih !'); window.history.go(-1);</script>";
+			return;
+		}
+		if($id_penerima==''){
+			echo "<script>alert('GAGAL. Yang Menerima Barang belum di pilih !'); window.history.go(-1);</script>";
+			return;
+		}
+		if($of_id_penyerah==$of_id_penerima){
+			if($sub_id_penerima==$sub_id_penyerah){
+			echo "<script>alert('GAGAL. Asal Barang dan Tujuan merupakan kantor yang sama !'); window.history.go(-1);</script>";
+			return;
+			}
+		}
+		if(sizeof($item)==0){
+			echo "<script>alert('GAGAL. Pilih Minimal 1 barang untuk di mutasikan !'); window.history.go(-1);</script>";
+			return;
+		}
+
+		//fill penerima
+		$penerima_detail=getEmployeeSimpeg(['pgw_id'=>$id_penerima])->row();
+		$nama_penerima=$penerima_detail->nama;
+		$nik_penerima=$penerima_detail->nik;
+		if($of_id_penerima==1){
+			$jabatan_penerima=$penerima_detail->jabatan.' '.$penerima_detail->sub_dep;
+		}else{
+			$jabatan_penerima=$penerima_detail->jabatan.' '.$penerima_detail->office;
+		}
+
+		//fill penyerah
+		$penyerah_detail=getEmployeeSimpeg(['pgw_id'=>$id_penyerah])->row();
+		$nama_penyerah=$penyerah_detail->nama;
+		$nik_penyerah=$penyerah_detail->nik;
+		if($of_id_penyerah==1){
+			$jabatan_penyerah=$penyerah_detail->jabatan.' '.$penyerah_detail->sub_dep;
+		}else{
+			$jabatan_penyerah=$penyerah_detail->jabatan.' '.$penyerah_detail->office;
+		}
+		//fill kadiv umum
+		$kadiv_umum_detail=getEmployeeSimpeg(['pgw_id'=>$id_kadiv_umum])->row();
+		$nama_kadiv_umum=$kadiv_umum_detail->nama;
+		$nik_kadiv_umum=$kadiv_umum_detail->nik;
+
+		//fill asal kantor
+		if($of_id_penyerah==1){
+			$asal_kantor=detailSubOffice($sub_id_penyerah)->alias;
+		}else{
+			$asal_kantor=detailOfid($of_id_penyerah)->nama;
+		}
+		$data=array(
+			'nomor'=>$nomor,
+			'asal_kantor'=>$asal_kantor,
+			'nama_penerima'=>$nama_penerima,
+			'nik_penerima'=>$nik_penerima,
+			'jabatan_penerima'=>$jabatan_penerima,
+			'nama_penyerah'=>$nama_penyerah,
+			'nik_penyerah'=>$nik_penyerah,
+			'jabatan_penyerah'=>$jabatan_penyerah,
+			'nama_kadiv_umum'=>$nama_kadiv_umum,
+			'nik_kadiv_umum'=>$nik_kadiv_umum,
+			'of_id_penyerah'=>$of_id_penyerah,
+			'sub_id_penyerah'=>$sub_id_penyerah,
+			'of_id_penerima'=>$of_id_penerima,
+			'sub_id_penerima'=>$sub_id_penerima,
+			'tanggal'=>$tanggal
+		);
+		$mutasi_id=$this->Global_model->createMutasi($data,$item);
+		if(!$mutasi_id){
+			echo "<script>alert('GAGAL. kesalahan sistem.'); window.history.go(-1);</script>";
+			return;
+		}
+		$this->session->set_flashdata('status', 'success');
+		redirect('laporan/detail_mutasi/'.$mutasi_id);
 	}
 	public function sukses($id){
 		$data['title']="Sukses Tambah Inventaris";

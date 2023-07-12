@@ -253,6 +253,18 @@ if (!function_exists('getNomorBA')) {
         }
     }
 }
+if (!function_exists('getNomorMutasi')) {
+    function getNomorMutasi() {
+        $ci =& get_instance();
+        $yearNow=date('Y');
+        $nomor=$ci->db->query("SELECT max(nomor) as nomor from mutasi where YEAR(tanggal)=$yearNow")->row()->nomor;
+        if($nomor==0){
+            return 1;
+        }else{
+            return $nomor+=1;
+        }
+    }
+}
 if (!function_exists('infoPerusahaan')) {
     function infoPerusahaan() {
         $ci =& get_instance();
@@ -308,6 +320,12 @@ if (!function_exists('getDetailBA')) {
         return $ci->db->query("SELECT * from berita_acara where id=$id")->row();
     }
 }
+if (!function_exists('getDetailMutasi')) {
+    function getDetailMutasi($id) {
+        $ci =& get_instance();
+        return $ci->db->query("SELECT * from mutasi where id_mutasi=$id")->row();
+    }
+}
 if (!function_exists('formatNomor')) {
     function formatNomor($no) {
        return sprintf("%03s", $no);
@@ -324,6 +342,19 @@ if (!function_exists('generateNomorBA')) {
        return $nomor;
     }
 }
+if (!function_exists('generateNomorMutasi')) {
+    function generateNomorMutasi($id_mutasi) {
+       $data_mutasi=@getDetailMutasi($id_mutasi);
+       $awal='690/';
+       $tengah=formatNomor(@$data_mutasi->nomor).'/';
+       $tengah2=$data_mutasi->asal_kantor.'/';
+       $akhir='BAMB/';
+       $akhir2=bulanRomawi(@$data_mutasi->tanggal).'/';
+       $akhir3= date('Y', strtotime(@$data_mutasi->tanggal));
+       $nomor=$awal.$tengah.$tengah2.$akhir.$akhir2.$akhir3;
+       return $nomor;
+    }
+}
 if (!function_exists('limitText')) {
     function limitText($text) {
         $limit=25;
@@ -333,6 +364,26 @@ if (!function_exists('limitText')) {
             $text = substr($text,0,$limit) . '...';
             return $text;
         }
+    }
+}
+if (!function_exists('bulanRomawi')) {
+    function bulanRomawi($date) {
+    $month = date('m', strtotime($date));
+     $romawi = array(
+        '01' => 'I',
+        '02' => 'II',
+        '03' => 'III',
+        '04' => 'IV',
+        '05' => 'V',
+        '06' => 'VI',
+        '07' => 'VII',
+        '08' => 'VIII',
+        '09' => 'IX',
+        '10' => 'X',
+        '11' => 'XI',
+        '12' => 'XII'
+        );
+        return $romawi[$month];
     }
 }
 if (!function_exists('terbilangAngka')) {
@@ -371,5 +422,26 @@ if (!function_exists('terbilangAngka')) {
         '31' => 'TIGA PULUH SATU',
         );
         return $angka[$day];
+    }
+}
+if (!function_exists('getEmployeeSimpeg')) {
+    function getEmployeeSimpeg($where) {
+        $ci =& get_instance();
+        $db2 = $ci->load->database('database2', TRUE);
+        $db2->select('pgw_id as id, pgw_nama as nama,pgw_nup as nik,employee.off_id, occ_name as jabatan,subdept_name as sub_dep, dept_name as dept, off_name as office');
+        $db2->join('occupation','employee.occ_id=occupation.occ_id');
+        $db2->join('departmentsub','employee.subdept_id=departmentsub.subdept_id');
+        $db2->join('department','employee.dept_id=department.dept_id');
+        $db2->join('office','employee.off_id=office.off_id');
+        $db2->order_by("occupation.urut", "asc");
+        $db2->from('employee');
+        $db2->where($where);
+        return $db2->get();
+    }
+}
+if (!function_exists('countJumlahBarangMutasi')) {
+    function countJumlahBarangMutasi($id_mutasi) {
+        $ci =& get_instance();
+        return $ci->db->query("SELECT count(id_mutasi) as total from mutasi_inventaris where id=$id_mutasi")->row()->total;
     }
 }

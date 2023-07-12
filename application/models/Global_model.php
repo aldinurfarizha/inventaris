@@ -47,7 +47,6 @@ class Global_model extends CI_Model{
       $this->db->join('sub_office','sub_office.sub_id=inventaris.sub_id', 'left');
       $this->db->where($where);
       return $this->db->get();
-
     }
     function master_perkiraan(){
       $this->db->select('master_perkiraan.*,master_perkiraan_dasar.*');
@@ -117,6 +116,39 @@ class Global_model extends CI_Model{
       $this->db->where(['berita_acara_inventaris.id_berita_acara'=>$id_berita_acara]);
       $this->db->group_by('inventaris.id_barang'); 
       return $this->db->get();
+    }
+    function getInventarisMutasi($id_mutasi){
+      $this->db->select('mutasi_inventaris.*, inventaris.*, count(inventaris.id_barang)as total,master_barang.*');
+      $this->db->from('mutasi_inventaris');
+      $this->db->join('inventaris', 'mutasi_inventaris.id_inventaris = inventaris.id_inventaris');
+      $this->db->join('master_barang','master_barang.id_barang=inventaris.id_barang', 'left');
+      $this->db->where(['mutasi_inventaris.id_mutasi'=>$id_mutasi]);
+      return $this->db->get();
+    }
+    function createMutasi($data,$item_barang){
+      $this->db->insert('mutasi', $data) ?   $id_mutasi=$this->db->insert_id()  :   $id_mutasi=false;
+     if($id_mutasi){
+      foreach($item_barang as $barang):
+        $mutasi_inventaris=array(
+          'id_mutasi'=>$id_mutasi,
+          'id_inventaris'=>$barang
+        );
+        $this->db->insert('mutasi_inventaris',$mutasi_inventaris);
+
+        //pemindahan kantor pada data inventaris
+        $new_office=array(
+          'of_id'=>$data['of_id_penerima'],
+          'sub_id'=>$data['sub_id_penerima']
+        );
+        $where=array(
+          'id_inventaris'=>$barang
+        );
+        $this->db->set($new_office);
+        $this->db->where($where);
+        $this->db->update('inventaris');
+      endforeach;
+     }
+     return $id_mutasi;
     }
 }
 ?>
