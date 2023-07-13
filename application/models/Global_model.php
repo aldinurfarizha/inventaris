@@ -125,13 +125,34 @@ class Global_model extends CI_Model{
       $this->db->where(['mutasi_inventaris.id_mutasi'=>$id_mutasi]);
       return $this->db->get();
     }
+    function getKIRBarang($id_kartu_inventaris){
+      $this->db->select('kartu_inventaris_barang.*, inventaris.*,master_barang.*');
+      $this->db->from('kartu_inventaris_barang');
+      $this->db->join('inventaris', 'kartu_inventaris_barang.id_inventaris = inventaris.id_inventaris');
+      $this->db->join('master_barang','master_barang.id_barang=inventaris.id_barang', 'left');
+      $this->db->where(['kartu_inventaris_barang.id_kartu_inventaris'=>$id_kartu_inventaris]);
+      return $this->db->get();
+    }
     function createMutasi($data,$item_barang){
       $this->db->insert('mutasi', $data) ?   $id_mutasi=$this->db->insert_id()  :   $id_mutasi=false;
      if($id_mutasi){
       foreach($item_barang as $barang):
+        $detail_barang=get_detail_barang($barang);
+        if($detail_barang->kondisi_baik){
+          $kondisi="Baik";
+        }{
+          $kondisi="Rusak";
+        }
+        if($detail_barang->pernah_servis){
+          $servis="Pernah Servis";
+        }else{
+          $servis="Blm Pernah Service";
+        }
+        $kondisi_terakhir=$kondisi.', '.$servis;
         $mutasi_inventaris=array(
           'id_mutasi'=>$id_mutasi,
-          'id_inventaris'=>$barang
+          'id_inventaris'=>$barang,
+          'kondisi_terakhir'=>$kondisi_terakhir
         );
         $this->db->insert('mutasi_inventaris',$mutasi_inventaris);
 
@@ -149,6 +170,33 @@ class Global_model extends CI_Model{
       endforeach;
      }
      return $id_mutasi;
+    }
+    function createKIR($data){
+      $this->db->insert('kartu_inventaris', $data) ?   $id_kartu_inventaris=$this->db->insert_id()  :   $id_kartu_inventaris=false;
+     if($id_kartu_inventaris){
+      $inventaris=getInventarisByIdRuanganKir($data['id_ruangan_kir'])->result();
+      foreach($inventaris as $inven):
+      
+        if($inven->kondisi_baik){
+          $kondisi="Baik";
+        }{
+          $kondisi="Rusak";
+        }
+        if($inven->pernah_servis){
+          $servis="Pernah Servis";
+        }else{
+          $servis="Blm Pernah Service";
+        }
+        $kondisi_terakhir=$kondisi.', '.$servis;
+        $data=array(
+          'id_kartu_inventaris'=>$id_kartu_inventaris,
+          'id_inventaris'=>$inven->id_inventaris,
+          'kondisi_terakhir'=>$kondisi_terakhir
+        );
+        $this->db->insert('kartu_inventaris_barang',$data);
+      endforeach;
+     }
+     return $id_kartu_inventaris;
     }
 }
 ?>

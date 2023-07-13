@@ -17,6 +17,43 @@ class Laporan extends CI_Controller {
 		$data['data']=$this->Global_model->get_all('mutasi')->result();
 		$this->load->view('laporan/mutasi',$data);
 	}
+	public function kartu_inventaris(){
+		$data['title']="Laporan Kartu inventaris";
+		$data['kantor']=$this->Global_model->get_all('office')->result();
+		$data['sub_kantor']=$this->Global_model->get_all('sub_office')->result();
+		$this->load->view('laporan/kartu_inventaris',$data);
+	}
+	public function kartu_inventaris_pusat(){
+		$data['title']="Laporan Kartu inventaris";
+		$data['sub_kantor']=$this->Global_model->get_all('sub_office')->result();
+		$this->load->view('laporan/kartu_inventaris_pusat',$data);
+	}
+	public function kartu_inventaris_list($of_id,$sub_id=null){
+		$data['title']="Master Ruangan KIR";
+		$data['of_id']=$of_id;
+		$data['sub_id']=$sub_id;
+		$data['data']=getRuanganKIR($of_id,$sub_id);
+		$this->load->view('laporan/kartu_inventaris_list',$data);
+	}
+	public function kartu_inventaris_detail($id_ruangan_kir,$of_id=null,$sub_id=null){
+		$data['title']="Data KIR";
+		$param=array(
+			'id_ruangan_kir'=>$id_ruangan_kir
+		);
+		$data['id_ruangan_kir']=$id_ruangan_kir;
+		$data['of_id']=$of_id;
+		$data['sub_id']=$sub_id;
+		$data['data']=$this->Global_model->get_by_id('kartu_inventaris',$param)->result();
+		$this->load->view('laporan/kartu_inventaris_detail',$data);
+	}
+	public function detail_kir($id_kartu_inventaris){
+			$param=array(
+			'id_kartu_inventaris'=>$id_kartu_inventaris
+		);
+		$data['kartu_inventaris']=$this->Global_model->get_by_id('kartu_inventaris',$param)->row();
+		$data['kartu_inventaris_barang']=$this->Global_model->getKIRBarang($id_kartu_inventaris)->result();
+		$this->load->view('laporan/detail_kir',$data);
+	}
 	public function tambah_berita_acara(){
 		$search_param=array();
 		$data['info_perusahaan']=infoPerusahaan();
@@ -25,6 +62,67 @@ class Laporan extends CI_Controller {
 		$data['kantor']=$this->Global_model->get_all('office')->result();
 		$data['data']=$this->Global_model->inventaris($search_param)->result();
 		$this->load->view('laporan/tambah_ba',$data);
+	}
+	public function insert_kir(){
+		$of_id=$this->input->post('of_id');
+		$sub_id=$this->input->post('sub_id');
+		$id_ruangan_kir=$this->input->post('id_ruangan_kir');
+		$id_penanggung_jawab=$this->input->post('id_penanggung_jawab');
+		$id_kasub_aset=$this->input->post('id_kasub_aset');
+		$id_kadiv_umum=$this->input->post('id_kadiv_umum');
+		if($of_id==''){
+			echo "<script>alert('GAGAL. Kantor Asal Barang belum di pilih !'); window.history.go(-1);</script>";
+			return;
+		}
+		if($of_id==1 && $sub_id==''){
+			echo "<script>alert('GAGAL. SUB Kantor asal barang Belum di pilih !'); window.history.go(-1);</script>";
+			return;
+		}
+		if($id_penanggung_jawab==''){
+			echo "<script>alert('GAGAL. Penanggung jawab belum di pilih !'); window.history.go(-1);</script>";
+			return;
+		}
+		if($id_kasub_aset==''){
+			echo "<script>alert('GAGAL. Kasub Aset belum di pilih !'); window.history.go(-1);</script>";
+			return;
+		}
+		if($id_kadiv_umum==''){
+			echo "<script>alert('GAGAL. Kadiv Umum belum di pilih !'); window.history.go(-1);</script>";
+			return;
+		}
+
+		$kadiv_umum_detail=getEmployeeSimpeg(['pgw_id'=>$id_kadiv_umum])->row();
+		$nama_kadiv_umum=$kadiv_umum_detail->nama;
+		$nik_kadiv_umum=$kadiv_umum_detail->nik;
+
+		$kasub_aset_detail=getEmployeeSimpeg(['pgw_id'=>$id_kasub_aset])->row();
+		$nama_kasub_aset=$kasub_aset_detail->nama;
+		$nik_kasub_aset=$kasub_aset_detail->nik;
+
+		$penanggung_jawab_detail=getEmployeeSimpeg(['pgw_id'=>$id_penanggung_jawab])->row();
+		$nama_penanggung_jawab=$penanggung_jawab_detail->nama;
+		$nik_penanggung_jawab=$penanggung_jawab_detail->nik;
+		$jabatan_penanggung_jawab=$penanggung_jawab_detail->jabatan;
+		$data=array(
+			'id_ruangan_kir'=>$id_ruangan_kir,
+			'of_id'=>$of_id,
+			'sub_id'=>$sub_id,
+			'nama_kadiv_umum'=>$nama_kadiv_umum,
+			'nik_kadiv_umum'=>$nik_kadiv_umum,
+			'nama_kasub_aset'=>$nama_kasub_aset,
+			'nik_kasub_aset'=>$nik_kasub_aset,
+			'nama_penanggung_jawab'=>$nama_penanggung_jawab,
+			'jabatan_penanggung_jawab'=>$jabatan_penanggung_jawab,
+			'nik_penanggung_jawab'=>$nik_penanggung_jawab,
+			'tanggal'=>date('Y-m-d')
+		);
+		$kartu_inventaris_id=$this->Global_model->createKIR($data);
+		if(!$kartu_inventaris_id){
+			echo "<script>alert('GAGAL. kesalahan sistem.'); window.history.go(-1);</script>";
+			return;
+		}
+		$this->session->set_flashdata('status', 'success');
+		redirect('laporan/detail_kir/'.$kartu_inventaris_id);
 	}
 	public function insert_ba(){
 		$nomor=$this->input->post('nomor');

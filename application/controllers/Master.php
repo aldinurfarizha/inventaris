@@ -33,6 +33,24 @@ class Master extends CI_Controller {
 		$data['data']=$this->Global_model->get_all('office')->result();
 		$this->load->view('master/kantor',$data);
 	}
+	public function ruangan_kir(){
+		$data['title']="Master Ruangan KIR";
+		$data['kantor']=$this->Global_model->get_all('office')->result();
+		$data['sub_kantor']=$this->Global_model->get_all('sub_office')->result();
+		$this->load->view('master/ruangan_kir',$data);
+	}
+	public function ruangan_kir_detail($of_id,$sub_id=null){
+		$data['title']="Master Ruangan KIR";
+		$data['of_id']=$of_id;
+		$data['sub_id']=$sub_id;
+		$data['data']=getRuanganKIR($of_id,$sub_id);
+		$this->load->view('master/ruangan_kir_detail',$data);
+	}
+	public function ruangan_kir_pusat(){
+		$data['title']="Master Ruangan KIR Pusat";
+		$data['sub_kantor']=$this->Global_model->get_all('sub_office')->result();
+		$this->load->view('master/ruangan_kir_pusat',$data);
+	}
 	public function sub_kantor()
 	{
         $data['title']="Sub Kantor";
@@ -52,6 +70,24 @@ class Master extends CI_Controller {
 			'nik'=>$nik,
 		);
 		$this->Global_model->insert('sub_office',$data);
+			return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode(array(
+                    'status' => true,
+                    'messages' => 'Success!'
+            )));
+	}
+	public function add_ruangan_kir(){
+		$of_id=$this->input->post('of_id');
+		$sub_id=$this->input->post('sub_id');
+		$nama_ruangan=$this->input->post('nama_ruangan');
+		$data=array(
+			'of_id'=>$of_id,
+			'sub_id'=>$sub_id,
+			'nama_ruangan'=>$nama_ruangan
+		);
+		$this->Global_model->insert('master_ruangan_kir',$data);
 			return $this->output
             ->set_content_type('application/json')
             ->set_status_header(200)
@@ -293,6 +329,59 @@ class Master extends CI_Controller {
             ->set_output(json_encode(array(
                     'status' => False,
                     'messages' => 'Hapus Gagal'
+            )));
+		}
+		}
+		public function delete_ruangan_kir(){
+		$id_ruangan_kir=$this->input->post('id_ruangan_kir');
+		$where=array(
+			'id_ruangan_kir'=>$id_ruangan_kir
+		);
+		$data=array(
+			'is_deleted'=>1
+		);
+		if($this->Global_model->update('master_ruangan_kir', $where,$data)){
+			return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode(array(
+                    'status' => true,
+                    'messages' => 'Success!'
+            )));
+		}else{
+			return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(500)
+            ->set_output(json_encode(array(
+                    'status' => False,
+                    'messages' => 'Hapus Gagal'
+            )));
+		}
+		}
+		public function edit_ruangan_kir(){
+		$id_ruangan_kir=$this->input->post('id_ruangan_kir');
+		$nama_ruangan=$this->input->post('nama_ruangan_edit');
+		$where=array(
+			'id_ruangan_kir'=>$id_ruangan_kir
+		);
+		$data=array(
+			'nama_ruangan'=>$nama_ruangan
+		);
+		if($this->Global_model->update('master_ruangan_kir', $where,$data)){
+			return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode(array(
+                    'status' => true,
+                    'messages' => 'Success!'
+            )));
+		}else{
+			return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(500)
+            ->set_output(json_encode(array(
+                    'status' => False,
+                    'messages' => 'Edit Gagal'
             )));
 		}
 		}

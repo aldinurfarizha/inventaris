@@ -56,7 +56,7 @@
         }
         $barangs=$detail_barang->merk.' '.$detail_barang->tipe.' '.$detail_barang->spek;
         ?>
-        <p class="item">-<?=terbilangAngka($barang->total).' ('.$barang->total.') '.$barang->satuan.' '.$barangs.' (<b>'.$kondisi.', '.$service.'</b>)';?></p>
+        <p class="item">-<?=terbilangAngka($barang->total).' ('.$barang->total.') '.$barang->satuan.' '.$barangs.' (<b>'.$barang->kondisi_terakhir.'</b>)';?></p>
     <?php endforeach;?>
     <p style="margin-top: 30px;">Demikian Berita Acara ini dibuat dan bisa dipergunakan sebagaimana mestinya.</p>
     <table style="width: 100%; margin-top:75px">
@@ -100,5 +100,5 @@
 </body>
 </html>
 <script type="text/javascript">
-window.print();
+    window.print();
 </script>

@@ -85,6 +85,11 @@
                     <div data-i18n="Account">Barang</div>
                   </a>
                 </li>
+                <li class="menu-item <?php if($this->uri->segment('2')=='ruangan_kir' || $this->uri->segment('2')=='ruangan_kir_detail' || $this->uri->segment('2')=='ruangan_kir_pusat') { echo"active";}?>">
+                  <a href="<?=base_url('master/ruangan_kir')?>" class="menu-link">
+                    <div data-i18n="Account">Master R. KIR</div>
+                  </a>
+                </li>
                 <li class="menu-item <?php if($this->uri->segment('2')=='kantor') { echo"active";}?>">
                   <a href="<?=base_url('master/kantor')?>" class="menu-link">
                     <div data-i18n="Account">Kantor</div>
@@ -113,7 +118,7 @@
                     <div data-i18n="Basic">Kartu Inventaris</div>
                   </a>
                 </li>
-                 <li class="menu-item <?php if($this->uri->segment('2')=='mutasi') { echo"active";}?>">
+                 <li class="menu-item <?php if($this->uri->segment('2')=='mutasi' || $this->uri->segment('2')=='detail_mutasi') { echo"active";}?>">
                  <a href="<?=base_url('laporan/mutasi')?>" class="menu-link">
                     <div data-i18n="Basic">Mutasi Barang</div>
                   </a>

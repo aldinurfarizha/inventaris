@@ -229,6 +229,37 @@ if (!function_exists('count_invent')) {
         return $ci->db->query("SELECT COUNT(id_inventaris) as res FROM inventaris where status=1 and of_id=".$of_id)->row()->res;
     }
 }
+if (!function_exists('count_barang_kir')) {
+    function count_barang_kir($id_kartu_inventaris) {
+        $ci =& get_instance();
+        return $ci->db->query("SELECT COUNT(id_kartu_inventaris) as res FROM kartu_inventaris_barang where id_kartu_inventaris=$id_kartu_inventaris")->row()->res;
+    }
+}
+if (!function_exists('count_ruangan_kir')) {
+    function count_ruangan_kir($of_id,$sub_id=null) {
+        $ci =& get_instance();
+        if($of_id&&$sub_id){
+            return $ci->db->query("SELECT COUNT(id_ruangan_kir) as res FROM master_ruangan_kir  where of_id=$of_id and sub_id=$sub_id and is_deleted=0")->row()->res;
+        }else{
+            return $ci->db->query("SELECT COUNT(id_ruangan_kir) as res FROM master_ruangan_kir where of_id=$of_id and is_deleted=0")->row()->res;
+        }
+        
+    }
+}
+if (!function_exists('count_kartu_inventaris')) {
+    function count_kartu_inventaris($of_id=null,$sub_id=null,$id_ruang_kir=null) {
+        $ci =& get_instance();
+        if($id_ruang_kir){
+            return $ci->db->query("SELECT COUNT(id_kartu_inventaris) as res FROM kartu_inventaris where id_ruangan_kir=$id_ruang_kir")->row()->res;
+        }
+        if($of_id&&$sub_id){
+            return $ci->db->query("SELECT COUNT(id_kartu_inventaris) as res FROM kartu_inventaris  where of_id=$of_id and sub_id=$sub_id")->row()->res;
+        }else{
+            return $ci->db->query("SELECT COUNT(id_kartu_inventaris) as res FROM kartu_inventaris where of_id=$of_id")->row()->res;
+        }
+        
+    }
+}
 if (!function_exists('of_name')) {
     function of_name($of_id) {
         $ci =& get_instance();
@@ -320,10 +351,26 @@ if (!function_exists('getDetailBA')) {
         return $ci->db->query("SELECT * from berita_acara where id=$id")->row();
     }
 }
+if (!function_exists('getRuanganKIR')) {
+    function getRuanganKIR($of_id,$sub_id=null) {
+         $ci =& get_instance();
+        if($of_id&&$sub_id){
+            return $ci->db->query("SELECT * FROM master_ruangan_kir where of_id=$of_id and sub_id=$sub_id and is_deleted=0")->result();
+        }else{
+            return $ci->db->query("SELECT * FROM master_ruangan_kir where of_id=$of_id and is_deleted=0")->result();
+        }
+    }
+}
 if (!function_exists('getDetailMutasi')) {
     function getDetailMutasi($id) {
         $ci =& get_instance();
         return $ci->db->query("SELECT * from mutasi where id_mutasi=$id")->row();
+    }
+}
+if (!function_exists('getNamaRuanganKir')) {
+    function getNamaRuanganKir($id_ruangan_kir) {
+        $ci =& get_instance();
+        return $ci->db->query("SELECT * from master_ruangan_kir where id_ruangan_kir=$id_ruangan_kir")->row();
     }
 }
 if (!function_exists('formatNomor')) {
@@ -445,3 +492,16 @@ if (!function_exists('countJumlahBarangMutasi')) {
         return $ci->db->query("SELECT count(id_mutasi) as total from mutasi_inventaris where id=$id_mutasi")->row()->total;
     }
 }
+if (!function_exists('getRuanganKirByofidandsubid')) {
+    function getRuanganKirByofidandsubid($of_id,$sub_id=null) {
+        $ci =& get_instance();
+        return $ci->db->query("SELECT * from master_ruangan_kir where of_id=$of_id and sub_id=$sub_id");
+    }
+}
+if (!function_exists('getInventarisByIdRuanganKir')) {
+    function getInventarisByIdRuanganKir($id_ruangan_kir) {
+        $ci =& get_instance();
+        return $ci->db->query("SELECT * from inventaris where id_ruangan_kir=$id_ruangan_kir and status=1");
+    }
+}
+

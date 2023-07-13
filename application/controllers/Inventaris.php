@@ -8,6 +8,9 @@ class Inventaris extends CI_Controller {
 		$data['kantor']=$this->Global_model->get_all('office')->result();
 		$this->load->view('inventaris/pilih',$data);
 	}
+	public function penghapusan(){
+		$this->load->view('inventaris/penghapusan');
+	}
 	public function tambah(){
 		$data['title']="Tambah Inventaris";
 		$param=array(
@@ -71,6 +74,33 @@ class Inventaris extends CI_Controller {
 		$where['ishapus']=0;
 		$where['ispensiun']=null;
 		$data=getEmployeeSimpeg($where)->result();
+		return $this->output
+					->set_content_type('application/json')
+					->set_status_header(200)
+					->set_output(json_encode(array(
+							'status' => true,
+							'messages' => 'Success!',
+							'data'=>$data
+					)));
+	}
+	public function get_ruangan_kir(){
+		$of_id=$this->input->post('of_id');
+		if($of_id==1){
+			$of_id=$this->input->post('sub_id');
+		}else{
+			$sub_id=0;
+		}
+		
+		$data=getRuanganKirByofidandsubid($of_id,$sub_id)->result();
+		if(sizeof($data)==0){
+			return $this->output
+					->set_content_type('application/json')
+					->set_status_header(500)
+					->set_output(json_encode(array(
+							'status' => true,
+							'messages' => 'Tidak ada ruang kir pada kantor tersebut,silahkan tambahkan pada menu master ruangan kir',
+					)));
+		}
 		return $this->output
 					->set_content_type('application/json')
 					->set_status_header(200)

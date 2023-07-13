@@ -15,15 +15,15 @@
                               </div>
                             </div>
                   <?php } ?>
-                    <a href="<?=base_url('laporan/mutasi')?>" class="btn btn-secondary">
+                    <a href="<?=base_url('laporan/kartu_inventaris')?>" class="btn btn-secondary">
                       <i class="fa fa-arrow-alt-circle-left"></i> Kembali
                     </a>
                     <hr>
 
                   <div class="card h-100">
                     <div class="card-header d-flex align-items-center justify-content-between">
-                      <h5 class="card-title m-0 me-2">Detail Mutasi Barang Inventaris</h5>
-                      <a href="<?=base_url('cetak/mutasi/'.$mutasi->id_mutasi)?>" target="_blank" class="btn btn-warning">Cetak <i class="fa fa-print"></i></a>
+                      <h5 class="card-title m-0 me-2">Detail Kartu Inventaris</h5>
+                      <a href="<?=base_url('cetak/kir/'.$kartu_inventaris->id_kartu_inventaris)?>" target="_blank" class="btn btn-warning">Cetak <i class="fa fa-print"></i></a>
                     </div>
                     <div class="card-body">
                       <div class="row">
@@ -36,41 +36,20 @@
                             <br>
                             <table class="table table-striped">
                               <tr>
-                                <td>Nomor</td>
-                                <td><?=generateNomorMutasi($mutasi->id_mutasi)?></td>
-                              </tr>
-                              <tr>
                                 <td>Waktu dibuat</td>
-                                <td><?=$mutasi->tanggal?></td>
+                                <td><?=$kartu_inventaris->tanggal?></td>
                               </tr>
                               <tr>
-                                <td>Yang Menyerahkan</td>
-                                <td><?=$mutasi->nama_penyerah.' | '.$mutasi->nik_penyerah.' | '.$mutasi->jabatan_penyerah?></td>
+                                <td>Yang Bertanggung Jawab</td>
+                                <td><?=$kartu_inventaris->nama_penanggung_jawab.' | '.$kartu_inventaris->nik_penanggung_jawab.' | '.$kartu_inventaris->jabatan_penanggung_jawab?></td>
                               </tr>
                               <tr>
-                                <td>Yang Menerima</td>
-                                <td><?=$mutasi->nama_penerima.' | '.$mutasi->nik_penerima.' | '.$mutasi->jabatan_penerima?></td>
+                                <td>Kepala Sub Divisi Logistik</td>
+                                <td><?=$kartu_inventaris->nama_kasub_aset.' | '.$kartu_inventaris->nik_kasub_aset?></td>
                               </tr>
                               <tr>
                                 <td>Kepala Divisi Umum</td>
-                                <td><?=$mutasi->nama_kadiv_umum.' | '.$mutasi->nik_kadiv_umum?></td>
-                              </tr>
-                                <tr>
-                                <td>Asal -> Tujuan</td>
-                                <td><?php
-                                    if($mutasi->of_id_penyerah==1){
-                                      $asal=detailOfid($mutasi->of_id_penyerah)->nama.' '.detailSubOffice($mutasi->sub_id_penyerah)->nama;
-                                    }else{
-                                      $asal=detailOfid($mutasi->of_id_penyerah)->nama;
-                                    }
-                                    if($mutasi->of_id_penerima==1){
-                                      $tujuan=detailOfid($mutasi->of_id_penerima)->nama.' '.detailSubOffice($mutasi->sub_id_penerima)->nama;
-                                    }else{
-                                      $tujuan=detailOfid($mutasi->of_id_penerima)->nama;
-                                    }
-                                    echo $asal.' -> '.$tujuan;
-                                    ?>
-                                </td>
+                                <td><?=$kartu_inventaris->nama_kadiv_umum.' | '.$kartu_inventaris->nik_kadiv_umum?></td>
                               </tr>
                             </table>
                           </div>
@@ -87,7 +66,6 @@
                               <thead>
                               <tr>
                                 <td>No.</td>
-                                <td>Jumlah</td>
                                 <td>Barang</td>
                                 <td>Kondisi</td>
                               </tr>
@@ -95,13 +73,12 @@
                               <tbody>
                                 <?php 
                                 $no=1;
-                                foreach($mutasi_inventaris as $barang):
+                                foreach($kartu_inventaris_barang as $barang):
                                 $detail_barang=get_detail_barang($barang->id_inventaris);
                                 $barangs=$detail_barang->merk.' '.$detail_barang->tipe.' '.$detail_barang->spek;
                                 ?>
                                 <tr>
                                   <td><?=$no?>.</td>
-                                  <td><span class="badge bg-secondary"><?=terbilangAngka($barang->total).' ('.$barang->total.') '.$barang->satuan?> </span></td>
                                   <td><?=$barangs?></td>
                                   <td><?=$barang->kondisi_terakhir?></td>
                                 </tr>
