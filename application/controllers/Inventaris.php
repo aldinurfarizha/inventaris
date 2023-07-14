@@ -215,6 +215,13 @@ class Inventaris extends CI_Controller {
 		}else{
 			$asal_kantor=detailOfid($of_id_penyerah)->nama;
 		}
+
+		if($of_id_penyerah==1){
+			$sub_id_penyerah=0;
+		}
+		if($of_id_penerima==1){
+			$sub_id_penerima=0;
+		}
 		$data=array(
 			'nomor'=>$nomor,
 			'asal_kantor'=>$asal_kantor,
@@ -362,6 +369,10 @@ class Inventaris extends CI_Controller {
 		$keterangan=$this->input->post('keterangan');
 		$admin=$this->input->post('admin');
 		$status=$this->input->post('status');
+		$id_ruangan_kir=$this->input->post('id_ruangan_kir');
+		if($of_id==1){
+			$sub_id=0;
+		}
 		$data=array(
 			'id_barang'=>$id_barang,
 			'of_id'=>$of_id,
@@ -373,6 +384,7 @@ class Inventaris extends CI_Controller {
 			'keterangan'=>$keterangan,
 			'admin'=>$admin,
 			'status'=>$status,
+			'id_ruangan_kir'=>$id_ruangan_kir,
 			'last_update'=>$now
 		);
 		if($this->Global_model->insert('inventaris',$data)){

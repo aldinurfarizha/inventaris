@@ -176,10 +176,9 @@ class Global_model extends CI_Model{
      if($id_kartu_inventaris){
       $inventaris=getInventarisByIdRuanganKir($data['id_ruangan_kir'])->result();
       foreach($inventaris as $inven):
-      
-        if($inven->kondisi_baik){
+       if($inven->kondisi_baik){
           $kondisi="Baik";
-        }{
+        }else{
           $kondisi="Rusak";
         }
         if($inven->pernah_servis){

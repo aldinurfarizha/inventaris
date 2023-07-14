@@ -10,7 +10,7 @@
                     <div class="alert alert-success d-flex" role="alert">
                               <span class="badge badge-center rounded-pill bg-success border-label-success p-3 me-2"><i class="fa fa-check-circle"></i></span>
                               <div class="d-flex flex-column ps-1">
-                                <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">Berhasil Membuat Mutasi Barang</h6>
+                                <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">Berhasil Membuat Kartu Inventaris</h6>
                                 <span>Silahkan Cetak!</span>
                               </div>
                             </div>

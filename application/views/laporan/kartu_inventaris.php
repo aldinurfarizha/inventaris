@@ -132,7 +132,7 @@
     var valueSelected = this.value;
     if(valueSelected!==''){
       getPenanggungJawab();
-      getRuanganKIR();
+      getRuanganKir();
     }
 });
 

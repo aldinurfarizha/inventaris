@@ -41,5 +41,13 @@ class Cetak extends CI_Controller {
 		$data['mutasi_inventaris']=$this->Global_model->getInventarisMutasi($id_mutasi)->result();
 		$this->load->view('cetak/mutasi',$data);
 	}
+	public function kir($id_kartu_inventaris){
+		$param=array(
+			'id_kartu_inventaris'=>$id_kartu_inventaris
+		);
+		$data['kartu_inventaris']=$this->Global_model->get_by_id('kartu_inventaris',$param)->row();
+		$data['kartu_inventaris_barang']=$this->Global_model->getKIRBarang($id_kartu_inventaris)->result();
+		$this->load->view('cetak/kir',$data);
+	}
 
 }

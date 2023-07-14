@@ -13,6 +13,9 @@ class Laporan extends CI_Controller {
 		$data['data']=$this->Global_model->get_all('berita_acara')->result();
 		$this->load->view('laporan/ba',$data);
 	}
+	public function barang(){
+		$this->load->view('laporan/barang');
+	}
 	public function mutasi(){
 		$data['data']=$this->Global_model->get_all('mutasi')->result();
 		$this->load->view('laporan/mutasi',$data);
@@ -47,7 +50,7 @@ class Laporan extends CI_Controller {
 		$this->load->view('laporan/kartu_inventaris_detail',$data);
 	}
 	public function detail_kir($id_kartu_inventaris){
-			$param=array(
+		$param=array(
 			'id_kartu_inventaris'=>$id_kartu_inventaris
 		);
 		$data['kartu_inventaris']=$this->Global_model->get_by_id('kartu_inventaris',$param)->row();
@@ -103,6 +106,14 @@ class Laporan extends CI_Controller {
 		$nama_penanggung_jawab=$penanggung_jawab_detail->nama;
 		$nik_penanggung_jawab=$penanggung_jawab_detail->nik;
 		$jabatan_penanggung_jawab=$penanggung_jawab_detail->jabatan;
+
+		$direktur_detail=infoPerusahaan();
+		$nama_direktur=$direktur_detail->direktur;
+		$nik_dirut=$direktur_detail->nik_dirut;
+
+		if($of_id==1){
+			$sub_id=0;
+		}
 		$data=array(
 			'id_ruangan_kir'=>$id_ruangan_kir,
 			'of_id'=>$of_id,
@@ -114,6 +125,8 @@ class Laporan extends CI_Controller {
 			'nama_penanggung_jawab'=>$nama_penanggung_jawab,
 			'jabatan_penanggung_jawab'=>$jabatan_penanggung_jawab,
 			'nik_penanggung_jawab'=>$nik_penanggung_jawab,
+			'nama_direktur'=>$nama_direktur,
+			'nik_direktur'=>$nik_dirut,
 			'tanggal'=>date('Y-m-d')
 		);
 		$kartu_inventaris_id=$this->Global_model->createKIR($data);
@@ -161,7 +174,9 @@ class Laporan extends CI_Controller {
 		$pihak_kedua_detail=getEmployeeSimpeg(['pgw_id'=>$id_pihak_kedua])->row();
 		$nama_pihak_kedua=$pihak_kedua_detail->nama;
 		$nik_pihak_kedua=$pihak_kedua_detail->nik;
-
+		if($of_id==1){
+			$sub_id=0;
+		}
 		$berita_acara=array(
 			'nomor'=>$nomor,
 			'sub_div_rt_nama'=>$nama_kasub_rt,

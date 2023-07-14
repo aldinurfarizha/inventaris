@@ -42,6 +42,13 @@
                                       </select>
                                     </div>
                                     <div class="col-md-6">
+                                        <div class="form-group">
+                                          <label class="form-label">Ruangan KIR <div style="display:inline;" id="loading_ruangan_kir"></div></label>
+                                          <select name="id_ruangan_kir" class="form-control" id="id_ruangan_kir">
+                                          </select>
+                                        </div>
+                                      </div>
+                                    <div class="col-md-6">
                                       <label for="defaultFormControlInput" class="form-label">Tahun perolehan</label>
                                       <input type="number" class="form-control" placeholder="Misal :<?=date('Y')?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" name="y" id="y">
                                     </div>
@@ -105,19 +112,78 @@
     var valueSelected = this.value;
     if(valueSelected!=='1'){
       $('#sub_kantor_option').hide();
+      getRuanganKir();
     }else{
       $('#sub_kantor_option').show();
     }
 });
-$('#of_id_filter').on('change', function (e) {
+ $('#sub_id').on('change', function (e) {
     var optionSelected = $("option:selected", this);
     var valueSelected = this.value;
-    if(valueSelected!=='1'){
-      $('#sub_kantor_filter').hide();
-    }else{
-      $('#sub_kantor_filter').show();
+    if(valueSelected!==''){
+      getRuanganKir();
     }
 });
+ function loadingRuanganKIR(){
+  $('#loading_penanggung_jawab').html('<i class="fas fa-circle-notch fa-spin"></i>');
+}
+function UnloadingRuanganKIR(){
+  $('#loading_penanggung_jawab').html('');
+}
+function getRuanganKir(){
+let of_id=$('#of_id').val();
+var param;
+  if(of_id==1 || of_id=='1'){
+  param={
+      of_id:of_id,
+      sub_id:$('#sub_id').val()
+    }
+  }else{
+     param={
+      of_id:of_id,
+    }
+  }
+ $('#id_ruangan_kir').html('<option selected="true" value="">--Kosong--</option>');
+  $.ajax({
+              url: "<?= base_url('inventaris/get_ruangan_kir')?>",
+              type: "POST",
+              data:param, 
+              beforeSend(){
+                loadingRuanganKIR();
+              },
+              success:function(response){
+               UnloadingRuanganKIR();
+               var data=response['data'];
+               var html='';
+               html+='<option selected="true" value="">--Pilih--</option>';
+               for (var i = 0; i< response['data'].length; i++) {
+                 html+='<option value="'+data[i].id_ruangan_kir+'">'+data[i].nama_ruangan+'</option>';
+               }
+               $('#id_ruangan_kir').html(html);
+              },
+              error:function(response){
+                 Swal.fire({
+                    title: 'Belum ada Ruang KIR pada Kantor ini !',
+                    text: "Apakah anda ingin menambahkan ruang KIR sekarang",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Tidak',
+                    customClass: {
+                      confirmButton: 'btn btn-primary me-1',
+                      cancelButton: 'btn btn-label-secondary'
+                    },
+                    buttonsStyling: false
+                  }).then(function(result) {
+                    if (result.value) {
+                       location.href = "<?=base_url('master/ruangan_kir')?>";
+                    }
+                  });
+              }
+            });
+}
 function validation(){
     if($('#id_barang').find(":selected").val()==""){
         alertMessage("Barang belum di pilih !")
@@ -129,6 +195,10 @@ function validation(){
     }
     if($('#of_id').find(":selected").val()==1 && $('#sub_id').find(":selected").val()==""){
         alertMessage("Sub Kantor belum di pilih !")
+        return false;
+    }
+    if($('#id_ruangan_kir').find(":selected").val()==""){
+        alertMessage("Ruangan KIR belum di pilih !")
         return false;
     }
     if($('#y').val()==""){

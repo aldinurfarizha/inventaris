@@ -29,11 +29,11 @@
                       </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
-                    <tbody class="table-border-bottom-0">
                       <?php $no=1; foreach($data as $datar):?>
-                          <tr onclick="buka('<?=base_url('laporan/kartu_inventaris_detail_kartu/'.$datar->id_kartu_inventaris)?>')" style="cursor: pointer;">
+                          <tr onclick="buka('<?=base_url('laporan/detail_kir/'.$datar->id_kartu_inventaris)?>')" style="cursor: pointer;">
                           <th><?=$no?></th>
-                          <th><?=$datar->nama_ruangan?></th>
+                          <th><?=$datar->nama_penanggung_jawab?></th>
+                          <th><?=$datar->tanggal?></th>
                           <th class="text-center"><span class="badge badge-center rounded-pill bg-secondary"><?= count_barang_kir($datar->id_kartu_inventaris)?></span></th>
                         </tr>
                         <?php $no++; endforeach;?>
