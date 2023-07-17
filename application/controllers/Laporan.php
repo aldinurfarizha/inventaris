@@ -14,7 +14,10 @@ class Laporan extends CI_Controller {
 		$this->load->view('laporan/ba',$data);
 	}
 	public function barang(){
-		$this->load->view('laporan/barang');
+		$data['barang']=$this->Global_model->master_barang()->result();
+		$data['sub_kantor']=$this->Global_model->get_all('sub_office')->result();
+		$data['kantor']=$this->Global_model->get_all('office')->result();
+		$this->load->view('laporan/barang',$data);
 	}
 	public function mutasi(){
 		$data['data']=$this->Global_model->get_all('mutasi')->result();

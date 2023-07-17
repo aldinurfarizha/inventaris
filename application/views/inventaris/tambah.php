@@ -100,9 +100,9 @@
 <script src="<?=base_url()?>/assets/vendor/libs/select2/select2.js"></script>
 <script>
     $(document).ready(function(){
-   $("#id_barang").select2({
-       placeholder: "Ketik, untuk Cari dan pilih"
-   });
+      $("#id_barang").select2({
+          placeholder: "Ketik, untuk Cari dan pilih"
+      });
     });
   $( '#harga' ).mask('000.000.000.000', {reverse: true});
   $('#sub_kantor_option').hide();
@@ -125,10 +125,10 @@
     }
 });
  function loadingRuanganKIR(){
-  $('#loading_penanggung_jawab').html('<i class="fas fa-circle-notch fa-spin"></i>');
+  $('#loading_ruangan_kir').html('<i class="fas fa-circle-notch fa-spin"></i>');
 }
 function UnloadingRuanganKIR(){
-  $('#loading_penanggung_jawab').html('');
+  $('#loading_ruangan_kir').html('');
 }
 function getRuanganKir(){
 let of_id=$('#of_id').val();
@@ -162,6 +162,7 @@ var param;
                $('#id_ruangan_kir').html(html);
               },
               error:function(response){
+                UnloadingRuanganKIR();
                  Swal.fire({
                     title: 'Belum ada Ruang KIR pada Kantor ini !',
                     text: "Apakah anda ingin menambahkan ruang KIR sekarang",

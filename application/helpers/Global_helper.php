@@ -36,7 +36,6 @@ if(!function_exists('opt_satuan')){
 if(!function_exists('opt_bulan')){
     function opt_bulan(){
         $bulan=array(
-            '',
             'Januari',
             'Februari',
             'Maret',
