@@ -38,8 +38,9 @@ class Api extends CI_Controller  {
     }   
     public function detailInventaris(){
         $id=$this->input->post('id');
-        $data=get_detail_inventaris($id)->row();
-        if(count($data)==0){
+        $data=get_detail_barang($id);
+        $history_update=getHistoryUpdate($id)->result();
+        if($data==null){
             return $this->output
             ->set_content_type('application/json')
             ->set_status_header(500)
@@ -53,7 +54,8 @@ class Api extends CI_Controller  {
         ->set_status_header(200)
         ->set_output(json_encode(array(
                 'status' => true,
-                'data'=>$data
+                'data'=>$data,
+                'history_update'=>$history_update
         )));
     }
 }

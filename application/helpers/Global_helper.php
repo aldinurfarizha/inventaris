@@ -271,6 +271,12 @@ if (!function_exists('get_detail_barang')) {
         return $ci->Global_model->get_detail_inventaris($id)->row();
     }
 }
+if (!function_exists('getHistoryUpdate')) {
+    function getHistoryUpdate($id) {
+        $ci =& get_instance();
+        return $ci->db->query("SELECT * FROM history_update where id_inventaris=$id");
+    }
+}
 if (!function_exists('getNomorBA')) {
     function getNomorBA() {
         $ci =& get_instance();
