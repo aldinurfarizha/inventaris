@@ -249,7 +249,7 @@ class Global_model extends CI_Model{
       $data=$this->db->query("SELECT 
       (SELECT COUNT(id_inventaris) as total_inventaris FROM inventaris WHERE status = 1) as total_inventaris,
       (SELECT COUNT(id_inventaris) as total_perolehan FROM inventaris WHERE status = 1 AND y = $tahunini AND m = $bulanini) as total_perolehan,
-      (SELECT COUNT(id_penghapusan_inventaris) as total_penghapusan FROM penghapusan inner join penghapusan_inventaris ON penghapusan.id_penghapusan=penghapusan_inventaris.id_penghapusan WHERE month(tanggal)=7 and year(tanggal)=2023) as total_penghapusan;")->row();
+      (SELECT COUNT(id_penghapusan_inventaris) as total_penghapusan FROM penghapusan inner join penghapusan_inventaris ON penghapusan.id_penghapusan=penghapusan_inventaris.id_penghapusan WHERE month(tanggal)=$bulanini and year(tanggal)=$tahunini) as total_penghapusan;")->row();
       return $data;
     }
 }
