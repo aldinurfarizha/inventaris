@@ -243,5 +243,14 @@ class Global_model extends CI_Model{
      }
      return $id_kartu_inventaris;
     }
+    function dashboard(){
+      $bulanini=date('m');
+      $tahunini=date('Y');
+      $data=$this->db->query("SELECT 
+      (SELECT COUNT(id_inventaris) as total_inventaris FROM inventaris WHERE status = 1) as total_inventaris,
+      (SELECT COUNT(id_inventaris) as total_perolehan FROM inventaris WHERE status = 1 AND y = $tahunini AND m = $bulanini) as total_perolehan,
+      (SELECT COUNT(id_penghapusan_inventaris) as total_penghapusan FROM penghapusan inner join penghapusan_inventaris ON penghapusan.id_penghapusan=penghapusan_inventaris.id_penghapusan WHERE month(tanggal)=7 and year(tanggal)=2023) as total_penghapusan;")->row();
+      return $data;
+    }
 }
 ?>
