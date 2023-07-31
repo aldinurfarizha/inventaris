@@ -23,6 +23,10 @@ class Laporan extends CI_Controller {
 		$data['data']=$this->Global_model->get_all('mutasi')->result();
 		$this->load->view('laporan/mutasi',$data);
 	}
+	public function penghapusan(){
+		$data['data']=$this->Global_model->get_all('penghapusan')->result();
+		$this->load->view('laporan/penghapusan',$data);
+	}
 	public function kartu_inventaris(){
 		$data['title']="Laporan Kartu inventaris";
 		$data['kantor']=$this->Global_model->get_all('office')->result();
@@ -218,6 +222,14 @@ class Laporan extends CI_Controller {
 		$data['mutasi_inventaris']=$this->Global_model->getInventarisMutasi($id_mutasi)->result();
 		$this->load->view('laporan/detail_mutasi',$data);
 	}
+	public function detail_penghapusan($id_penghapusan){
+		$param=array(
+			'id_penghapusan'=>$id_penghapusan
+		);
+		$data['penghapusan']=$this->Global_model->get_by_id('penghapusan',$param)->row();
+		$data['penghapusan_inventaris']=$this->Global_model->getInventarisPenghapusan($id_penghapusan)->result();
+		$this->load->view('laporan/detail_penghapusan',$data);
+	}
 	public function get_pihak_kedua(){
 		$of_id=$this->input->post('of_id');
 		$sub_id=$this->input->post('sub_id');
@@ -257,6 +269,21 @@ class Laporan extends CI_Controller {
 		);
 		$this->Global_model->delete('mutasi',$where);
 		$this->Global_model->delete('mutasi_inventaris',$where);
+		return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode(array(
+                    'status' => true,
+                    'messages' => 'Success!'
+            )));
+		}
+		public function delete_penghapusan(){
+		$id=$this->input->post('id');
+		$where=array(
+			'id_penghapusan'=>$id
+		);
+		$this->Global_model->delete('penghapusan',$where);
+		$this->Global_model->delete('penghapusan_inventaris',$where);
 		return $this->output
             ->set_content_type('application/json')
             ->set_status_header(200)

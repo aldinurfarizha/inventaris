@@ -9,7 +9,10 @@ class Inventaris extends CI_Controller {
 		$this->load->view('inventaris/pilih',$data);
 	}
 	public function penghapusan(){
-		$this->load->view('inventaris/penghapusan');
+		$search_param=array();
+		$data['data']=$this->Global_model->inventaris($search_param)->result();
+		$data['title']="Penghapusan Aset";
+		$this->load->view('inventaris/penghapusan',$data);
 	}
 	public function tambah(){
 		$data['title']="Tambah Inventaris";
@@ -355,7 +358,57 @@ class Inventaris extends CI_Controller {
 				));
 			}
 	}
-	
+	public function do_penghapusan(){
+		$item=$this->input->post('item');
+		if(sizeof($item)==0){
+				echo "<script>alert('GAGAL. Pilih Minimal 1 barang untuk di proses penghapusan aset !'); close();</script>";
+			return;
+		}
+		$alasan=$this->input->post('alasan');
+		$id_kadiv_umum=$this->input->post('id_kadiv_umum');
+		$id_kasub_aset=$this->input->post('id_kasub_aset');
+		$id_kadiv_spi=$this->input->post('id_kadiv_spi');
+		$nomor=$this->input->post('nomor');
+		//fill kadiv_umum
+		$kadiv_umum_detail=getEmployeeSimpeg(['pgw_id'=>$id_kadiv_umum])->row();
+		$nama_kadiv_umum=$kadiv_umum_detail->nama;
+		$nik_kadiv_umum=$kadiv_umum_detail->nik;
+
+		//fill kasub aset
+		$kasub_aset_detail=getEmployeeSimpeg(['pgw_id'=>$id_kasub_aset])->row();
+		$nama_kasub_aset=$kasub_aset_detail->nama;
+		$nik_kasub_aset=$kasub_aset_detail->nik;
+
+		//fill kadiv SPI
+		$kadiv_spi_detail=getEmployeeSimpeg(['pgw_id'=>$id_kadiv_spi])->row();
+		$nama_kadiv_spi=$kadiv_spi_detail->nama;
+		$nik_kadiv_spi=$kadiv_spi_detail->nik;
+
+		//fill Direktur
+		$nama_direktur=infoPerusahaan()->direktur;
+		$nik_direktur=infoPerusahaan()->nik_dirut;
+
+		$data=array(
+			'nomor'=>$nomor,
+			'alasan'=>$alasan,
+			'nama_kadiv_umum'=>$nama_kadiv_umum,
+			'nik_kadiv_umum'=>$nik_kadiv_umum,
+			'nama_kasub_aset'=>$nama_kasub_aset,
+			'nik_kasub_aset'=>$nik_kasub_aset,
+			'nama_kadiv_spi'=>$nama_kadiv_spi,
+			'nik_kadiv_spi'=>$nik_kadiv_spi,
+			'nama_direktur'=>$nama_direktur,
+			'nik_direktur'=>$nik_direktur,
+			'tanggal'=>date('Y-m-d')
+		);
+		$penghapusan_id=$this->Global_model->createPenghapusan($data,$item);
+		if(!$penghapusan_id){
+			echo "<script>alert('GAGAL. kesalahan sistem.'); window.history.go(-1);</script>";
+			return;
+		}
+		$this->session->set_flashdata('status', 'success');
+		redirect('laporan/detail_penghapusan/'.$penghapusan_id);
+	}
 	public function add(){
 		date_default_timezone_set('Asia/Jakarta');
 		$now = date('Y-m-d H:i:s');

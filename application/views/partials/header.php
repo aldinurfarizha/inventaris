@@ -128,6 +128,11 @@
                     <div data-i18n="Basic">Berita Acara</div>
                   </a>
                 </li>
+                   <li class="menu-item <?php if($this->uri->segment('2')=='penghapusan' || $this->uri->segment('2')=='detail_penghapusan') { echo"active";}?>">
+                 <a href="<?=base_url('laporan/penghapusan')?>" class="menu-link">
+                    <div data-i18n="Basic">Penghapusan</div>
+                  </a>
+                </li>
               </ul>
             </li>
             <li class="menu-item <?php if($this->uri->segment('1')=='inventaris') { echo"active open";}?>">

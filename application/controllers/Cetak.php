@@ -22,12 +22,17 @@ class Cetak extends CI_Controller {
 		$param=array(
 			'id'=>$berita_acara_id
 		);
-		$param_barang=array(
-			'id_berita_acara'=>$berita_acara_id
-		);
 		$data['berita_acara']=$this->Global_model->get_by_id('berita_acara',$param)->row();
 		$data['berita_acara_barang']=$this->Global_model->getBarangBA($berita_acara_id)->result();
 		$this->load->view('cetak/berita_acara',$data);
+	}
+	public function penghapusan($id_penghapusan){
+		$param=array(
+			'id_penghapusan'=>$id_penghapusan
+		);
+		$data['penghapusan']=$this->Global_model->get_by_id('penghapusan',$param)->row();
+		$data['penghapusan_inventaris']=$this->Global_model->getInventarisPenghapusan($id_penghapusan)->result();
+		$this->load->view('cetak/penghapusan',$data);
 	}
 	public function single_label($id){
 		$data['id']=$id;

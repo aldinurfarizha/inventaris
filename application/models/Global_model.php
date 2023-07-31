@@ -126,6 +126,14 @@ class Global_model extends CI_Model{
       $this->db->where(['mutasi_inventaris.id_mutasi'=>$id_mutasi]);
       return $this->db->get();
     }
+    function getInventarisPenghapusan($id_penghapusan){
+      $this->db->select('penghapusan_inventaris.*, inventaris.*, count(inventaris.id_barang)as total,master_barang.*');
+      $this->db->from('penghapusan_inventaris');
+      $this->db->join('inventaris', 'penghapusan_inventaris.id_inventaris = inventaris.id_inventaris');
+      $this->db->join('master_barang','master_barang.id_barang=inventaris.id_barang', 'left');
+      $this->db->where(['penghapusan_inventaris.id_penghapusan'=>$id_penghapusan]);
+      return $this->db->get();
+    }
     function getKIRBarang($id_kartu_inventaris){
       $this->db->select('kartu_inventaris_barang.*, inventaris.*,master_barang.*');
       $this->db->from('kartu_inventaris_barang');
@@ -171,6 +179,43 @@ class Global_model extends CI_Model{
       endforeach;
      }
      return $id_mutasi;
+    }
+    function createPenghapusan($data,$item_barang){
+      $this->db->insert('penghapusan', $data) ?   $id_penghapusan=$this->db->insert_id()  :   $id_penghapusan=false;
+     if($id_penghapusan){
+      foreach($item_barang as $barang):
+        $detail_barang=get_detail_barang($barang);
+        if($detail_barang->kondisi_baik){
+          $kondisi="Baik";
+        }{
+          $kondisi="Rusak";
+        }
+        if($detail_barang->pernah_servis){
+          $servis="Pernah Servis";
+        }else{
+          $servis="Blm Pernah Service";
+        }
+        $kondisi_terakhir=$kondisi.', '.$servis;
+        $penghapusan_inventaris=array(
+          'id_penghapusan'=>$id_penghapusan,
+          'id_inventaris'=>$barang,
+          'kondisi_terakhir'=>$kondisi_terakhir
+        );
+        $this->db->insert('penghapusan_inventaris',$penghapusan_inventaris);
+
+        //perubahan status pada inventaris
+        $new_office=array(
+          'status'=>0,
+        );
+        $where=array(
+          'id_inventaris'=>$barang
+        );
+        $this->db->set($new_office);
+        $this->db->where($where);
+        $this->db->update('inventaris');
+      endforeach;
+     }
+     return $id_penghapusan;
     }
     function createKIR($data){
       $this->db->insert('kartu_inventaris', $data) ?   $id_kartu_inventaris=$this->db->insert_id()  :   $id_kartu_inventaris=false;

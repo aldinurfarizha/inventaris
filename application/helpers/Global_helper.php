@@ -274,7 +274,7 @@ if (!function_exists('get_detail_barang')) {
 if (!function_exists('getHistoryUpdate')) {
     function getHistoryUpdate($id) {
         $ci =& get_instance();
-        return $ci->db->query("SELECT * FROM history_update where id_inventaris=$id");
+        return $ci->db->query("SELECT * FROM history_update where id_inventaris=$id order by id_history DESC");
     }
 }
 if (!function_exists('getNomorBA')) {
@@ -294,6 +294,18 @@ if (!function_exists('getNomorMutasi')) {
         $ci =& get_instance();
         $yearNow=date('Y');
         $nomor=$ci->db->query("SELECT max(nomor) as nomor from mutasi where YEAR(tanggal)=$yearNow")->row()->nomor;
+        if($nomor==0){
+            return 1;
+        }else{
+            return $nomor+=1;
+        }
+    }
+}
+if (!function_exists('getNomorPenghapusan')) {
+    function getNomorPenghapusan() {
+        $ci =& get_instance();
+        $yearNow=date('Y');
+        $nomor=$ci->db->query("SELECT max(nomor) as nomor from penghapusan where YEAR(tanggal)=$yearNow")->row()->nomor;
         if($nomor==0){
             return 1;
         }else{
@@ -372,6 +384,12 @@ if (!function_exists('getDetailMutasi')) {
         return $ci->db->query("SELECT * from mutasi where id_mutasi=$id")->row();
     }
 }
+if (!function_exists('getDetailPenghapusan')) {
+    function getDetailPenghapusan($id) {
+        $ci =& get_instance();
+        return $ci->db->query("SELECT * from penghapusan where id_penghapusan=$id")->row();
+    }
+}
 if (!function_exists('getNamaRuanganKir')) {
     function getNamaRuanganKir($id_ruangan_kir) {
         $ci =& get_instance();
@@ -404,6 +422,17 @@ if (!function_exists('generateNomorMutasi')) {
        $akhir2=bulanRomawi(@$data_mutasi->tanggal).'/';
        $akhir3= date('Y', strtotime(@$data_mutasi->tanggal));
        $nomor=$awal.$tengah.$tengah2.$akhir.$akhir2.$akhir3;
+       return $nomor;
+    }
+}
+if (!function_exists('generateNomorPenghapusan')) {
+    function generateNomorPenghapusan($id_penghapusan) {
+       $data_ba=@getDetailPenghapusan($id_penghapusan);
+       $awal='020/Um./Penghapusan/ ';
+       $tengah=formatNomor(@$data_ba->nomor);
+       $akhir=' -PAM/TK/';
+       $akhir2=@getYear($data_ba->tanggal);
+       $nomor=$awal.$tengah.$akhir.$akhir2;
        return $nomor;
     }
 }
@@ -495,6 +524,12 @@ if (!function_exists('countJumlahBarangMutasi')) {
     function countJumlahBarangMutasi($id_mutasi) {
         $ci =& get_instance();
         return $ci->db->query("SELECT count(id_mutasi) as total from mutasi_inventaris where id=$id_mutasi")->row()->total;
+    }
+}
+if (!function_exists('countJumlahBarangPenghapusan')) {
+    function countJumlahBarangPenghapusan($id_penghapusan) {
+        $ci =& get_instance();
+        return $ci->db->query("SELECT count(id_penghapusan) as total from penghapusan_inventaris where id_penghapusan=$id_penghapusan")->row()->total;
     }
 }
 if (!function_exists('getRuanganKirByofidandsubid')) {
