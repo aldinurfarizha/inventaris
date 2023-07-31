@@ -188,10 +188,13 @@ class Api extends CI_Controller  {
     }
     public function dashboard(){
         $data=$this->Global_model->dashboard();
+        $datar=array(
+            'data'=>$data
+        );
            return $this->output
             ->set_content_type('application/json')
             ->set_status_header(200)
-            ->set_output(json_encode($data
+            ->set_output(json_encode($datar
             ));
     }
 }
