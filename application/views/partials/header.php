@@ -133,6 +133,11 @@
                     <div data-i18n="Basic">Penghapusan</div>
                   </a>
                 </li>
+                <li class="menu-item <?php if($this->uri->segment('2')=='pengembalian' || $this->uri->segment('2')=='detail_pengembalian') { echo"active";}?>">
+                 <a href="<?=base_url('laporan/pengembalian')?>" class="menu-link">
+                    <div data-i18n="Basic">Pengembalian</div>
+                  </a>
+                </li>
               </ul>
             </li>
             <li class="menu-item <?php if($this->uri->segment('1')=='inventaris') { echo"active open";}?>">
@@ -154,6 +159,11 @@
                  <li class="menu-item <?php if($this->uri->segment('2')=='mutasi') { echo"active";}?>">
                  <a href="<?=base_url('inventaris/mutasi')?>" class="menu-link">
                     <div data-i18n="Basic">Mutasi</div>
+                  </a>
+                </li>
+                <li class="menu-item <?php if($this->uri->segment('2')=='pengembalian') { echo"active";}?>">
+                 <a href="<?=base_url('inventaris/pengembalian')?>" class="menu-link">
+                    <div data-i18n="Basic">Pengembalian</div>
                   </a>
                 </li>
                  <li class="menu-item <?php if($this->uri->segment('2')=='penghapusan') { echo"active";}?>">

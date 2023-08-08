@@ -544,4 +544,20 @@ if (!function_exists('getInventarisByIdRuanganKir')) {
         return $ci->db->query("SELECT * from inventaris where id_ruangan_kir=$id_ruangan_kir and status=1");
     }
 }
+if (!function_exists('getSelectedBarang')) {
+    function getSelectedBarang($barang) {
+        $ci =& get_instance();
+        $ci->db->select('*');
+        $ci->db->from('inventaris');
+        $ci->db->where_in('id_inventaris',$barang);
+        return $ci->db->get()->result();
+    }
+}
+if (!function_exists('deleteSelectedBarang')) {
+    function deleteSelectedBarang($barang) {
+        $ci =& get_instance();
+        $ci->db->where_in('id_inventaris',$barang);
+        $ci->db->delete('inventaris');
+    }
+}
 

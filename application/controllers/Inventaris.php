@@ -12,7 +12,7 @@ class Inventaris extends CI_Controller {
 		$search_param=array();
 		$data['data']=$this->Global_model->inventaris($search_param)->result();
 		$data['title']="Penghapusan Aset";
-		$this->load->view('inventaris/penghapusan',$data);
+		$this->load->view('inventaris/segera',$data);
 	}
 	public function tambah(){
 		$data['title']="Tambah Inventaris";
@@ -32,6 +32,12 @@ class Inventaris extends CI_Controller {
 		$data['sub_kantor']=$this->Global_model->get_all('sub_office')->result();
 		$data['kantor']=$this->Global_model->get_all('office')->result();
 		$this->load->view('inventaris/mutasi',$data);
+	}
+	public function pengembalian(){
+		$search_param=array();
+		$data['data']=$this->Global_model->inventaris($search_param)->result();
+		$data['title']="Pengembalian Aset";
+		$this->load->view('inventaris/pengembalian',$data);
 	}
 	public function load_inventaris(){
 		$of_id=$this->input->post('of_id');
@@ -357,6 +363,77 @@ class Inventaris extends CI_Controller {
 				->set_output(json_encode($response
 				));
 			}
+	}
+	public function do_pengembalian(){
+		$item=$this->input->post('item');
+	
+		if(sizeof($item)==0){
+				echo "<script>alert('GAGAL. Pilih Minimal 1 barang untuk di proses pengembalian aset !'); close();</script>";
+			return;
+		}
+		$keterangan=$this->input->post('keterangan');
+
+		//uploading foto
+		$config["upload_path"]   = TEMP_PATH;
+        $config["allowed_types"] = '*';
+        $config['encrypt_name'] = TRUE;
+        $config['max_size'] = '10000';
+        $this->load->library('image_lib');
+        $conf_resize['image_library'] = 'gd2';
+        $conf_resize['maintain_ratio'] = true;
+        $conf_resize['width'] = 1000;
+        $this->load->library('upload', $config);	
+		if ( ! $this->upload->do_upload("foto")) {
+            $error = array('error' => $this->upload->display_errors());
+            $response=array(
+                'message'=>"Wajib Melampirkan Foto !"
+            );
+            return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(400)
+            ->set_output(json_encode($response
+            ));
+		}
+		$data_file = array('upload_data' => $this->upload->data());
+		$foto_name= $data_file['upload_data']['file_name'];
+		$conf_resize['source_image'] = TEMP_PATH.$foto_name;
+		$conf_resize['new_image'] = FOTO_PENGEMBALIAN_PATH.$foto_name;
+		$this->image_lib->initialize($conf_resize);
+		$this->image_lib->resize();
+		if ($foto_name && file_exists(TEMP_PATH . $foto_name)) {
+			unlink(TEMP_PATH . $foto_name);
+		}
+
+		//uploading berkas
+			unset($config);
+			$config['upload_path']          = BERKAS_PENGEMBALIAN_PATH;//file save path
+            $config['allowed_types']        = 'pdf';
+            $config['max_size']             = 100000;
+			$config['encrypt_name'] = TRUE;
+            $this->load->library('upload', $config);
+            if ( ! $this->upload->do_upload('berkas'))
+            {
+				$error = array('error' => $this->upload->display_errors());
+				$response=array(
+					'message'=>"Wajib Melampirkan Berkas !"
+				);
+				return $this->output
+				->set_content_type('application/json')
+				->set_status_header(400)
+				->set_output(json_encode($response
+				));
+            }
+			$data_file_berkas = array('upload_data' => $this->upload->data());
+			$berkas_name= $data_file_berkas['upload_data']['file_name'];
+		$pengembalian=array(
+			'keterangan'=>$keterangan,
+			'foto'=>$foto_name,
+			'berkas'=>$berkas_name,
+			'tanggal'=>date('Y-m-d')
+		);
+		$id_pengembalian=$this->Global_model->createPengembalian($pengembalian,$item);
+		$this->session->set_flashdata('status', 'success');
+		redirect('laporan/detail_pengembalian/'.$id_pengembalian);
 	}
 	public function do_penghapusan(){
 		$item=$this->input->post('item');

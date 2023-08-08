@@ -94,6 +94,8 @@ defined('KOP_SURAT')      OR define('KOP_SURAT', '/assets/img/kop_surat.jpg');
 defined('LOGO_PERUSAHAAN_PATH')      OR define('LOGO_PERUSAHAAN_PATH', '/assets/upload/logo/'); 
 defined('FOTO_BARANG_PATH')      OR define('FOTO_BARANG_PATH', 'private/barang/'); 
 defined('FOTO_HISTORY_BARANG_PATH')      OR define('FOTO_HISTORY_BARANG_PATH', 'private/history_barang/'); 
+defined('FOTO_PENGEMBALIAN_PATH')      OR define('FOTO_PENGEMBALIAN_PATH', 'private/pengembalian/foto/'); 
+defined('BERKAS_PENGEMBALIAN_PATH')      OR define('BERKAS_PENGEMBALIAN_PATH', 'private/pengembalian/berkas/'); 
 defined('NO_IMAGE')      OR define('NO_IMAGE', 'assets/img/noimage.png'); 
 defined('NO_BARCODE')      OR define('NO_BARCODE', 'assets/img/nobarcode.png'); 
 defined('QR_PATH')             OR define('QR_PATH', '/private/qr/');

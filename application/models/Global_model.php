@@ -217,6 +217,23 @@ class Global_model extends CI_Model{
      }
      return $id_penghapusan;
     }
+    function createPengembalian($data,$item_barang){
+
+      $this->db->insert('pengembalian', $data) ?   $id_pengembalian=$this->db->insert_id()  :   $id_pengembalian=false;
+      
+      if($id_pengembalian){
+        $barang=getSelectedBarang($item_barang);
+        $this->db->trans_start();
+        foreach($barang as $inventaris):
+          $inventaris->id_pengembalian=$id_pengembalian;
+          $this->db->insert('inventaris_pengembalian',$inventaris);
+        endforeach;
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === FALSE){ return false;}
+        deleteSelectedBarang($barang);
+        return $id_pengembalian;
+      }
+    }
     function createKIR($data){
       $this->db->insert('kartu_inventaris', $data) ?   $id_kartu_inventaris=$this->db->insert_id()  :   $id_kartu_inventaris=false;
      if($id_kartu_inventaris){
