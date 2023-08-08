@@ -59,7 +59,7 @@
                                     </div>
                                        <div class="col-md-6">
                                       <div class="form-group">
-                                        <label>Kasub RT <div style="display:inline;" id="loading_kasub_rt"></div></label>
+                                        <label>Kasubdiv Logistik & Aset <div style="display:inline;" id="loading_kasub_rt"></div></label>
                                         <select name="id_kasub_rt" class="form-control" id="id_kasub_rt">
                                         </select>
                                       </div>
@@ -207,7 +207,7 @@ function getKasubRT(){
               data:{
                 off_id:1,
                 dept_id:4,
-                subdept_id:91,
+                subdept_id:48,
                 occ_id:4
               }, 
               beforeSend(){
@@ -227,7 +227,7 @@ function getKasubRT(){
                     icon: "error",
                     title: 'Opps!',
                     button:"Oke",
-                    text: "Gagal Mengambil Data Kasub RT"
+                    text: "Gagal Mengambil Data Kasub ASET"
                   }).then(function(){
                     location.reload();
                   })
@@ -256,9 +256,10 @@ function loadInventaris(){
                  '<td><input style="cursor: pointer;" class="form-check-input" type="checkbox" value="'+data[i].id_inventaris+'" name="item[]"></td>'+
                  '<td>'+no+'</td>'+
                  '<td><span class="badge bg-label-secondary me-1">'+data[i].kd_perkiraan+'</span></td>'+
-                 '<td><a target="_blank" href="detail/'+data[i].id_inventaris+'">'+barang.slice(0, 25)+'...</a>'+
+                 '<td><a target="_blank" href="<?=base_url('inventaris/detail')?>/'+data[i].id_inventaris+'">'+barang.slice(0, 25)+'...</a>'+
                  '<td>'+data[i].y+'-'+data[i].m+'-'+data[i].d+'</td>'+
                  '<td>'+data[i].satuan+'</td>'+
+                 '<td>'+data[i].harga+'</td>'+
                  '<td>'+data[i].last_update+'</td>'+
                  '</tr>'
                 no++;

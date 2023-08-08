@@ -39,7 +39,7 @@
         <tr>
             <td></td>
             <td>JABATAN</td>
-            <td>: Pejabat Rumah Tangga</td>
+            <td>: Kepala Sub Divisi Logistik & Aset</td>
         </tr>
          <tr>
             <td></td>
