@@ -39,7 +39,7 @@
         <tr>
             <td></td>
             <td>JABATAN</td>
-            <td>: Kepala Sub Divisi Logistik & Aset</td>
+            <td>: KASUBDIV Logistik & Aset</td>
         </tr>
          <tr>
             <td></td>
@@ -59,7 +59,7 @@
         <tr>
             <td></td>
             <td>JABATAN</td>
-            <td>: <?=generateJabatan($berita_acara->of_id, $berita_acara->sub_office)?></td>
+            <td>: <?=$berita_acara->pihak_kedua_jabatan?></td>
         </tr>
          <tr>
             <td></td>
@@ -72,10 +72,9 @@
     <p>dengan ini PIHAK PERTAMA menyerahkan fasilitas barang inventaris perusahaan  kepada PIHAK KEDUA, dengan perencian sebagai berikut :</p>
     <?php 
     foreach($berita_acara_barang as $barang):
-        $detail_barang=get_detail_barang($barang->id_inventaris);
-        $barangs=$detail_barang->merk.' '.$detail_barang->tipe.' '.$detail_barang->spek;
+        $barang_nama=$barang->barang;
         ?>
-        <p class="item"><b>-<?=terbilangAngka($barang->total).' ('.$barang->total.') '.$barang->satuan.' '.$barangs?>	</b></p>
+        <p class="item"><b>-<?=terbilangAngka($barang->total).' ('.$barang->total.') '.$barang->satuan.' '.$barang_nama?>	</b></p>
     <?php endforeach;?>
     
 

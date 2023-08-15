@@ -96,13 +96,38 @@ class Global_model extends CI_Model{
       $this->db->where(['id_inventaris'=>$id]);
       return $this->db->get();
     }
+     function get_history_mutasi_barang($id){
+      $this->db->select('mutasi_inventaris.*, mutasi.*');
+      $this->db->from('mutasi_inventaris');
+      $this->db->join('mutasi','mutasi.id_mutasi=mutasi_inventaris.id_mutasi');
+      $this->db->where(['mutasi_inventaris.id_inventaris'=>$id]);
+      return $this->db->get();
+    }
     function createBA($berita_acara,$item_barang){
       $this->db->insert('berita_acara', $berita_acara) ?   $id_berita_acara=$this->db->insert_id()  :   $id_berita_acara=false;
      if($id_berita_acara){
       foreach($item_barang as $barang):
+        $detail_barang=get_detail_barang($barang);
+        if($detail_barang->is_pusat!=1){
+          $sub_id=''; //cabang
+        }else{
+          $sub_id=$detail_barang->nama_sub_kantor;
+        }
         $data=array(
           'id_berita_acara'=>$id_berita_acara,
-          'id_inventaris'=>$barang
+          'id_inventaris'=>$barang,
+          'barang'=>$detail_barang->merk.' '.$detail_barang->tipe.' '.$detail_barang->spek,
+          'satuan'=>$detail_barang->satuan,
+          'nama_ruangan_kir'=>$detail_barang->nama_ruangan,
+          'of_name'=>$detail_barang->nama_kantor,
+          'sub_name'=>$sub_id,
+          'd'=>$detail_barang->d,
+          'm'=>$detail_barang->m,
+          'y'=>$detail_barang->y,
+          'harga'=>$detail_barang->harga,
+          'kondisi_baik'=>$detail_barang->kondisi_baik,
+          'pernah_servis'=>$detail_barang->pernah_servis,
+          'admin'=>$detail_barang->admin
         );
         $this->db->insert('berita_acara_inventaris',$data);
       endforeach;
@@ -110,12 +135,10 @@ class Global_model extends CI_Model{
      return $id_berita_acara;
     }
     function getBarangBA($id_berita_acara){
-      $this->db->select('berita_acara_inventaris.*, inventaris.*, count(inventaris.id_barang)as total,master_barang.*');
+      $this->db->select('berita_acara_inventaris.*, count(id)as total');
       $this->db->from('berita_acara_inventaris');
-      $this->db->join('inventaris', 'berita_acara_inventaris.id_inventaris = inventaris.id_inventaris');
-      $this->db->join('master_barang','master_barang.id_barang=inventaris.id_barang', 'left');
       $this->db->where(['berita_acara_inventaris.id_berita_acara'=>$id_berita_acara]);
-      $this->db->group_by('inventaris.id_barang'); 
+      $this->db->group_by('barang'); 
       return $this->db->get();
     }
     function getInventarisMutasi($id_mutasi){
@@ -132,6 +155,13 @@ class Global_model extends CI_Model{
       $this->db->join('inventaris', 'penghapusan_inventaris.id_inventaris = inventaris.id_inventaris');
       $this->db->join('master_barang','master_barang.id_barang=inventaris.id_barang', 'left');
       $this->db->where(['penghapusan_inventaris.id_penghapusan'=>$id_penghapusan]);
+      return $this->db->get();
+    }
+    function getInventarisPengembalian($id_pengembalian){
+      $this->db->select('inventaris_pengembalian.*, count(inventaris_pengembalian.id_barang)as total,master_barang.*');
+      $this->db->from('inventaris_pengembalian');
+      $this->db->join('master_barang','master_barang.id_barang=inventaris_pengembalian.id_barang', 'left');
+      $this->db->where(['inventaris_pengembalian.id_pengembalian'=>$id_pengembalian]);
       return $this->db->get();
     }
     function getKIRBarang($id_kartu_inventaris){
@@ -168,7 +198,8 @@ class Global_model extends CI_Model{
         //pemindahan kantor pada data inventaris
         $new_office=array(
           'of_id'=>$data['of_id_penerima'],
-          'sub_id'=>$data['sub_id_penerima']
+          'sub_id'=>$data['sub_id_penerima'],
+          'id_ruangan_kir'=>$data['id_ruangan_kir_penerima']
         );
         $where=array(
           'id_inventaris'=>$barang
@@ -230,7 +261,7 @@ class Global_model extends CI_Model{
         endforeach;
         $this->db->trans_complete();
         if ($this->db->trans_status() === FALSE){ return false;}
-        deleteSelectedBarang($barang);
+        deleteSelectedBarang($item_barang);
         return $id_pengembalian;
       }
     }
@@ -239,21 +270,27 @@ class Global_model extends CI_Model{
      if($id_kartu_inventaris){
       $inventaris=getInventarisByIdRuanganKir($data['id_ruangan_kir'])->result();
       foreach($inventaris as $inven):
-       if($inven->kondisi_baik){
-          $kondisi="Baik";
-        }else{
-          $kondisi="Rusak";
-        }
-        if($inven->pernah_servis){
-          $servis="Pernah Servis";
-        }else{
-          $servis="Blm Pernah Service";
-        }
-        $kondisi_terakhir=$kondisi.', '.$servis;
+      if($inven->is_pusat!=1){
+                $sub_id=''; //cabang
+              }else{
+                $sub_id=$inven->nama_sub_kantor;
+              }
         $data=array(
           'id_kartu_inventaris'=>$id_kartu_inventaris,
           'id_inventaris'=>$inven->id_inventaris,
-          'kondisi_terakhir'=>$kondisi_terakhir
+          'barang'=>$inven->merk.' '.$inven->tipe.' '.$inven->spek,
+          'nama_perkiraan'=>$inven->nama_perkiraan,
+          'satuan'=>$inven->satuan,
+          'nama_ruangan_kir'=>$inven->nama_ruangan,
+          'of_name'=>$inven->nama_kantor,
+          'sub_name'=>$sub_id,
+          'd'=>$inven->d,
+          'm'=>$inven->m,
+          'y'=>$inven->y,
+          'harga'=>$inven->harga,
+          'kondisi_baik'=>$inven->kondisi_baik,
+          'pernah_servis'=>$inven->pernah_servis,
+          'admin'=>$inven->admin
         );
         $this->db->insert('kartu_inventaris_barang',$data);
       endforeach;

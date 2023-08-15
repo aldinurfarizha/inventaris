@@ -88,6 +88,7 @@
                   </table>
                                  </div>
                         </div>
+                       
                         <div class="col-md-12">
                               <center><button type="submit" id="add" onclick="tambah()" class="btn btn-primary">Buat Berita Acara <i class="fa fa-file"></i></button></center>
                         </div>

@@ -72,13 +72,13 @@
                     </div>
                     <div class="form-group">
                     <label class="form-label">Foto Dokumentasi</label>
-                    <input type="file" class="form-control" name="foto">
+                    <input type="file" accept="image/*" class="form-control" name="foto">
                     <small>*Foto Barang</small>
                    </div>
                    <div class="form-group">
                     <label class="form-label">Berkas Pendukung</label>
-                    <input type="file" class="form-control" name="berkas">
-                    <small>*Berita Acara Pengembalian Barang</small>
+                    <input type="file" class="form-control" accept="application/pdf" name="berkas">
+                    <small>*Berita Acara Pengembalian Barang (.pdf)</small>
                    </div>
                     </div>
                   </div>

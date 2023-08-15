@@ -113,7 +113,7 @@
                     <div data-i18n="Basic">Barang</div>
                   </a>
                 </li>
-                <li class="menu-item <?php if($this->uri->segment('2')=='kartu_inventaris') { echo"active";}?>">
+                <li class="menu-item <?php if($this->uri->segment('2')=='kartu_inventaris'|| $this->uri->segment('2')=='kartu_inventaris_pusat' || $this->uri->segment('2')=='kartu_inventaris_list'|| $this->uri->segment('2')=='kartu_inventaris_detail'|| $this->uri->segment('2')=='detail_kir') { echo"active";}?>">
                  <a href="<?=base_url('laporan/kartu_inventaris')?>" class="menu-link">
                     <div data-i18n="Basic">Kartu Inventaris</div>
                   </a>
@@ -128,16 +128,17 @@
                     <div data-i18n="Basic">Berita Acara</div>
                   </a>
                 </li>
-                   <li class="menu-item <?php if($this->uri->segment('2')=='penghapusan' || $this->uri->segment('2')=='detail_penghapusan') { echo"active";}?>">
+                 <li class="menu-item <?php if($this->uri->segment('2')=='pengembalian' || $this->uri->segment('2')=='detail_pengembalian') { echo"active";}?>">
+                  <a href="<?=base_url('laporan/pengembalian')?>" class="menu-link">
+                    <div data-i18n="Basic">Pengembalian</div>
+                  </a>
+                </li>
+                  <li class="menu-item <?php if($this->uri->segment('2')=='penghapusan' || $this->uri->segment('2')=='detail_penghapusan') { echo"active";}?>">
                  <a href="<?=base_url('laporan/penghapusan')?>" class="menu-link">
                     <div data-i18n="Basic">Penghapusan</div>
                   </a>
                 </li>
-                <li class="menu-item <?php if($this->uri->segment('2')=='pengembalian' || $this->uri->segment('2')=='detail_pengembalian') { echo"active";}?>">
-                 <a href="<?=base_url('laporan/pengembalian')?>" class="menu-link">
-                    <div data-i18n="Basic">Pengembalian</div>
-                  </a>
-                </li>
+               
               </ul>
             </li>
             <li class="menu-item <?php if($this->uri->segment('1')=='inventaris') { echo"active open";}?>">

@@ -532,6 +532,12 @@ if (!function_exists('countJumlahBarangPenghapusan')) {
         return $ci->db->query("SELECT count(id_penghapusan) as total from penghapusan_inventaris where id_penghapusan=$id_penghapusan")->row()->total;
     }
 }
+if (!function_exists('countJumlahBarangPengembalian')) {
+    function countJumlahBarangPengembalian($id_pengembalian) {
+        $ci =& get_instance();
+        return $ci->db->query("SELECT count(id_pengembalian) as total from pengembalian where id_pengembalian=$id_pengembalian")->row()->total;
+    }
+}
 if (!function_exists('getRuanganKirByofidandsubid')) {
     function getRuanganKirByofidandsubid($of_id,$sub_id=null) {
         $ci =& get_instance();
@@ -540,8 +546,17 @@ if (!function_exists('getRuanganKirByofidandsubid')) {
 }
 if (!function_exists('getInventarisByIdRuanganKir')) {
     function getInventarisByIdRuanganKir($id_ruangan_kir) {
-        $ci =& get_instance();
-        return $ci->db->query("SELECT * from inventaris where id_ruangan_kir=$id_ruangan_kir and status=1");
+      $ci =& get_instance();
+      $ci->db->select('inventaris.*, master_barang.*, office.*, office.nama as nama_kantor, sub_office.nama as nama_sub_kantor,master_perkiraan.*, master_perkiraan_dasar.*, master_ruangan_kir.nama_ruangan');
+      $ci->db->from('inventaris');
+      $ci->db->join('master_barang','master_barang.id_barang=inventaris.id_barang');
+      $ci->db->join('master_perkiraan','master_barang.id_perkiraan=master_perkiraan.id_perkiraan');
+      $ci->db->join('master_perkiraan_dasar', 'master_perkiraan.kd_perkiraan_dasar = master_perkiraan_dasar.kd_perkiraan_dasar');
+      $ci->db->join('office','office.of_id=inventaris.of_id');
+      $ci->db->join('sub_office','sub_office.sub_id=inventaris.sub_id','left');
+      $ci->db->join('master_ruangan_kir','inventaris.id_ruangan_kir=master_ruangan_kir.id_ruangan_kir', 'left');
+      $ci->db->where(['inventaris.id_ruangan_kir'=>$id_ruangan_kir,'inventaris.status'=>1]);
+      return $ci->db->get();
     }
 }
 if (!function_exists('getSelectedBarang')) {

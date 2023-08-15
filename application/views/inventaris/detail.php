@@ -91,6 +91,10 @@
                               <?php } ?>
                             </select>
                           </div>
+                            <div class="col-md-6">
+                                      <label for="defaultFormControlInput" class="form-label">Ruangan kir</label>
+                                      <input type="text" value="<?=$data->nama_ruangan?>" class="form-control" id="defaultFormControlInput" readonly placeholder="misal: Warna Hitam,Layar 4 inch" aria-describedby="defaultFormControlHelp">
+                                    </div>
                           <div class="col-md-6">
                                       <label for="defaultFormControlInput" class="form-label">Harga (Rp.)</label>
                                       <input type="text" class="form-control" value="<?=$data->harga?>" name="harga" id="harga" placeholder="Rp. 0" aria-describedby="defaultFormControlHelp">
@@ -194,6 +198,62 @@
                                       <?php endif;?>
                                   </th>
                                   <th><?=$hist->date_updated?></th>
+                                </tr>
+                                <?php endforeach;?>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+                   <div class="col-md-12">
+                  <div class="card h-100">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                      <h5 class="card-title m-0 me-2">History Mutasi Barang</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="row">
+                         <div class="col-md-12">
+                              <div class="text-center">
+                              </div>
+                              <br>
+                            </div>
+                        <div class="table-responsive text-nowrap">
+                          <table class="table table-striped table-hover">
+                            <thead>
+                              <tr>
+                                <th>#</th>
+                                <th>No.BAMB</th>
+                                <th>Asal / Tujuan</th>
+                                <th>Tanggal</th>
+                                <th>Kondisi Terakhir</th>
+                              </tr>
+                            </thead>
+                            <tbody class="table-border-bottom-0">
+                              <?php $no=1; 
+                             
+                              foreach($history_mutasi_barang as $hist_mutasi):?>
+                                <tr>
+                                  <td><?=$no?></td>
+                                  <td><a href="<?=base_url('laporan/detail_mutasi/'.$hist_mutasi->id_mutasi)?>"><?=limitText(generateNomorMutasi($hist_mutasi->id_mutasi))?></a></td>
+                                  <td><?php
+                                    if($hist_mutasi->of_id_penyerah==1){
+                                      $asal=detailOfid($hist_mutasi->of_id_penyerah)->nama.' '.detailSubOffice($hist_mutasi->sub_id_penyerah)->nama;
+                                    }else{
+                                      $asal=detailOfid($hist_mutasi->of_id_penyerah)->nama;
+                                    }
+                                    if($hist_mutasi->of_id_penerima==1){
+                                      $tujuan=detailOfid($hist_mutasi->of_id_penerima)->nama.' '.detailSubOffice($hist_mutasi->sub_id_penerima)->nama;
+                                    }else{
+                                      $tujuan=detailOfid($hist_mutasi->of_id_penerima)->nama;
+                                    }
+                                    $mutasi=$asal.' -> '.$tujuan;
+                                    echo $mutasi;
+                                  ?></td>
+                                  <td><?=$hist_mutasi->tanggal?></td>
+                                  <td><?=$hist_mutasi->kondisi_terakhir?></td>
                                 </tr>
                                 <?php endforeach;?>
                             </tbody>

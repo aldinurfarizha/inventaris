@@ -56,7 +56,7 @@ class Api extends CI_Controller  {
             ->set_status_header(500)
             ->set_output(json_encode(array(
                     'status' => False,
-                    'messages' => 'Invalid Id ! Aset Tidak ditemukan.'
+                    'messages' => 'Aset dalam Pengembalian Atau telah Di hapus'
             )));
         }
         return $this->output

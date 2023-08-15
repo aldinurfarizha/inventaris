@@ -25,7 +25,11 @@ class Laporan extends CI_Controller {
 	}
 	public function penghapusan(){
 		$data['data']=$this->Global_model->get_all('penghapusan')->result();
-		$this->load->view('laporan/penghapusan',$data);
+		$this->load->view('inventaris/segera',$data);
+	}
+	public function pengembalian(){
+		$data['data']=$this->Global_model->get_all('pengembalian')->result();
+		$this->load->view('laporan/pengembalian',$data);
 	}
 	public function kartu_inventaris(){
 		$data['title']="Laporan Kartu inventaris";
@@ -118,9 +122,6 @@ class Laporan extends CI_Controller {
 		$nama_direktur=$direktur_detail->direktur;
 		$nik_dirut=$direktur_detail->nik_dirut;
 
-		if($of_id==1){
-			$sub_id=0;
-		}
 		$data=array(
 			'id_ruangan_kir'=>$id_ruangan_kir,
 			'of_id'=>$of_id,
@@ -181,6 +182,7 @@ class Laporan extends CI_Controller {
 		$pihak_kedua_detail=getEmployeeSimpeg(['pgw_id'=>$id_pihak_kedua])->row();
 		$nama_pihak_kedua=$pihak_kedua_detail->nama;
 		$nik_pihak_kedua=$pihak_kedua_detail->nik;
+		$jabatan_pihak_kedua=$pihak_kedua_detail->jabatan;
 		if($of_id==1){
 			$sub_id=0;
 		}
@@ -190,6 +192,7 @@ class Laporan extends CI_Controller {
 			'sub_div_rt_nik'=>$nik_kasub_rt,
 			'pihak_kedua_nama'=>$nama_pihak_kedua,
 			'pihak_kedua_nik'=>$nik_pihak_kedua,
+			'pihak_kedua_jabatan'=>$jabatan_pihak_kedua,
 			'kadiv_umum_nama'=>$nama_kadiv_umum,
 			'kadiv_umum_nik'=>$nik_kadiv_umum,
 			'tanggal'=>$tanggal,
@@ -229,6 +232,14 @@ class Laporan extends CI_Controller {
 		$data['penghapusan']=$this->Global_model->get_by_id('penghapusan',$param)->row();
 		$data['penghapusan_inventaris']=$this->Global_model->getInventarisPenghapusan($id_penghapusan)->result();
 		$this->load->view('laporan/detail_penghapusan',$data);
+	}
+	public function detail_pengembalian($id_pengembalian){
+		$param=array(
+			'id_pengembalian'=>$id_pengembalian
+		);
+		$data['pengembalian']=$this->Global_model->get_by_id('pengembalian',$param)->row();
+		$data['pengembalian_inventaris']=$this->Global_model->getInventarisPengembalian($id_pengembalian)->result();
+		$this->load->view('laporan/detail_pengembalian',$data);
 	}
 	public function get_pihak_kedua(){
 		$of_id=$this->input->post('of_id');

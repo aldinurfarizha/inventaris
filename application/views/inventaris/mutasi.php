@@ -82,6 +82,14 @@
                                         <?php } ?>
                                       </select>
                                     </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                          <label class="form-label">Ruangan KIR <div style="display:inline;" id="loading_ruangan_kir"></div></label>
+                                          <select name="id_ruangan_kir" class="form-control" id="id_ruangan_kir">
+                                          </select>
+                                        </div>
+                                      </div>
+
                     </div>
                     </div>
                   </div>
@@ -140,6 +148,67 @@
               </form>
 <?php $this->load->view('partials/footer')?>
 <script>
+   function loadingRuanganKIR(){
+  $('#loading_ruangan_kir').html('<i class="fas fa-circle-notch fa-spin"></i>');
+}
+function UnloadingRuanganKIR(){
+  $('#loading_ruangan_kir').html('');
+}
+function getRuanganKir(){
+let of_id=$('#of_id_penerima').val();
+var param;
+  if(of_id==1 || of_id=='1'){
+  param={
+      of_id:of_id,
+      sub_id:$('#sub_id_penerima').val()
+    }
+  }else{
+     param={
+      of_id:of_id,
+    }
+  }
+ $('#id_ruangan_kir').html('<option selected="true" value="">--Kosong--</option>');
+  $.ajax({
+              url: "<?= base_url('inventaris/get_ruangan_kir')?>",
+              type: "POST",
+              data:param, 
+              beforeSend(){
+                loadingRuanganKIR();
+              },
+              success:function(response){
+               UnloadingRuanganKIR();
+               var data=response['data'];
+               var html='';
+               html+='<option selected="true" value="">--Pilih--</option>';
+               for (var i = 0; i< response['data'].length; i++) {
+                 html+='<option value="'+data[i].id_ruangan_kir+'">'+data[i].nama_ruangan+'</option>';
+               }
+               $('#id_ruangan_kir').html(html);
+              },
+              error:function(response){
+                UnloadingRuanganKIR();
+                 Swal.fire({
+                    title: 'Belum ada Ruang KIR pada Kantor ini !',
+                    text: "Apakah anda ingin menambahkan ruang KIR sekarang",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Tidak',
+                    customClass: {
+                      confirmButton: 'btn btn-primary me-1',
+                      cancelButton: 'btn btn-label-secondary'
+                    },
+                    buttonsStyling: false
+                  }).then(function(result) {
+                    if (result.value) {
+                       location.href = "<?=base_url('master/ruangan_kir')?>";
+                    }
+                  });
+              }
+            });
+}
   $("#checkall").click(function(){
     $('input:checkbox').not(this).prop('checked', this.checked);
 });
@@ -162,6 +231,7 @@ $('#of_id_penerima').on('change', function (e) {
     if(valueSelected!=='1'){
       $('#sub_kantor_option_penerima').hide();
       getPenerima();
+      getRuanganKir();
     }else{
       $('#sub_kantor_option_penerima').show();
     }
@@ -179,6 +249,7 @@ $('#sub_id_penerima').on('change', function (e) {
     var valueSelected = this.value;
     if(valueSelected!==''){
       getPenerima();
+      getRuanganKir();
     }
 });
 getKadivUmum();

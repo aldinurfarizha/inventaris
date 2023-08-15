@@ -31,7 +31,7 @@
     <img style="width:250px;" src="<?=base_url(KOP_SURAT)?>" alt="">
     <center><u><b><h3>KARTU INVENTARIS RUANGAN <br>(KIR)</h3></b></u></center>
     <h4 class="right"><b><?=getNamaRuanganKir($kartu_inventaris->id_ruangan_kir)->nama_ruangan?></b></h4>
-    <p style="margin-top: -25px;" class="right"><?=detailOfid($kartu_inventaris->of_id)->nama.' '.detailSubOffice($kartu_inventaris->sub_id)?></p>
+    <p style="margin-top: -25px;" class="right"><?=detailOfid($kartu_inventaris->of_id)->nama.' '.@detailSubOffice($kartu_inventaris->sub_id)->nama?></p>
     
     <table style="width: 100%; border: 1px solid black; border-collapse: collapse;">
     <thead>
@@ -48,17 +48,28 @@
     </thead>
     <tbody>
         <?php $no=1; foreach($kartu_inventaris_barang as $barang):
-             $detail_barang=get_detail_barang($barang->id_inventaris);
+         $kondisi_terakhir='';
+                                  if($barang->kondisi_baik==1){
+                                    $kondisi="Baik";
+                                  }else{
+                                    $kondisi="Rusak";
+                                  }
+                                  if($barang->pernah_servis==1){
+                                    $servis="Pernah Servis";
+                                  }else{
+                                    $servis='Blm Pernah Servis';
+                                  }
+                                  $kondisi_terakhir=$kondisi.', '.$servis;
             ?>
             <tr>
                 <td class="border"><?=$no?></td>
-                <td class="border"><?=$detail_barang->nama_perkiraan?></td>
-                <td class="border"><?=$detail_barang->merk.' '.$detail_barang->tipe.' '.$detail_barang->spek;?></td>
+                <td class="border"><?=$barang->nama_perkiraan?></td>
+                <td class="border"><?=$barang->barang;?></td>
                 <td class="border">1</td>
-                <td class="border"><?=$detail_barang->satuan?></td>
-                <td class="border"><?=$detail_barang->y?></td>
-                <td class="border"><?=$barang->kondisi_terakhir?></td>
-                <td class="border"><?=$detail_barang->keterangan?></td>
+                <td class="border"><?=$barang->satuan?></td>
+                <td class="border"><?=$barang->y?></td>
+                <td class="border"><?=$kondisi_terakhir?></td>
+                <td class="border"></td>
             </tr>
         <?php endforeach;?>
     </tbody>
@@ -115,5 +126,5 @@
 </body>
 </html>
 <script type="text/javascript">
-    //window.print();
+    window.print();
 </script>

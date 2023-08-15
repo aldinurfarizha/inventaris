@@ -57,7 +57,13 @@
                               </tr>
                                 <tr>
                                 <td>Kantor</td>
-                                <td><?=@detailOfid($berita_acara->of_id)->nama.' - '.@detailSubOffice($berita_acara->sub_office)->nama?></td>
+                                <td><?php
+                                if($berita_acara->of_id==1){
+                                  $kantor="PUSAT";
+                                }else{
+                                  $kantor=detailOfid($berita_acara->of_id)->nama.' - '.@detailSubOffice($berita_acara->sub_office)->nama;
+                                }
+                                echo $kantor;?></td>
                               </tr>
                             </table>
                           </div>
@@ -82,13 +88,11 @@
                                 <?php 
                                 $no=1;
                                 foreach($berita_acara_barang as $barang):
-                                $detail_barang=get_detail_barang($barang->id_inventaris);
-                                $barangs=$detail_barang->merk.' '.$detail_barang->tipe.' '.$detail_barang->spek;
                                 ?>
                                 <tr>
                                   <td><?=$no?>.</td>
                                   <td><span class="badge bg-secondary"><?=terbilangAngka($barang->total).' ('.$barang->total.') '.$barang->satuan?> </span></td>
-                                  <td><?=$barangs?></td>
+                                  <td><?=$barang->barang?></td>
                                 </tr>
                                 <?php $no++; endforeach;
                                 ?>

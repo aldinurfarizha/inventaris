@@ -95,7 +95,7 @@ class Inventaris extends CI_Controller {
 	public function get_ruangan_kir(){
 		$of_id=$this->input->post('of_id');
 		if($of_id==1){
-			$of_id=$this->input->post('sub_id');
+			$sub_id=$this->input->post('sub_id');
 		}else{
 			$sub_id=0;
 		}
@@ -146,6 +146,7 @@ class Inventaris extends CI_Controller {
 		$data['kantor']=$this->Global_model->get_all('office')->result();
 		$data['sub_kantor']=$this->Global_model->get_all('sub_office')->result();
 		$data['history']=$this->Global_model->get_history($id)->result();
+		$data['history_mutasi_barang']=$this->Global_model->get_history_mutasi_barang($id)->result();
 		$this->load->view('inventaris/detail',$data);
 	}
 	public function insert_mutasi(){
@@ -158,6 +159,7 @@ class Inventaris extends CI_Controller {
 		$id_penyerah=$this->input->post('id_penyerah');
 		$id_penerima=$this->input->post('id_penerima');
 		$id_kadiv_umum=$this->input->post('id_kadiv_umum');
+		$id_ruangan_kir=$this->input->post('id_ruangan_kir');
 		$item=$this->input->post('item');
 		if($of_id_penyerah==''){
 			echo "<script>alert('GAGAL. Kantor Asal Barang belum di pilih !'); window.history.go(-1);</script>";
@@ -224,13 +226,6 @@ class Inventaris extends CI_Controller {
 		}else{
 			$asal_kantor=detailOfid($of_id_penyerah)->nama;
 		}
-
-		if($of_id_penyerah==1){
-			$sub_id_penyerah=0;
-		}
-		if($of_id_penerima==1){
-			$sub_id_penerima=0;
-		}
 		$data=array(
 			'nomor'=>$nomor,
 			'asal_kantor'=>$asal_kantor,
@@ -246,6 +241,7 @@ class Inventaris extends CI_Controller {
 			'sub_id_penyerah'=>$sub_id_penyerah,
 			'of_id_penerima'=>$of_id_penerima,
 			'sub_id_penerima'=>$sub_id_penerima,
+			'id_ruangan_kir_penerima'=>$id_ruangan_kir,
 			'tanggal'=>$tanggal
 		);
 		$mutasi_id=$this->Global_model->createMutasi($data,$item);
@@ -411,6 +407,7 @@ class Inventaris extends CI_Controller {
             $config['max_size']             = 100000;
 			$config['encrypt_name'] = TRUE;
             $this->load->library('upload', $config);
+			$this->upload->initialize($config);
             if ( ! $this->upload->do_upload('berkas'))
             {
 				$error = array('error' => $this->upload->display_errors());
