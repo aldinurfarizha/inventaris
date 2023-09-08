@@ -497,7 +497,7 @@ class Inventaris extends CI_Controller {
 		$admin=$this->input->post('admin');
 		$status=$this->input->post('status');
 		$id_ruangan_kir=$this->input->post('id_ruangan_kir');
-		if($of_id==1){
+		if($of_id!=1){
 			$sub_id=0;
 		}
 		$data=array(

@@ -121,7 +121,7 @@ if (!function_exists('terbilangHari')) {
 if (!function_exists('terbilangBulan')) {
     function terbilangBulan($date){
        $month = date('m', strtotime($date));
-       return bulan($month);
+       return strtoupper(bulan($month));
     }
 }
 if (!function_exists('terbilangTahun')) {
@@ -402,14 +402,15 @@ if (!function_exists('formatNomor')) {
     }
 }
 if (!function_exists('generateNomorBA')) {
-    function generateNomorBA($id_berita_acara) {
-       $data_ba=@getDetailBA($id_berita_acara);
-       $awal='020/Um. ';
-       $tengah=formatNomor(@$data_ba->nomor);
-       $akhir=' -PAM/TK/';
-       $akhir2=@getYear($data_ba->tanggal);
-       $nomor=$awal.$tengah.$akhir.$akhir2;
-       return $nomor;
+    function generateNomorBA($id_berita_acara)
+    {
+        $data_ba = @getDetailBA($id_berita_acara);
+        $awal = '690/';
+        $tengah = formatNomor(@$data_ba->nomor);
+        $akhir = '/BAST/LOG-ASET/';
+        $akhir2 = bulanRomawi(@$data_ba->tanggal).'/'.@getYear($data_ba->tanggal);
+        $nomor = $awal . $tengah . $akhir . $akhir2;
+        return $nomor;
     }
 }
 if (!function_exists('generateNomorMutasi')) {

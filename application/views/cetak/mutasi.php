@@ -40,7 +40,7 @@
     <center><u><b><h3>BERITA ACARA MUTASI BARANG</h3></b></u>
     <p style="margin-top: -20px;">NOMOR : <?=generateNomorMutasi($mutasi->id_mutasi)?></p>
     </center>
-    <p>Pada hari ini <b><?=terbilangHari($mutasi->tanggal)?></b> tanggal <b><?=terbilangTanggal($mutasi->tanggal)?></b> bulan <b><?=terbilangBulan($mutasi->tanggal)?></b> tahun <b><?=terbilangTahun($mutasi->tanggal)?> <i>(<?=$mutasi->tanggal?>)</i></b>, Bawha telah di mutasikan Barang / Pengalihan Aset Inventaris Kantor dari <b><?=$asal?></b> ke <b><?=$tujuan?></b> berupa: </p>
+    <p>Pada hari ini <b><?=terbilangHari($mutasi->tanggal)?></b> tanggal <b><?=terbilangTanggal($mutasi->tanggal)?></b> bulan <b><?=terbilangBulan($mutasi->tanggal)?></b> tahun <b><?=terbilangTahun($mutasi->tanggal)?> <i>(<?=$mutasi->tanggal?>)</i></b>, Bahwa telah di mutasikan Barang / Pengalihan Aset Inventaris Kantor dari <b><?=$asal?></b> ke <b><?=$tujuan?></b> berupa: </p>
     <?php 
     foreach($mutasi_inventaris as $barang):
         $detail_barang=get_detail_barang($barang->id_inventaris);

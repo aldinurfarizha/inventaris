@@ -73,7 +73,7 @@
                             <label for="defaultFormControlInput" class="form-label">Bulan perolehan</label>
                             <select class="form-control" name="m" id="m" readonly>
                               <option selected="true" value="<?=$data->m?>"><?=opt_bulan()[$data->m]?></option>
-                              <?php $no=0; 
+                              <?php $no=1; 
                               foreach(opt_bulan() as $bulan){
                                     if($bulan!=""){?>
                                 <option value="<?=$no?>"><?=$bulan?></option>
