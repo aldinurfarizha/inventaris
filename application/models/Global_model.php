@@ -190,11 +190,18 @@ class Global_model extends CI_Model
   }
   function getKIRBarang($id_kartu_inventaris)
   {
-    $this->db->select('kartu_inventaris_barang.*, inventaris.*,master_barang.*');
+    $this->db->select('kartu_inventaris_barang.id_inventaris, 
+                   COUNT(kartu_inventaris_barang.id_inventaris) as jumlah_barang, 
+                   inventaris.*, master_barang.*,
+                   CASE 
+                       WHEN kartu_inventaris_barang.kondisi_baik = 1 THEN "Baik"
+                       ELSE "Tidak Baik"
+                   END as kondisi_barang');
     $this->db->from('kartu_inventaris_barang');
     $this->db->join('inventaris', 'kartu_inventaris_barang.id_inventaris = inventaris.id_inventaris');
-    $this->db->join('master_barang', 'master_barang.id_barang=inventaris.id_barang', 'left');
+    $this->db->join('master_barang', 'master_barang.id_barang = inventaris.id_barang', 'left');
     $this->db->where(['kartu_inventaris_barang.id_kartu_inventaris' => $id_kartu_inventaris]);
+    $this->db->group_by('kartu_inventaris_barang.id_inventaris, kondisi_barang');
     return $this->db->get();
   }
   function createMutasi($data, $item_barang)
