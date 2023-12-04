@@ -32,7 +32,7 @@ if (!function_exists('opt_satuan')) {
             'M',
             'M2',
             'M3',
-            'SET'
+	    'SET',
         );
         return $satuan;
     }

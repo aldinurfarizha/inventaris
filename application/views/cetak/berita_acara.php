@@ -42,7 +42,7 @@
         <p style="margin-top: -20px;">NOMOR : <?= generateNomorBA($berita_acara->id) ?></p>
     </center>
     <p>Pada hari ini <b><?= terbilangHari($berita_acara->tanggal) ?></b> tanggal <b><?= terbilangTanggal($berita_acara->tanggal) ?></b> bulan <b><?= terbilangBulan($berita_acara->tanggal) ?></b> tahun <b><?= terbilangTahun($berita_acara->tanggal) ?> <i>(<?= $berita_acara->tanggal ?>)</i></b>, kami yang bertanda tangan dibawah ini : </p>
-    <center>
+
         <table>
             <tr>
                 <td>1.</td>
@@ -60,9 +60,9 @@
                 <td>: <?= $berita_acara->sub_div_rt_nik ?></td>
             </tr>
         </table>
-    </center>
+
     <p>untuk selanjutnya disebut : --------------- PIHAK PERTAMA ------------</p>
-    <center>
+  
         <table>
             <tr>
                 <td>2.</td>
@@ -72,7 +72,7 @@
             <tr>
                 <td></td>
                 <td>JABATAN</td>
-                <td>: <?= $berita_acara->pihak_kedua_jabatan . ' ' . detailOfid($berita_acara->of_id)->nama . detailOfid($berita_acara->detailSubOffice)->nama ?></td>
+                <td>: <?= $berita_acara->pihak_kedua_jabatan?></td>
             </tr>
             <tr>
                 <td></td>
@@ -80,7 +80,7 @@
                 <td>: <?= $berita_acara->pihak_kedua_nik ?></td>
             </tr>
         </table>
-    </center>
+
     <p>untuk selanjutnya disebut : --------------- PIHAK KEDUA ------------</p>
     <p>dengan ini PIHAK PERTAMA menyerahkan fasilitas barang inventaris perusahaan kepada PIHAK KEDUA, dengan perencian sebagai berikut :</p>
     <?php

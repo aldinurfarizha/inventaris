@@ -295,7 +295,7 @@ var param;
       off_id:of_id,
       dept_id:$('#sub_id').val()
     }
-  }else if(of_id=='14'||of_id=='15'||of_id=='16'||of_id=='17'||of_id=='18'||of_id=='19'){
+  }else if (of_id > 13){
   param={
         off_id:1,
         dept_id:7

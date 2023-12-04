@@ -257,11 +257,18 @@ var param;
       off_id:of_id,
       dept_id:$('#sub_id').val()
     }
-  }else{
-     param={
-      off_id:of_id,
-    }
-  }
+  }else {
+            if (of_id > 13) {
+              param = {
+                of_id: 1,
+                dept_id: 7
+              }
+            } else {
+              param = {
+                of_id: of_id,
+              }
+            }
+          }
   $.ajax({
               url: "<?= base_url('inventaris/get_employee')?>",
               type: "POST",

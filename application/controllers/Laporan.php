@@ -182,7 +182,11 @@ class Laporan extends CI_Controller {
 		$pihak_kedua_detail=getEmployeeSimpeg(['pgw_id'=>$id_pihak_kedua])->row();
 		$nama_pihak_kedua=$pihak_kedua_detail->nama;
 		$nik_pihak_kedua=$pihak_kedua_detail->nik;
-		$jabatan_pihak_kedua=$pihak_kedua_detail->jabatan;
+		if ($pihak_kedua_detail->off_id == 1) {
+			$jabatan_pihak_kedua = $pihak_kedua_detail->sub_dep . ' (' . $pihak_kedua_detail->dept . ' - ' . $pihak_kedua_detail->office . ')';
+		} else {
+			$jabatan_pihak_kedua = $pihak_kedua_detail->jabatan . ' - ' . $pihak_kedua_detail->dept . ' ' . $pihak_kedua_detail->office;
+		}
 		if($of_id==1){
 			$sub_id=0;
 		}
