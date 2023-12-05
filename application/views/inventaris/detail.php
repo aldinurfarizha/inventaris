@@ -147,6 +147,11 @@
                   <input type="text" value="<?= $data->last_update ?>" class="form-control" id="defaultFormControlInput" readonly>
                 </div>
                 <br>
+                <div class="col-md-12">
+                  <label for="defaultFormControlInput" class="form-label">Keterangan</label>
+                  <input type="text" value="<?= $data->keterangan ?>" class="form-control" name="keterangan" id="defaultFormControlInput">
+                </div>
+                <br>
                 </form>
                 <hr style="margin-top: 10px;">
                 <div class="row">

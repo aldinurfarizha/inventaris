@@ -139,6 +139,13 @@
                   <div data-i18n="Basic">Barang</div>
                 </a>
               </li>
+              <li class="menu-item <?php if ($this->uri->segment('2') == 'pembelian') {
+                                      echo "active";
+                                    } ?>">
+                <a href="<?= base_url('laporan/pembelian') ?>" class="menu-link">
+                  <div data-i18n="Basic">Pembelian Barang</div>
+                </a>
+              </li>
               <li class="menu-item <?php if ($this->uri->segment('2') == 'kartu_inventaris' || $this->uri->segment('2') == 'kartu_inventaris_pusat' || $this->uri->segment('2') == 'kartu_inventaris_list' || $this->uri->segment('2') == 'kartu_inventaris_detail' || $this->uri->segment('2') == 'detail_kir') {
                                       echo "active";
                                     } ?>">

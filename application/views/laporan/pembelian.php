@@ -4,17 +4,26 @@
   <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
       <div class="row justify-content-end">
-        <div class="col-md-3">
-
+        <div class="col-md-12">
+          <?php
+          if ($this->session->flashdata('status') == 'success') { ?>
+            <div class="alert alert-success d-flex" role="alert">
+              <span class="badge badge-center rounded-pill bg-success border-label-success p-3 me-2"><i class="fa fa-check-circle"></i></span>
+              <div class="d-flex flex-column ps-1">
+                <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">Berhasil Membuat Laporan Pembelian Barang</h6>
+                <span>Silahkan Cetak!</span>
+              </div>
+            </div>
+          <?php } ?>
         </div>
         <div class="col-md-12">
           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#basicModal">
-            <i class="fa fa-plus"></i> Kartu Inventaris
+            <i class="fa fa-plus"></i> Laporan Pembelian Barang
           </button>
           <hr>
           <div class="card h-100">
             <div class="card-header d-flex align-items-center justify-content-between">
-              <h5 class="card-title m-0 me-2">Kartu Inventaris</h5>
+              <h5 class="card-title m-0 me-2">Laporan Pembelian Barang Inventaris</h5>
             </div>
             <div class="card-body">
               <div class="table-responsive text-nowrap">
@@ -22,23 +31,23 @@
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>Nama Kantor</th>
-                      <th class="text-center">Total Kartu Inventaris</th>
+                      <th>Bulan</th>
+                      <th>Tahun</th>
+                      <th class="text-center">Total Barang</th>
+                      <th class="text-center">Aksi</th>
                     </tr>
                   </thead>
                   <tbody class="table-border-bottom-0">
                     <?php $no = 1;
-                    foreach ($kantor as $datar) : ?>
-                      <?php if ($datar->of_id == 1) { ?>
-                        <tr onclick="buka('<?= base_url('laporan/kartu_inventaris_pusat/') ?>')" style="cursor: pointer;">
-                        <?php } else { ?>
-                        <tr onclick="buka('<?= base_url('laporan/kartu_inventaris_list/') . $datar->of_id ?>')" style="cursor: pointer;">
-                        <?php } ?>
-                        <th><?= $no ?></th>
-                        <th><?= $datar->nama ?></th>
-                        <th class="text-center"><span class="badge badge-center rounded-pill bg-secondary"><?= count_kartu_inventaris($datar->of_id) ?></span></th>
-                        </tr>
-                      <?php $no++;
+                    foreach ($data as $datar) : ?>
+                      <tr>
+                        <td><?= $no ?></td>
+                        <td><?= bulan($datar->m) ?></td>
+                        <td><?= $datar->y ?></td>
+                        <th class="text-center"><span class="badge badge-center rounded-pill bg-secondary"><?= $datar->total_pembelian_inventaris ?></span></th>
+                        <td class="text-center"><a href="<?= base_url('cetak/pembelian/' . $datar->id_pembelian) ?>" target="_blank" class="btn btn-warning btn-sm">Cetak <i class="fa fa-print"></i></a></td>
+                      </tr>
+                    <?php $no++;
                     endforeach; ?>
                   </tbody>
                 </table>
@@ -48,61 +57,64 @@
         </div>
       </div>
       <div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel1">Buat Kartu Inventaris Baru</h5>
+              <h5 class="modal-title" id="exampleModalLabel1">Buat Laporan Pembelian Barang</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <form action="insert_kir" method="POST">
+              <form action="insert_pembelian" method="POST">
                 <div class="row">
-                  <div class="col-md-6">
-                    <label>Kantor</label>
-                    <select class="form-control" name="of_id" id="of_id">
-                      <option value="">--Pilih kantor--</option>
-                      <?php foreach ($kantor as $kan) { ?>
-                        <option value="<?= $kan->of_id ?>"><?= $kan->nama; ?></option>
-                      <?php } ?>
-                    </select>
-                  </div>
-                  <div class="col-md-6" id="sub_kantor_option">
-                    <label>Sub Kantor</label>
-                    <select class="form-control" name="sub_id" id="sub_id">
-                      <option value="">--Pilih Sub Kantor--</option>
-                      <?php foreach ($sub_kantor as $kan) { ?>
-                        <option value="<?= $kan->sub_id ?>"><?= $kan->nama; ?></option>
-                      <?php } ?>
-                    </select>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Ruangan KIR <div style="display:inline;" id="loading_ruangan_kir"></div></label>
-                      <select name="id_ruangan_kir" class="form-control" id="id_ruangan_kir">
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Penanggung Jawab <div style="display:inline;" id="loading_penanggung_jawab"></div></label>
-                      <select name="id_penanggung_jawab" class="form-control" id="id_penanggung_jawab">
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Kasub Aset <div style="display:inline;" id="loading_kasub_aset"></div></label>
-                      <select name="id_kasub_aset" class="form-control" id="id_kasub_aset">
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label>Kadiv Umum <div style="display:inline;" id="loading_kadiv_umum"></div></label>
                       <select name="id_kadiv_umum" class="form-control" id="id_kadiv_umum">
                       </select>
                     </div>
                   </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Kasub Aset <div style="display:inline;" id="loading_kasub_aset"></div></label>
+                      <select name="id_kasub_aset" class="form-control" id="id_kasub_aset">
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Pel. Subdiv Aset<div style="display:inline;" id="loading_penanggung_jawab"></div></label>
+                      <select name="id_pelaksana" class="form-control" id="id_pelaksana">
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Bulan</label>
+                    <select class="form-control" name="m" id="m">
+                      <option value="">--Pilih Bulan--</option>
+                      <?php $no = 1;
+                      foreach (opt_bulan() as $bulan) {
+                        if ($bulan != "") { ?>
+                          <option value="<?= $no ?>"><?= $bulan ?></option>
+                        <?php } ?>
+                      <?php $no++;
+                      } ?>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Tahun</label>
+                    <select class="form-control" name="y" id="y">
+                      <option value="">--Pilih Tahun--</option>
+                      <?php $no = 1;
+                      foreach (opt_tahun() as $years) {
+                        if ($years != "") { ?>
+                          <option value="<?= $years ?>"><?= $years ?></option>
+                        <?php } ?>
+                      <?php $no++;
+                      } ?>
+                    </select>
+                  </div>
+
+
                 </div>
             </div>
             <div class="modal-footer">
@@ -117,27 +129,6 @@
       </div>
       <?php $this->load->view('partials/footer') ?>
       <script>
-        $('#sub_kantor_option').hide();
-        $('#of_id').on('change', function(e) {
-          var optionSelected = $("option:selected", this);
-          var valueSelected = this.value;
-          if (valueSelected !== '1') {
-            $('#sub_kantor_option').hide();
-            getPenanggungJawab();
-            getRuanganKir();
-          } else {
-            $('#sub_kantor_option').show();
-          }
-        });
-        $('#sub_id').on('change', function(e) {
-          var optionSelected = $("option:selected", this);
-          var valueSelected = this.value;
-          if (valueSelected !== '') {
-            getPenanggungJawab();
-            getRuanganKir();
-          }
-        });
-
         function loadingKadivUmum() {
           $('#loading_kadiv_umum').html('<i class="fas fa-circle-notch fa-spin"></i>');
         }
@@ -206,80 +197,16 @@
             }
           });
         }
-
-        function getRuanganKir() {
-          let of_id = $('#of_id').val();
-          var param;
-          if (of_id == 1 || of_id == '1') {
-            param = {
-              of_id: of_id,
-              sub_id: $('#sub_id').val()
-            }
-          } else {
-            param = {
-              of_id: of_id,
-            }
-          }
-          $.ajax({
-            url: "<?= base_url('inventaris/get_ruangan_kir') ?>",
-            type: "POST",
-            data: param,
-            beforeSend() {
-              loadingRuanganKIR();
-            },
-            success: function(response) {
-              UnloadingRuanganKIR();
-              var data = response['data'];
-              var html = '';
-              html += '<option selected="true" value="">--Pilih--</option>';
-              for (var i = 0; i < response['data'].length; i++) {
-                html += '<option value="' + data[i].id_ruangan_kir + '">' + data[i].nama_ruangan + '</option>';
-              }
-              $('#id_ruangan_kir').html(html);
-            },
-            error: function(response) {
-              Swal.fire({
-                title: 'Belum ada Ruang KIR pada Kantor ini !',
-                text: "Apakah anda ingin menambahkan ruang KIR sekarang",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya',
-                cancelButtonText: 'Tidak',
-                customClass: {
-                  confirmButton: 'btn btn-primary me-1',
-                  cancelButton: 'btn btn-label-secondary'
-                },
-                buttonsStyling: false
-              }).then(function(result) {
-                if (result.value) {
-                  location.href = "<?= base_url('master/ruangan_kir') ?>";
-                }
-              });
-            }
-          });
-        }
+        getPenanggungJawab();
 
         function getPenanggungJawab() {
           let of_id = $('#of_id').val();
           var param;
-          if (of_id == 1 || of_id == '1') {
-            param = {
-              off_id: of_id,
-              dept_id: $('#sub_id').val()
-            }
-          } else {
-            if (of_id > 13) {
-              param = {
-                off_id: 1,
-                dept_id: 7
-              }
-            } else {
-              param = {
-                off_id: of_id,
-              }
-            }
+          param = {
+            off_id: 1,
+            dept_id: 4,
+            subdept_id: 48,
+            occ_id: 10
           }
           $.ajax({
             url: "<?= base_url('inventaris/get_employee') ?>",
@@ -296,7 +223,7 @@
               for (var i = 0; i < response['data'].length; i++) {
                 html += '<option value="' + data[i].id + '">' + data[i].nama + ' | ' + data[i].nik + '</option>';
               }
-              $('#id_penanggung_jawab').html(html);
+              $('#id_pelaksana').html(html);
             },
             error: function(response) {
               Swal.fire({

@@ -188,7 +188,7 @@ class Global_model extends CI_Model
     $this->db->where(['inventaris_pengembalian.id_pengembalian' => $id_pengembalian]);
     return $this->db->get();
   }
- function getKIRBarang($id_kartu_inventaris)
+  function getKIRBarang($id_kartu_inventaris)
   {
     $result = $this->db->query("SELECT 
     `kartu_inventaris_barang`.`id_inventaris`,`kartu_inventaris_barang`.`barang`,`kartu_inventaris_barang`.`nama_perkiraan`,
@@ -339,6 +339,31 @@ class Global_model extends CI_Model
     }
     return $id_kartu_inventaris;
   }
+  function createPembelian($data)
+  {
+    $this->db->insert('pembelian', $data) ?   $id_pembelian = $this->db->insert_id()  :   $id_pembelian = false;
+    if ($id_pembelian) {
+      $inventaris = getInventarisByYM($data['y'], $data['m'])->result();
+      foreach ($inventaris as $inven) :
+        $data = array(
+          'id_pembelian' => $id_pembelian,
+          'id_inventaris' => $inven->id_inventaris,
+          'id_barang' => $inven->id_barang,
+          'barang' => $inven->nama_perkiraan,
+          'satuan' => $inven->satuan,
+          'd' => $inven->d,
+          'm' => $inven->m,
+          'y' => $inven->y,
+          'merk' => $inven->merk,
+          'tipe' => $inven->tipe . ' ' . $inven->spek,
+          'harga' => $inven->harga,
+          'keterangan' => $inven->keterangan,
+        );
+        $this->db->insert('pembelian_inventaris', $data);
+      endforeach;
+    }
+    return $id_pembelian;
+  }
   function dashboard()
   {
     $bulanini = date('m');
@@ -348,5 +373,25 @@ class Global_model extends CI_Model
       (SELECT COUNT(id_inventaris) as total_perolehan FROM inventaris WHERE status = 1 AND y = $tahunini AND m = $bulanini) as total_perolehan,
       (SELECT COUNT(id_penghapusan_inventaris) as total_penghapusan FROM penghapusan inner join penghapusan_inventaris ON penghapusan.id_penghapusan=penghapusan_inventaris.id_penghapusan WHERE month(tanggal)=$bulanini and year(tanggal)=$tahunini) as total_penghapusan;")->row();
     return $data;
+  }
+  function getAllPembelianInventaris()
+  {
+    $this->db->select('pembelian.id_pembelian, pembelian.m, pembelian.y, COUNT(pembelian_inventaris.id) AS total_pembelian_inventaris');
+    $this->db->from('pembelian');
+    $this->db->join('pembelian_inventaris', 'pembelian.id_pembelian = pembelian_inventaris.id_pembelian', 'left');
+    $this->db->group_by('pembelian.id_pembelian, pembelian.m, pembelian.y');
+    $this->db->order_by('pembelian.y', 'DESC');
+    $this->db->order_by('pembelian.m', 'DESC');
+    $query = $this->db->get();
+    return $query;
+  }
+  function getInventarisPembelianByIdPembelian($id_pembelian)
+  {
+    $this->db->select('pembelian_inventaris.*, COUNT(pembelian_inventaris.id_barang) as jumlah');
+    $this->db->from('pembelian_inventaris');
+    $this->db->group_by('pembelian_inventaris.id_barang, pembelian_inventaris.d');
+    $this->db->where(['pembelian_inventaris.id_pembelian' => $id_pembelian]);
+    $query = $this->db->get();
+    return $query;
   }
 }

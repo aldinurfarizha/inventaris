@@ -15,9 +15,12 @@ if (!function_exists('opt_tahun')) {
     function opt_tahun()
     {
         $tahun = array();
-        for ($x = date("Y") - 5; $x <= date("Y"); $x++) {
+        $tahun_sekarang = date("Y");
+
+        for ($x = $tahun_sekarang - 10; $x <= $tahun_sekarang + 10; $x++) {
             array_push($tahun, $x);
         }
+
         return $tahun;
     }
 }
@@ -32,7 +35,7 @@ if (!function_exists('opt_satuan')) {
             'M',
             'M2',
             'M3',
-	    'SET',
+            'SET',
         );
         return $satuan;
     }
@@ -604,6 +607,18 @@ if (!function_exists('getInventarisByIdRuanganKir')) {
         return $ci->db->get();
     }
 }
+if (!function_exists('getInventarisByYM')) {
+    function getInventarisByYM($y, $m)
+    {
+        $ci = &get_instance();
+        $ci->db->select('inventaris.*, master_barang.*,master_perkiraan.*');
+        $ci->db->from('inventaris');
+        $ci->db->join('master_barang', 'master_barang.id_barang=inventaris.id_barang');
+        $ci->db->join('master_perkiraan', 'master_barang.id_perkiraan=master_perkiraan.id_perkiraan');
+        $ci->db->where(['inventaris.m' => $m, 'inventaris.y' => $y]);
+        return $ci->db->get();
+    }
+}
 if (!function_exists('getSelectedBarang')) {
     function getSelectedBarang($barang)
     {
@@ -627,5 +642,40 @@ if (!function_exists('countPerkiraanDasar')) {
     {
         $ci = &get_instance();
         return $ci->db->query("SELECT count(id_inventaris)as total FROM inventaris inner join master_barang on inventaris.id_barang = master_barang.id_barang inner join master_perkiraan on master_barang.id_perkiraan = master_perkiraan.id_perkiraan where master_perkiraan.kd_perkiraan_dasar='$kode'")->row()->total;
+    }
+}
+if (!function_exists('getPerkiraanByIdPerkiraan')) {
+    function getPerkiraanByIdPerkiraan($id_perkiraan)
+    {
+        $ci = &get_instance();
+        $ci->db->select('*');
+        $ci->db->from('master_perkiraan');
+        $ci->db->where('id_perkiraan', $id_perkiraan);
+        return $ci->db->get()->row();
+    }
+}
+if (!function_exists('generateKondisiBarang')) {
+    function generateKondisiBarang($kondisi_baik)
+    {
+        if ($kondisi_baik == 0) {
+            return "Rusak";
+        }
+        if ($kondisi_baik == 1) {
+            return "Baik";
+        }
+        if ($kondisi_baik == 2) {
+            return "Rusak Ringan";
+        }
+    }
+}
+if (!function_exists('checkPembelian')) {
+    function checkPembelianExists($m, $y)
+    {
+        $ci = &get_instance();
+        $ci->db->select('*');
+        $ci->db->from('pembelian');
+        $ci->db->where('m', $m);
+        $ci->db->where('y', $y);
+        return $ci->db->get()->num_rows();
     }
 }

@@ -80,11 +80,7 @@
         <tbody>
             <?php $no = 1;
             foreach ($data as $barang) :
-                if ($barang->kondisi_baik) {
-                    $kondisi = "Baik";
-                } else {
-                    $kondisi = "Rusak";
-                }
+                $kondisi = generateKondisiBarang($barang->kondisi_baik);
                 if ($barang->pernah_servis) {
                     $service = "servis";
                 } else {

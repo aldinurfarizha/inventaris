@@ -46,7 +46,6 @@
             </b></u></center>
     <h4 class="right"><b><?= getNamaRuanganKir($kartu_inventaris->id_ruangan_kir)->nama_ruangan ?></b></h4>
     <p style="margin-top: -25px;" class="right"><?= detailOfid($kartu_inventaris->of_id)->nama . ' ' . @detailSubOffice($kartu_inventaris->sub_id)->nama ?></p>
-
     <table style="width: 100%; border: 1px solid black; border-collapse: collapse;">
         <thead>
             <tr>
@@ -57,10 +56,10 @@
                     <center><b>Nama Barang</b></center>
                 </td>
                 <td class="border">
-                    <center><b>MERK/TYPE</b></center>
+                    <center><b>Kode Barang</b></center>
                 </td>
                 <td class="border">
-                    <center><b>Vol</b></center>
+                    <center><b>MERK/TYPE</b></center>
                 </td>
                 <td class="border">
                     <center><b>Satuan</b></center>
@@ -80,11 +79,7 @@
             <?php $no = 1;
             foreach ($kartu_inventaris_barang as $barang) :
                 $kondisi_terakhir = '';
-                if ($barang->kondisi_baik == 1) {
-                    $kondisi = "Baik";
-                } else {
-                    $kondisi = "Rusak";
-                }
+                $kondisi = generateKondisiBarang($barang->kondisi_baik);
                 if ($barang->pernah_servis == 1) {
                     $servis = "Pernah Servis";
                 } else {
@@ -95,12 +90,12 @@
                 <tr>
                     <td class="border"><?= $no ?></td>
                     <td class="border"><?= $barang->nama_perkiraan ?></td>
+                    <td class="border"><?= getPerkiraanByIdPerkiraan($barang->id_perkiraan)->kd_perkiraan ?></td>
                     <td class="border"><?= $barang->barang; ?></td>
-                    <td class="border"><?= $barang->jumlah_barang ?></td>
                     <td class="border"><?= $barang->satuan ?></td>
-                    <td class="border"><?= $barang->y ?></td>
+                    <td class="border"><?= $barang->d . '-' . $barang->m . '-' . $barang->y ?></td>
                     <td class="border"><?= $kondisi_terakhir ?></td>
-                    <td class="border"></td>
+                    <td class="border"><?= $barang->keterangan ?></td>
                 </tr>
             <?php $no++;
             endforeach; ?>
